@@ -1,0 +1,28 @@
+import type { DepartmentDefinition } from "@/types/rfq";
+
+export const roadFreight: DepartmentDefinition = {
+    id: "road_freight",
+    name: "Transport",
+    group: "Road",
+    fields: [
+        { key: "trade_lane", label: "Trade Lane", type: "select", required: true, options: ["Export", "Import", "Cross Trade"], ui: { hideInPreview: true }, halfWidth: true },
+        { key: "mode", label: "Shipment Mode", type: "select", required: true, options: ["AIR", "FCL", "LCL"], default: "FCL", halfWidth: true },
+        { key: "stuffing_type", label: "Stuffing / Destuffing Type", type: "select", required: true, options: ["Factory Stuffing", "Dock Stuffing", "Factory Destuffing", "Dock Destuffing"], default: "Dock Stuffing", rules: { visible_if: { mode: "FCL" } }, halfWidth: true },
+        { key: "source", label: "Pickup", type: "text", required: true, halfWidth: true },
+        { key: "destination", label: "Drop", type: "text", required: true, halfWidth: true },
+        { key: "empty_pickup_address", label: "Empty Pickup Address", type: "text", required: false, rules: { visible_if: { stuffing_type: "Factory Stuffing" } }, halfWidth: true },
+        { key: "loaded_return_address", label: "Loaded Return Address", type: "text", required: false, rules: { visible_if: { stuffing_type: "Factory Stuffing" } }, halfWidth: true },
+        { key: "empty_return_address", label: "Empty Return Address", type: "text", required: false, rules: { visible_if: { stuffing_type: "Factory Destuffing" } }, halfWidth: true },
+        { key: "container_mix", label: "No. & Type of Containers", type: "multiline", required: true, ui: { placeholder: "1 x 20GP\n2 x 40HC" }, rules: { visible_if: { mode: "FCL" } } },
+        { key: "num_packages", label: "No. & Type of Packages", type: "text", required: true, rules: { visible_if: { mode: ["AIR", "LCL"] } }, halfWidth: true },
+        { key: "dimensions", label: "Dimensions per package", type: "text", required: false, rules: { visible_if: { mode: ["AIR", "LCL"] } }, halfWidth: true },
+        { key: "gross_weight_pkg", label: "Gross Weight per Package", type: "text", required: false, rules: { visible_if: { mode: ["AIR", "LCL"] } }, halfWidth: true },
+        { key: "gross_weight_kg", label: "Total Gross Weight", type: "text", required: true, halfWidth: true },
+        { key: "volume_cbm", label: "Volume (CBM)", type: "text", required: false, rules: { visible_if: { mode: ["LCL"] } }, halfWidth: true },
+        { key: "vehicle_type", label: "Vehicle Type", type: "multiselect", required: true, options: ["Pickup", "407", "14 FT", "17 FT", "20 FT", "32 FT", "40 FT", "Flatbed", "Reefer"] },
+        { key: "loading_date", label: "Loading Date", type: "date", required: false, halfWidth: true },
+        { key: "cargo_summary", label: "Cargo Description", type: "multiline", required: true, ui: { placeholder: "Cargo type, weight, package details, or special handling notes" } },
+        { key: "immediate_requirement", label: "Immediate Requirement", type: "select", required: true, options: ["Yes", "No"], default: "No" },
+        { key: "other_notes", label: "Other Notes", type: "multiline", required: false },
+    ],
+};

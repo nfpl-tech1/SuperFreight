@@ -1,0 +1,14 @@
+export declare function normalizeVendorCompanyName(value: unknown): string | null;
+export declare function normalizeVendorNameKey(value: unknown): string;
+export declare function normalizeVendorOfficeName(value: unknown): string | null;
+export declare function normalizeVendorLocationName(value: unknown): string | null;
+export declare function normalizeVendorContactName(value: unknown): string | null;
+export declare function normalizeVendorDesignation(value: unknown): string | null;
+export declare function normalizeVendorSalutation(value: unknown): string | null;
+export declare function normalizeVendorFreeText(value: unknown): string | null;
+export declare function normalizeVendorAddress(value: unknown): string | null;
+export declare function normalizeVendorNotes(value: unknown): string | null;
+export declare function normalizeVendorExternalCode(value: unknown): string | null;
+export declare function normalizeVendorEmail(value: unknown): string | null;
+export declare function normalizeVendorPhone(value: unknown): string | null;
+export declare function normalizeVendorSheetTitle(value: unknown): string | null;

@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-10T09:25:51.093Z",
+  "mappings": [
+    {
+      "syntheticCode": "SEA-0168",
+      "targets": [
+        {
+          "code": "CVMIN",
+          "name": "(CVMIN) Mindelo",
+          "cityName": "Mindelo",
+          "countryName": "Cape Verde",
+          "aliases": [
+            "Mindelo/Praia"
+          ]
+        },
+        {
+          "code": "CVRAI",
+          "name": "(CVRAI) Praia",
+          "cityName": "Praia",
+          "countryName": "Cape Verde",
+          "aliases": [
+            "Mindelo/Praia"
+          ]
+        }
+      ],
+      "notes": "Curated seaport split for a composite carrier-coverage label from OG DB."
+    },
+    {
+      "syntheticCode": "SEA-0217",
+      "targets": [
+        {
+          "code": "CAMTR",
+          "name": "(CAMTR) Montreal",
+          "cityName": "Montreal",
+          "countryName": "Canada",
+          "aliases": [
+            "Montreal / Halifax"
+          ]
+        },
+        {
+          "code": "CAHAL",
+          "name": "(CAHAL) Halifax",
+          "cityName": "Halifax",
+          "countryName": "Canada",
+          "aliases": [
+            "Montreal / Halifax"
+          ]
+        }
+      ],
+      "notes": "Curated seaport split for a composite carrier-coverage label from OG DB."
+    }
+  ],
+  "migratedSyntheticPorts": 0,
+  "createdCanonicalPorts": 0,
+  "items": []
+}

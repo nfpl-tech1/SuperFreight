@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-10T07:18:24.501Z",
+  "mode": "dry-run",
+  "workbookPath": "..\\OG DB\\Carrier Master.xlsx",
+  "exportRowsRead": 7592,
+  "masterRowsRead": 303,
+  "uniqueVendorsInMaster": 174,
+  "rowsMatchedToOffice": 9459,
+  "rowsMatchedToPort": 8536,
+  "rowsReadyToLink": 8536,
+  "uniqueOfficePortPairsReady": 7578,
+  "linksCreated": 0,
+  "linksAlreadyPresent": 8499,
+  "statusCounts": {
+    "matched": 8536,
+    "vendor_not_in_master": 428,
+    "office_unresolved": 184,
+    "vendor_not_in_db": 0,
+    "db_office_not_found": 0,
+    "port_unresolved": 887,
+    "port_ambiguous": 36
+  }
+}

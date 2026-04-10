@@ -1,0 +1,13 @@
+import { DeepPartial } from 'typeorm';
+import { CreateInquiryDto } from './dto/create-inquiry.dto';
+import { UpdateInquiryDto } from './dto/update-inquiry.dto';
+import { Inquiry } from './entities/inquiry.entity';
+import { Job } from './entities/job.entity';
+import { JobServicePart } from './entities/job-service-part.entity';
+import { OwnershipAssignment } from './entities/ownership-assignment.entity';
+export declare function buildInquiryCreateInput(dto: CreateInquiryDto, currentUserId: string, inquiryNumber: string): DeepPartial<Inquiry>;
+export declare function buildInquiryUpdateInput(dto: UpdateInquiryDto): DeepPartial<Inquiry>;
+export declare function buildJobCreateInput(inquiry: Inquiry): DeepPartial<Job>;
+export declare function buildJobUpdateInput(inquiry: Inquiry): DeepPartial<Job>;
+export declare function buildFreightServicePartCreateInput(jobId: string, inquiry: Inquiry, applicationSlug: string): DeepPartial<JobServicePart>;
+export declare function buildOwnershipTransferInput(inquiryId: string, previousOwnerUserId: string | null, newOwnerUserId: string, changedByUserId: string, reason?: string): DeepPartial<OwnershipAssignment>;

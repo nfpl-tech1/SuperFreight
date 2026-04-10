@@ -1,0 +1,68 @@
+import type { FilterableVendor } from "@/types/rfq";
+
+export const filterableVendors: FilterableVendor[] = [
+    {
+        id: "FV001", name: "Himalayan Trans Logistics", primaryContactName: "Rohan Karki",
+        locationMaster: "Kathmandu, Nepal", country: "Nepal",
+        primaryContactEmail: "rohan@himtrans.com", tradeDirections: ["Export", "Import"],
+        categories: ["Transporter", "CFS"], status: "Active", wcaYears: 5,
+        iataCertified: false, seaFreight: true, projectCargo: false,
+        ownConsolidation: true, ownTransport: true, ownWarehouse: true, ownCustoms: false,
+    },
+    {
+        id: "FV002", name: "Everest Fleet Services", primaryContactName: "Deepak Adhikari",
+        locationMaster: "Birgunj, Nepal", country: "Nepal",
+        primaryContactEmail: "deepak@everestfleet.com", tradeDirections: ["Export"],
+        categories: ["Carrier", "Transporter"], status: "Active", wcaYears: 3,
+        iataCertified: false, seaFreight: true, projectCargo: true,
+        ownConsolidation: false, ownTransport: true, ownWarehouse: false, ownCustoms: false,
+    },
+    {
+        id: "FV003", name: "Northway Cargo Chain", primaryContactName: "Ratna Gurung",
+        locationMaster: "Kolkata, India", country: "India",
+        primaryContactEmail: "ratna@northwaycargo.com", tradeDirections: ["Export", "Import", "International"],
+        categories: ["Co-Loader", "Shipping Line"], status: "Active", wcaYears: 8,
+        iataCertified: true, seaFreight: true, projectCargo: false,
+        ownConsolidation: true, ownTransport: false, ownWarehouse: true, ownCustoms: true,
+    },
+    {
+        id: "FV004", name: "Western Route Carriers", primaryContactName: "Milan Bajaj",
+        locationMaster: "Lucknow, India", country: "India",
+        primaryContactEmail: "milan@westernroute.com", tradeDirections: ["Export"],
+        categories: ["Transporter"], status: "Active", wcaYears: 2,
+        iataCertified: false, seaFreight: false, projectCargo: false,
+        ownConsolidation: false, ownTransport: true, ownWarehouse: false, ownCustoms: false,
+    },
+    {
+        id: "FV005", name: "Kathmandu Air Cargo", primaryContactName: "Sita Sharma",
+        locationMaster: "Kathmandu, Nepal", country: "Nepal",
+        primaryContactEmail: "sita@ktmair.com", tradeDirections: ["Export", "Import"],
+        categories: ["IATA Agent", "Carrier"], status: "Active", wcaYears: 6,
+        iataCertified: true, seaFreight: false, projectCargo: false,
+        ownConsolidation: true, ownTransport: false, ownWarehouse: false, ownCustoms: false,
+    },
+    {
+        id: "FV006", name: "Nepal Customs Partners", primaryContactName: "Binod Thapa",
+        locationMaster: "Kathmandu, Nepal", country: "Nepal",
+        primaryContactEmail: "binod@nepalcustoms.com", tradeDirections: ["Import"],
+        categories: ["CHA", "Licensing"], status: "Active", wcaYears: 10,
+        iataCertified: false, seaFreight: false, projectCargo: false,
+        ownConsolidation: false, ownTransport: false, ownWarehouse: false, ownCustoms: true,
+    },
+    {
+        id: "FV007", name: "Sagarmatha Pack & Move", primaryContactName: "Anish Rai",
+        locationMaster: "Dubai, UAE", country: "UAE",
+        primaryContactEmail: "anish@sagpack.com", tradeDirections: ["Export", "International"],
+        categories: ["Packer", "Transporter"], status: "Active", wcaYears: 1,
+        iataCertified: false, seaFreight: false, projectCargo: true,
+        ownConsolidation: false, ownTransport: true, ownWarehouse: true, ownCustoms: false,
+    },
+    {
+        id: "FV008", name: "Indo-Nepal Shipping Co.", primaryContactName: "Rajesh Gupta",
+        locationMaster: "Mumbai, India", country: "India",
+        primaryContactEmail: "rajesh@inship.com", tradeDirections: ["Export", "Import", "International"],
+        categories: ["Shipping Line", "Co-Loader", "CFS"], status: "Inactive", wcaYears: 12,
+        iataCertified: false, seaFreight: true, projectCargo: true,
+        ownConsolidation: true, ownTransport: true, ownWarehouse: true, ownCustoms: true,
+    },
+];

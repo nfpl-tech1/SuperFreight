@@ -1,0 +1,3578 @@
+{
+  "generatedAt": "2026-04-05T17:27:45.402Z",
+  "sourceFile": "carrier-export-coverage.review.json + carrier-export-coverage.nooverride.review.json",
+  "generationRule": "Recovered override set: rows that are matched in the last known-good review snapshot but regress when overrides are removed.",
+  "count": 469,
+  "items": [
+    {
+      "rowNumber": 17,
+      "normalizedPortLabel": "SUDAN",
+      "portCode": "SDPZU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sudan -> SDPZU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 54,
+      "normalizedPortLabel": "HAI PHONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hai Phong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 59,
+      "normalizedPortLabel": "IZMIR ALIAGA",
+      "portCode": "TRALI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Izmir / Aliaga -> TRALI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 77,
+      "normalizedPortLabel": "SUDAN",
+      "portCode": "SDPZU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sudan -> SDPZU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 150,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 158,
+      "normalizedPortLabel": "KIMBE",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kimbe -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 162,
+      "normalizedPortLabel": "MADANG",
+      "portCode": "VNDAD",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Madang -> VNDAD.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 176,
+      "normalizedPortLabel": "PEMBA",
+      "portCode": "GHTEM",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Pemba -> GHTEM.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 188,
+      "normalizedPortLabel": "SANTO",
+      "portCode": "BRSSZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Santo -> BRSSZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 200,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 477,
+      "normalizedPortLabel": "ANKINGCHENG",
+      "portCode": "CNAQG",
+      "notes": "Row-level override for workbook label Ankingcheng -> UNECE CN AQG Anqing.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 492,
+      "normalizedPortLabel": "BAHEZHEN BAHE",
+      "portCode": "CNBAH",
+      "notes": "Row-level override for workbook label Bahezhen (Bahe) -> UNECE CN BAH Bahe.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 551,
+      "normalizedPortLabel": "CAGAYAN",
+      "portCode": "PHCGY",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cagayan -> PHCGY.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 623,
+      "normalizedPortLabel": "EL DIKHEILA ALY11",
+      "portCode": "EGEDK",
+      "notes": "Row-level override for workbook label El-Dikheila Aly11 -> EGEDK Alexandria El Dekheila.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 642,
+      "normalizedPortLabel": "FUNAFATI",
+      "portCode": "TVFUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Funafati -> TVFUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 645,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 674,
+      "normalizedPortLabel": "GUIGA",
+      "portCode": "ECGYE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guiga -> ECGYE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 697,
+      "normalizedPortLabel": "HO CHI MINH CATLAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh - Catlai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 698,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh (Cat Lai) -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 701,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh/Cat Lai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 731,
+      "normalizedPortLabel": "ISHIKARIWAN SHINKO",
+      "portCode": "JPICW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ishikariwan-Shinko -> JPICW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 735,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 746,
+      "normalizedPortLabel": "JALI",
+      "portCode": "AEDXB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jali -> AEDXB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 781,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 792,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 799,
+      "normalizedPortLabel": "KUCHING BINTULU",
+      "portCode": "MYBTU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kuching, Bintulu -> MYBTU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 910,
+      "normalizedPortLabel": "NANHAINANGANG",
+      "portCode": "CNNAH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhainangang -> CNNAH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 960,
+      "normalizedPortLabel": "PANAMA CITY DR VIA BALBOA",
+      "portCode": "PABLB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panama City Dr ( Via Balboa -> PABLB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 987,
+      "normalizedPortLabel": "PORT EVERGLADES MIAMI",
+      "portCode": "SEA-0132",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Everglades / Miami -> SEA-0132.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1020,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1033,
+      "normalizedPortLabel": "RARTONGA",
+      "portCode": "CKRAR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Rartonga -> CKRAR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1038,
+      "normalizedPortLabel": "REUNION",
+      "portCode": "RELPT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Reunion -> RELPT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1048,
+      "normalizedPortLabel": "RONQUI",
+      "portCode": "CNROQ",
+      "notes": "Row-level override for workbook typo Ronqui -> CNROQ Rongqi Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1069,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1070,
+      "normalizedPortLabel": "SANSHUI NEW PORT",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui New Port -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1100,
+      "normalizedPortLabel": "SHUNDE LELIU WHARF",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde Leliu Wharf -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1101,
+      "normalizedPortLabel": "SHUNDE NEW PORT",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde New Port -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1102,
+      "normalizedPortLabel": "SHUNDERONGQI",
+      "portCode": "CNROQ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shunderongqi -> CNROQ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1156,
+      "normalizedPortLabel": "TIANJIN XINGANG",
+      "portCode": "CNTXG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tianjin, Xingang -> CNTXG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1160,
+      "normalizedPortLabel": "TINCAN APAPA",
+      "portCode": "NGAPP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tincan / Apapa -> NGAPP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1203,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1226,
+      "normalizedPortLabel": "YANTIAN SHENZHEN CHINA",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yantian, Shenzhen, China -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1242,
+      "normalizedPortLabel": "ZHAOQING NEW PORT",
+      "portCode": "CNZQG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhaoqing New Port -> CNZQG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1375,
+      "normalizedPortLabel": "EL DIKHEILA ALY11",
+      "portCode": "EGEDK",
+      "notes": "Row-level override for workbook label El-Dikheila Aly11 -> EGEDK Alexandria El Dekheila.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1384,
+      "normalizedPortLabel": "GEFLE",
+      "portCode": "TRGEB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Gefle -> TRGEB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1402,
+      "normalizedPortLabel": "ISKENDEREN",
+      "portCode": "TRISK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Iskenderen -> TRISK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1416,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1420,
+      "normalizedPortLabel": "KUCHING BINTULU",
+      "portCode": "MYBTU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kuching, Bintulu -> MYBTU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1426,
+      "normalizedPortLabel": "LAT KRA BANG",
+      "portCode": "THLKR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lat Kra Bang -> THLKR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1438,
+      "normalizedPortLabel": "MALTA",
+      "portCode": "MVMLE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Malta -> MVMLE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1452,
+      "normalizedPortLabel": "NEUSS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Neuss -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1470,
+      "normalizedPortLabel": "PORT SAID WEST",
+      "portCode": "SEA-0007",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Said West -> SEA-0007.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1474,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1495,
+      "normalizedPortLabel": "SHUIABA",
+      "portCode": "KWSAA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shuiaba -> KWSAA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1519,
+      "normalizedPortLabel": "UST LUGA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ust-Luga -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1533,
+      "normalizedPortLabel": "YUNFU",
+      "portCode": "SEA-0064",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yunfu -> SEA-0064.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1581,
+      "normalizedPortLabel": "HOCHIMINH",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hochiminh -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1628,
+      "normalizedPortLabel": "HOCHIMINH CITY",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hochiminh City -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1632,
+      "normalizedPortLabel": "ISKENDRUN",
+      "portCode": "TRISK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Iskendrun -> TRISK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1634,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1635,
+      "normalizedPortLabel": "IZMIR ALIAGA",
+      "portCode": "TRALI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Izmir (Aliaga) -> TRALI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1681,
+      "normalizedPortLabel": "YUNFU",
+      "portCode": "SEA-0064",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yunfu -> SEA-0064.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1701,
+      "normalizedPortLabel": "BUNAVENTURA",
+      "portCode": "COBUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bunaventura -> COBUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1702,
+      "normalizedPortLabel": "CALDERA",
+      "portCode": "SEA-0202",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Caldera -> SEA-0202.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1727,
+      "normalizedPortLabel": "HALIFAX",
+      "portCode": "SEA-0217",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Halifax -> SEA-0217.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1746,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1752,
+      "normalizedPortLabel": "LAZARO CARDINOS",
+      "portCode": "SEA-0222",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lazaro Cardinos -> SEA-0222.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1780,
+      "normalizedPortLabel": "PIREAUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Pireaus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1785,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1823,
+      "normalizedPortLabel": "AJAMA",
+      "portCode": "AEAJM",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ajama -> AEAJM.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2059,
+      "normalizedPortLabel": "ALGIER",
+      "portCode": "SEA-0224",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Algier -> SEA-0224.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2079,
+      "normalizedPortLabel": "BUENES AIRES",
+      "portCode": "ARBUE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Buenes Aires -> ARBUE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2097,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2134,
+      "normalizedPortLabel": "JIANGMEN",
+      "portCode": "SEA-0043",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jiangmen -> SEA-0043.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2142,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2186,
+      "normalizedPortLabel": "PORT SAID EAST",
+      "portCode": "SEA-0007",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Said East -> SEA-0007.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2187,
+      "normalizedPortLabel": "PORT SAID WEST",
+      "portCode": "SEA-0007",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Said West -> SEA-0007.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2203,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sanshui -> SEA-0053.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2237,
+      "normalizedPortLabel": "WEIHAI",
+      "portCode": "SEA-0057",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Weihai -> SEA-0057.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2245,
+      "normalizedPortLabel": "YUEYANG",
+      "portCode": "SEA-0063",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yueyang -> SEA-0063.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2246,
+      "normalizedPortLabel": "YUNFU",
+      "portCode": "SEA-0064",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yunfu -> SEA-0064.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2248,
+      "normalizedPortLabel": "ZHENJIANG",
+      "portCode": "SEA-0066",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhenjiang -> SEA-0066.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2262,
+      "normalizedPortLabel": "ANKINGCHENG",
+      "portCode": "CNAQG",
+      "notes": "Row-level override for workbook label Ankingcheng -> UNECE CN AQG Anqing.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2279,
+      "normalizedPortLabel": "BAHEZHEN BAHE",
+      "portCode": "CNBAH",
+      "notes": "Row-level override for workbook label Bahezhen (Bahe) -> UNECE CN BAH Bahe.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2339,
+      "normalizedPortLabel": "CAGAYAN",
+      "portCode": "PHCGY",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cagayan -> PHCGY.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2351,
+      "normalizedPortLabel": "CAT LAI HO CHI MINH",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cat Lai, Ho Chi Minh -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2417,
+      "normalizedPortLabel": "EL DIKHEILA ALY11",
+      "portCode": "EGEDK",
+      "notes": "Row-level override for workbook label El-Dikheila Aly11 -> EGEDK Alexandria El Dekheila.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2436,
+      "normalizedPortLabel": "FUNAFATI",
+      "portCode": "TVFUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Funafati -> TVFUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2439,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2470,
+      "normalizedPortLabel": "GUIGA",
+      "portCode": "ECGYE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guiga -> ECGYE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2493,
+      "normalizedPortLabel": "HO CHI MINH CATLAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh - Catlai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2494,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh (Cat Lai) -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2524,
+      "normalizedPortLabel": "ISHIKARIWAN SHINKO",
+      "portCode": "JPICW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ishikariwan-Shinko -> JPICW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2528,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2539,
+      "normalizedPortLabel": "JALI",
+      "portCode": "AEDXB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jali -> AEDXB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2573,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2584,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2591,
+      "normalizedPortLabel": "KUCHING BINTULU",
+      "portCode": "MYBTU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kuching, Bintulu -> MYBTU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2683,
+      "normalizedPortLabel": "MONTREAL HALIFAX",
+      "portCode": "SEA-0086",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Montreal/ Halifax -> SEA-0086.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2700,
+      "normalizedPortLabel": "NANHAINANGANG",
+      "portCode": "CNNAH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhainangang -> CNNAH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2750,
+      "normalizedPortLabel": "PANAMA CITY DR VIA BALBOA",
+      "portCode": "PABLB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panama City Dr ( Via Balboa -> PABLB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2777,
+      "normalizedPortLabel": "PORT EVERGLADES MIAMI",
+      "portCode": "SEA-0132",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Everglades / Miami -> SEA-0132.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2809,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2822,
+      "normalizedPortLabel": "RARTONGA",
+      "portCode": "CKRAR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Rartonga -> CKRAR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2827,
+      "normalizedPortLabel": "REUNION",
+      "portCode": "RELPT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Reunion -> RELPT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2837,
+      "normalizedPortLabel": "RONQUI",
+      "portCode": "CNROQ",
+      "notes": "Row-level override for workbook typo Ronqui -> CNROQ Rongqi Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2856,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2857,
+      "normalizedPortLabel": "SANSHUI NEW PORT",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui New Port -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2887,
+      "normalizedPortLabel": "SHUNDE LELIU WHARF",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde Leliu Wharf -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2888,
+      "normalizedPortLabel": "SHUNDE NEW PORT",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde New Port -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2889,
+      "normalizedPortLabel": "SHUNDERONGQI",
+      "portCode": "CNROQ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shunderongqi -> CNROQ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2943,
+      "normalizedPortLabel": "TIANJIN XINGANG",
+      "portCode": "CNTXG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tianjin, Xingang -> CNTXG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2946,
+      "normalizedPortLabel": "TINCAN APAPA",
+      "portCode": "NGAPP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tincan / Apapa -> NGAPP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2988,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3011,
+      "normalizedPortLabel": "YANTIAN SHENZHEN CHINA",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yantian, Shenzhen, China -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3027,
+      "normalizedPortLabel": "ZHAOQING NEW PORT",
+      "portCode": "CNZQG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhaoqing New Port -> CNZQG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3083,
+      "normalizedPortLabel": "ANKINGCHENG",
+      "portCode": "CNAQG",
+      "notes": "Row-level override for workbook label Ankingcheng -> UNECE CN AQG Anqing.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3084,
+      "normalizedPortLabel": "ANQING",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Anqing -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3087,
+      "normalizedPortLabel": "BAHEZHEN BAHE",
+      "portCode": "CNBAH",
+      "notes": "Row-level override for workbook label Bahezhen (Bahe) -> UNECE CN BAH Bahe.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3091,
+      "normalizedPortLabel": "BEIMEN",
+      "portCode": "DEBRE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Beimen -> DEBRE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3099,
+      "normalizedPortLabel": "CHANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Changzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3102,
+      "normalizedPortLabel": "CHIKOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Chikou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3111,
+      "normalizedPortLabel": "DATONG",
+      "portCode": "CNNTG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Datong -> CNNTG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3112,
+      "normalizedPortLabel": "DIGANG",
+      "portCode": "CNXGG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Digang -> CNXGG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3114,
+      "normalizedPortLabel": "EZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ezhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3159,
+      "normalizedPortLabel": "QUINGDAO",
+      "portCode": "CNTAO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Quingdao -> CNTAO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3165,
+      "normalizedPortLabel": "SHEKHOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shekhou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3189,
+      "normalizedPortLabel": "YANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yangzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3193,
+      "normalizedPortLabel": "ZHENJIANG",
+      "portCode": "SEA-0066",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhenjiang -> SEA-0066.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3337,
+      "normalizedPortLabel": "DA CHEN BAY",
+      "portCode": "SEA-0091",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Da Chen Bay -> SEA-0091.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3382,
+      "normalizedPortLabel": "HO CHI MIN",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Min -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3476,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3481,
+      "normalizedPortLabel": "HOCHIMINH CITY",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hochiminh City -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3506,
+      "normalizedPortLabel": "SHEKHOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shekhou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3525,
+      "normalizedPortLabel": "BANDAR BUSHEHR",
+      "portCode": "IRBUZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bandar Bushehr -> IRBUZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3534,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3574,
+      "normalizedPortLabel": "BERBERRA",
+      "portCode": "SOBBO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Berberra -> SOBBO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3592,
+      "normalizedPortLabel": "KAOUSHING",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kaoushing -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3600,
+      "normalizedPortLabel": "LAT KRABANK",
+      "portCode": "THLKR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lat Krabank -> THLKR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3627,
+      "normalizedPortLabel": "SHEKHOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shekhou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3638,
+      "normalizedPortLabel": "TAWAN",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawan -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3639,
+      "normalizedPortLabel": "TAWAU",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawau -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3717,
+      "normalizedPortLabel": "COLUMBUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Columbus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3729,
+      "normalizedPortLabel": "DALLAS",
+      "portCode": "CNDAL",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dallas -> CNDAL.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3734,
+      "normalizedPortLabel": "DEKHEILA",
+      "portCode": "EGEDK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dekheila -> EGEDK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3757,
+      "normalizedPortLabel": "HALIFAX",
+      "portCode": "SEA-0217",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Halifax -> SEA-0217.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3787,
+      "normalizedPortLabel": "LA GUAIRA",
+      "portCode": "SEA-0181",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: La Guaira -> SEA-0181.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3801,
+      "normalizedPortLabel": "LONGONI",
+      "portCode": "GBLON",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Longoni -> GBLON.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3817,
+      "normalizedPortLabel": "MEMPHIS",
+      "portCode": "GRDLP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Memphis -> GRDLP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3818,
+      "normalizedPortLabel": "MINDELO",
+      "portCode": "SEA-0168",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Mindelo -> SEA-0168.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3828,
+      "normalizedPortLabel": "MONTREAL HALIFAX",
+      "portCode": "SEA-0086",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Montreal/ Halifax -> SEA-0086.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3846,
+      "normalizedPortLabel": "NEWYORK",
+      "portCode": "USNYC",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Newyork -> USNYC.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3858,
+      "normalizedPortLabel": "PANJANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panjang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3890,
+      "normalizedPortLabel": "ANKINGCHENG",
+      "portCode": "CNAQG",
+      "notes": "Row-level override for workbook label Ankingcheng -> UNECE CN AQG Anqing.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3892,
+      "normalizedPortLabel": "ANQING",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Anqing -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3901,
+      "normalizedPortLabel": "ASUNCION",
+      "portCode": "SEA-0178",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Asuncion -> SEA-0178.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3904,
+      "normalizedPortLabel": "AUCKLAND METROPORT",
+      "portCode": "SEA-0145",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Auckland Metroport -> SEA-0145.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3907,
+      "normalizedPortLabel": "BAHEZHEN BAHE",
+      "portCode": "CNBAH",
+      "notes": "Row-level override for workbook label Bahezhen (Bahe) -> UNECE CN BAH Bahe.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3912,
+      "normalizedPortLabel": "BANDAR BUSHEHR",
+      "portCode": "IRBUZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bandar Bushehr -> IRBUZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3932,
+      "normalizedPortLabel": "BEIMEN",
+      "portCode": "DEBRE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Beimen -> DEBRE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3941,
+      "normalizedPortLabel": "BERBARA",
+      "portCode": "SOBBO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Berbara -> SOBBO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3943,
+      "normalizedPortLabel": "BERCELONA",
+      "portCode": "ESBCN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bercelona -> ESBCN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3958,
+      "normalizedPortLabel": "BUENA VENTURA",
+      "portCode": "COBUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Buena Ventura -> COBUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3960,
+      "normalizedPortLabel": "BUENES AIRES",
+      "portCode": "ARBUE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Buenes Aires -> ARBUE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3962,
+      "normalizedPortLabel": "BUNAVENTURA",
+      "portCode": "COBUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bunaventura -> COBUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3967,
+      "normalizedPortLabel": "CAGAYAN",
+      "portCode": "PHCGY",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cagayan -> PHCGY.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3973,
+      "normalizedPortLabel": "CANTON",
+      "portCode": "BRSSZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Canton -> BRSSZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3979,
+      "normalizedPortLabel": "CAT LAI HO CHI MINH",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cat Lai, Ho Chi Minh -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3986,
+      "normalizedPortLabel": "CHANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Changzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3990,
+      "normalizedPortLabel": "CHIKOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Chikou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4015,
+      "normalizedPortLabel": "DA CHEN BAY",
+      "portCode": "SEA-0091",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Da Chen Bay -> SEA-0091.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4024,
+      "normalizedPortLabel": "DATONG",
+      "portCode": "CNNTG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Datong -> CNNTG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4028,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4030,
+      "normalizedPortLabel": "DIGANG",
+      "portCode": "CNXGG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Digang -> CNXGG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4045,
+      "normalizedPortLabel": "EL DIKHEILA ALY11",
+      "portCode": "EGEDK",
+      "notes": "Row-level override for workbook label El-Dikheila Aly11 -> EGEDK Alexandria El Dekheila.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4047,
+      "normalizedPortLabel": "EZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ezhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4064,
+      "normalizedPortLabel": "FUNAFATI",
+      "portCode": "TVFUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Funafati -> TVFUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4067,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4080,
+      "normalizedPortLabel": "GEFLE",
+      "portCode": "TRGEB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Gefle -> TRGEB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4096,
+      "normalizedPortLabel": "GUATEMALA CITY",
+      "portCode": "GHTEM",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guatemala City -> GHTEM.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4098,
+      "normalizedPortLabel": "GUIGA",
+      "portCode": "ECGYE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guiga -> ECGYE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4105,
+      "normalizedPortLabel": "HALIFAX",
+      "portCode": "SEA-0217",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Halifax -> SEA-0217.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4117,
+      "normalizedPortLabel": "HIPHONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hiphong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4119,
+      "normalizedPortLabel": "HITACHINAKA",
+      "portCode": "CNCHN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hitachinaka -> CNCHN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4121,
+      "normalizedPortLabel": "HO CHI MINH CATLAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh - Catlai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4122,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh (Cat Lai) -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4125,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh/Cat Lai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4127,
+      "normalizedPortLabel": "HOCHIMINH CITY",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hochiminh City -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4137,
+      "normalizedPortLabel": "HUIZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Huizhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4155,
+      "normalizedPortLabel": "ISHIKARIWAN SHINKO",
+      "portCode": "JPICW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ishikariwan-Shinko -> JPICW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4156,
+      "normalizedPortLabel": "ISKENDEREN",
+      "portCode": "TRISK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Iskenderen -> TRISK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4159,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4170,
+      "normalizedPortLabel": "JALI",
+      "portCode": "AEDXB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jali -> AEDXB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4174,
+      "normalizedPortLabel": "JIANGMEN",
+      "portCode": "SEA-0043",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jiangmen -> SEA-0043.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4194,
+      "normalizedPortLabel": "KELANG",
+      "portCode": "MYPEN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kelang -> MYPEN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4203,
+      "normalizedPortLabel": "KIMBE",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kimbe -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4204,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4205,
+      "normalizedPortLabel": "KING ABDULLAH",
+      "portCode": "SEA-0125",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: King Abdullah -> SEA-0125.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4214,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4215,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4222,
+      "normalizedPortLabel": "KUCHING BINTULU",
+      "portCode": "MYBTU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kuching, Bintulu -> MYBTU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4224,
+      "normalizedPortLabel": "KUSHIRO",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kushiro -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4228,
+      "normalizedPortLabel": "LA GUAIRA",
+      "portCode": "SEA-0181",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: La Guaira -> SEA-0181.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4238,
+      "normalizedPortLabel": "LAT KRA BANG",
+      "portCode": "THLKR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lat Kra Bang -> THLKR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4244,
+      "normalizedPortLabel": "LAZARO CARDINAS",
+      "portCode": "SEA-0222",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lazaro Cardinas -> SEA-0222.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4245,
+      "normalizedPortLabel": "LAZARO CARDINOS",
+      "portCode": "SEA-0222",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lazaro Cardinos -> SEA-0222.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4262,
+      "normalizedPortLabel": "LONGONI",
+      "portCode": "GBLON",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Longoni -> GBLON.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4266,
+      "normalizedPortLabel": "LUZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Luzhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4271,
+      "normalizedPortLabel": "MADANG",
+      "portCode": "VNDAD",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Madang -> VNDAD.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4280,
+      "normalizedPortLabel": "MALTA",
+      "portCode": "MVMLE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Malta -> MVMLE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4315,
+      "normalizedPortLabel": "MONTREAL HALIFAX",
+      "portCode": "SEA-0086",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Montreal/ Halifax -> SEA-0086.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4329,
+      "normalizedPortLabel": "NANGANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nangang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4330,
+      "normalizedPortLabel": "NANHAI",
+      "portCode": "CNNSH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhai -> CNNSH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4332,
+      "normalizedPortLabel": "NANHAINANGANG",
+      "portCode": "CNNAH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhainangang -> CNNAH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4346,
+      "normalizedPortLabel": "NEUSS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Neuss -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4350,
+      "normalizedPortLabel": "NEWYORK",
+      "portCode": "USNYC",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Newyork -> USNYC.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4359,
+      "normalizedPortLabel": "NORTH MANILA",
+      "portCode": "SEA-0106",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: North Manila -> SEA-0106.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4375,
+      "normalizedPortLabel": "OTAKE",
+      "portCode": "JPOSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Otake -> JPOSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4377,
+      "normalizedPortLabel": "PADANG",
+      "portCode": "MYPEN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Padang -> MYPEN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4382,
+      "normalizedPortLabel": "PANAMA CITY DR VIA BALBOA",
+      "portCode": "PABLB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panama City Dr ( Via Balboa -> PABLB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4383,
+      "normalizedPortLabel": "PANJANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panjang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4394,
+      "normalizedPortLabel": "PEMBA",
+      "portCode": "GHTEM",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Pemba -> GHTEM.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4400,
+      "normalizedPortLabel": "PIREAUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Pireaus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4409,
+      "normalizedPortLabel": "PORT EVERGLADES MIAMI",
+      "portCode": "SEA-0132",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Everglades / Miami -> SEA-0132.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4423,
+      "normalizedPortLabel": "PORT SAID EAST",
+      "portCode": "SEA-0007",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Said East -> SEA-0007.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4424,
+      "normalizedPortLabel": "PORT SAID WEST",
+      "portCode": "SEA-0007",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Said West -> SEA-0007.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4429,
+      "normalizedPortLabel": "PORTKLANG NORTH",
+      "portCode": "MYPKL",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Portklang North -> MYPKL.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4435,
+      "normalizedPortLabel": "PUERTO CABELLO",
+      "portCode": "SEA-0185",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Puerto Cabello -> SEA-0185.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4441,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4442,
+      "normalizedPortLabel": "PUERTO QUETZEL",
+      "portCode": "SEA-0203",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Puerto Quetzel -> SEA-0203.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4450,
+      "normalizedPortLabel": "QUINHON",
+      "portCode": "VNUIH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Quinhon -> VNUIH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4454,
+      "normalizedPortLabel": "RARTONGA",
+      "portCode": "CKRAR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Rartonga -> CKRAR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4459,
+      "normalizedPortLabel": "REUNION",
+      "portCode": "RELPT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Reunion -> RELPT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4469,
+      "normalizedPortLabel": "RONQUI",
+      "portCode": "CNROQ",
+      "notes": "Row-level override for workbook typo Ronqui -> CNROQ Rongqi Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4488,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sanshui -> SEA-0053.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4489,
+      "normalizedPortLabel": "SANSHUI NEW PORT",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui New Port -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4491,
+      "normalizedPortLabel": "SANTO",
+      "portCode": "BRSSZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Santo -> BRSSZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4510,
+      "normalizedPortLabel": "SHIBUSHI",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shibushi -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4515,
+      "normalizedPortLabel": "SHUIABA",
+      "portCode": "KWSAA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shuiaba -> KWSAA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4519,
+      "normalizedPortLabel": "SHUNDE LELIU WHARF",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde Leliu Wharf -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4520,
+      "normalizedPortLabel": "SHUNDE NEW PORT",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde New Port -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4521,
+      "normalizedPortLabel": "SHUNDERONGQI",
+      "portCode": "CNROQ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shunderongqi -> CNROQ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4533,
+      "normalizedPortLabel": "SONGHKLA",
+      "portCode": "THSGZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Songhkla -> THSGZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4543,
+      "normalizedPortLabel": "SUEZ EL SUWEIS",
+      "portCode": "EGSOK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Suez/El Suweis -> EGSOK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4544,
+      "normalizedPortLabel": "SUHAR",
+      "portCode": "OMSOH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Suhar -> OMSOH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4550,
+      "normalizedPortLabel": "TAICANG",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Taicang -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4567,
+      "normalizedPortLabel": "TAWAO",
+      "portCode": "PHDVO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawao -> PHDVO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4574,
+      "normalizedPortLabel": "TIANJIN XINGANG",
+      "portCode": "CNTXG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tianjin, Xingang -> CNTXG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4577,
+      "normalizedPortLabel": "TINCAN APAPA",
+      "portCode": "NGAPP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tincan / Apapa -> NGAPP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4579,
+      "normalizedPortLabel": "TOKUSHIMA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tokushima -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4594,
+      "normalizedPortLabel": "UM AL QUAIN",
+      "portCode": "AEQIW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Um Al Quain -> AEQIW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4596,
+      "normalizedPortLabel": "UMM AL QWAIN",
+      "portCode": "AEQIW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Umm Al Qwain -> AEQIW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4598,
+      "normalizedPortLabel": "USHUAIA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ushuaia -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4599,
+      "normalizedPortLabel": "UST LUGA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ust-Luga -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4606,
+      "normalizedPortLabel": "VAVAU",
+      "portCode": "PHDVO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Vavau -> PHDVO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4616,
+      "normalizedPortLabel": "VILLA DO CONDE",
+      "portCode": "SEA-0190",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Villa Do Conde -> SEA-0190.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4620,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4623,
+      "normalizedPortLabel": "WEIHAI",
+      "portCode": "SEA-0057",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Weihai -> SEA-0057.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4627,
+      "normalizedPortLabel": "WU ZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wu Zhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4634,
+      "normalizedPortLabel": "XINGTAN",
+      "portCode": "CNXGG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Xingtan -> CNXGG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4637,
+      "normalizedPortLabel": "YAN TIAN",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yan Tian -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4640,
+      "normalizedPortLabel": "YANGPU PT",
+      "portCode": "CNHUA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yangpu Pt -> CNHUA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4641,
+      "normalizedPortLabel": "YANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yangzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4643,
+      "normalizedPortLabel": "YANTIAN SHENZHEN CHINA",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yantian, Shenzhen, China -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4644,
+      "normalizedPortLabel": "YATSUSHIRO",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yatsushiro -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4648,
+      "normalizedPortLabel": "YUEYANG",
+      "portCode": "SEA-0063",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yueyang -> SEA-0063.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4649,
+      "normalizedPortLabel": "YUNFU",
+      "portCode": "SEA-0064",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yunfu -> SEA-0064.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4654,
+      "normalizedPortLabel": "ZHANJIAGANG",
+      "portCode": "CNZJG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhanjiagang -> CNZJG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4659,
+      "normalizedPortLabel": "ZHAOQING NEW PORT",
+      "portCode": "CNZQG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhaoqing New Port -> CNZQG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4661,
+      "normalizedPortLabel": "ZHENJIANG",
+      "portCode": "SEA-0066",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhenjiang -> SEA-0066.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4668,
+      "normalizedPortLabel": "ZHUHAI CIVET",
+      "portCode": "CNZUH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhuhai Civet -> CNZUH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4669,
+      "normalizedPortLabel": "ZHUHAI GAOLAN",
+      "portCode": "CNZUH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhuhai Gaolan -> CNZUH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4670,
+      "normalizedPortLabel": "ZHUHAI JIUZHOU",
+      "portCode": "CNZUH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhuhai Jiuzhou -> CNZUH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4678,
+      "normalizedPortLabel": "HOCHIMINH",
+      "portCode": "CNHUA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hochiminh -> CNHUA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4758,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4763,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh/Cat Lai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4797,
+      "normalizedPortLabel": "UMM AL QWAIN",
+      "portCode": "AEQIW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Umm Al Qwain -> AEQIW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4844,
+      "normalizedPortLabel": "AAHUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Aahus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4846,
+      "normalizedPortLabel": "AARHUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Aarhus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4864,
+      "normalizedPortLabel": "ASUNCION",
+      "portCode": "SEA-0178",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Asuncion -> SEA-0178.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4886,
+      "normalizedPortLabel": "BUSANAN",
+      "portCode": "KRPUS",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Busanan -> KRPUS.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4912,
+      "normalizedPortLabel": "DEKHEILA",
+      "portCode": "EGEDK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dekheila -> EGEDK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4913,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4945,
+      "normalizedPortLabel": "HAI PHONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hai Phong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4950,
+      "normalizedPortLabel": "HALIFAX",
+      "portCode": "SEA-0217",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Halifax -> SEA-0217.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4958,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh (Cat Lai) -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4974,
+      "normalizedPortLabel": "JIANGMEN",
+      "portCode": "SEA-0043",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jiangmen -> SEA-0043.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4983,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5005,
+      "normalizedPortLabel": "LONDON GATEWAY PORT",
+      "portCode": "GBLGW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: London Gateway Port -> GBLGW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5028,
+      "normalizedPortLabel": "NANSHANGHAI",
+      "portCode": "CNNSH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanshanghai -> CNNSH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5043,
+      "normalizedPortLabel": "PANAMA CITY DR VIA BALBOA",
+      "portCode": "PABLB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panama City Dr ( Via Balboa -> PABLB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5060,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5081,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sanshui -> SEA-0053.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5093,
+      "normalizedPortLabel": "SHIBUSHI",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shibushi -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5119,
+      "normalizedPortLabel": "TAWAU",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawau -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5123,
+      "normalizedPortLabel": "TIN CAN",
+      "portCode": "NGTIN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tin Can -> NGTIN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5136,
+      "normalizedPortLabel": "VILLA DO CONDE",
+      "portCode": "SEA-0190",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Villa Do Conde -> SEA-0190.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5152,
+      "normalizedPortLabel": "ZHENJIANG",
+      "portCode": "SEA-0066",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhenjiang -> SEA-0066.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5154,
+      "normalizedPortLabel": "ZHONGSHANGHAI N",
+      "portCode": "CNSHA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhongshanghai N -> CNSHA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5222,
+      "normalizedPortLabel": "FOUS SUR MER",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Fous Sur Mer -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5223,
+      "normalizedPortLabel": "FOUS SUR MER",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Fous Sur Mer -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5230,
+      "normalizedPortLabel": "ISKENDRUN",
+      "portCode": "TRISK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Iskendrun -> TRISK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5231,
+      "normalizedPortLabel": "ISKENDRUN",
+      "portCode": "TRISK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Iskendrun -> TRISK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5233,
+      "normalizedPortLabel": "JIBOUTI",
+      "portCode": "SEA-0104",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jibouti -> SEA-0104.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5236,
+      "normalizedPortLabel": "LAZ PEZIA",
+      "portCode": "ITSPZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Laz Pezia -> ITSPZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5237,
+      "normalizedPortLabel": "LAZ PEZIA",
+      "portCode": "ITSPZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Laz Pezia -> ITSPZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5250,
+      "normalizedPortLabel": "PORT OF GEBZE",
+      "portCode": "TRGEB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Of Gebze -> TRGEB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5251,
+      "normalizedPortLabel": "PORT OF GEBZE",
+      "portCode": "TRGEB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Port Of Gebze -> TRGEB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5258,
+      "normalizedPortLabel": "SFAX TUNISIA",
+      "portCode": "SEA-0103",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sfax Tunisia -> SEA-0103.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5259,
+      "normalizedPortLabel": "SFAX TUNISIA",
+      "portCode": "SEA-0103",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sfax Tunisia -> SEA-0103.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5330,
+      "normalizedPortLabel": "FUNAFATI",
+      "portCode": "TVFUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Funafati -> TVFUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5331,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5353,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5354,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5402,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5408,
+      "normalizedPortLabel": "RARTONGA",
+      "portCode": "CKRAR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Rartonga -> CKRAR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5410,
+      "normalizedPortLabel": "REUNION",
+      "portCode": "RELPT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Reunion -> RELPT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5417,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5448,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5478,
+      "normalizedPortLabel": "BANDAR",
+      "portCode": "IRBND",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bandar -> IRBND.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5496,
+      "normalizedPortLabel": "JEBEL",
+      "portCode": "AEDXB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jebel -> AEDXB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5542,
+      "normalizedPortLabel": "CAGAYAN",
+      "portCode": "PHCGY",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cagayan -> PHCGY.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5557,
+      "normalizedPortLabel": "GUANGZHOU HUANGPU",
+      "portCode": "CNHUA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guangzhou / Huangpu -> CNHUA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5562,
+      "normalizedPortLabel": "HO CHI MINH CAT LAI",
+      "portCode": "VNCLI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Minh/Cat Lai -> VNCLI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5569,
+      "normalizedPortLabel": "JIANGMEN",
+      "portCode": "SEA-0043",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jiangmen -> SEA-0043.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5572,
+      "normalizedPortLabel": "KELANG",
+      "portCode": "MYPEN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kelang -> MYPEN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5573,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5576,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5584,
+      "normalizedPortLabel": "NANHAI",
+      "portCode": "CNNSH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhai -> CNNSH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5590,
+      "normalizedPortLabel": "NORTH MANILA",
+      "portCode": "SEA-0106",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: North Manila -> SEA-0106.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5607,
+      "normalizedPortLabel": "RONQUI",
+      "portCode": "CNROQ",
+      "notes": "Row-level override for workbook typo Ronqui -> CNROQ Rongqi Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5621,
+      "normalizedPortLabel": "SONGHKLA",
+      "portCode": "THSGZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Songhkla -> THSGZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5636,
+      "normalizedPortLabel": "XINGANG TIANJIN",
+      "portCode": "CNTXG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Xingang/Tianjin -> CNTXG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5640,
+      "normalizedPortLabel": "ZHANJIAGANG",
+      "portCode": "CNZJG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhanjiagang -> CNZJG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5642,
+      "normalizedPortLabel": "ZHONGSHAN CITY",
+      "portCode": "CNZSN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhongshan City -> CNZSN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5699,
+      "normalizedPortLabel": "ISHIKARIWAN SHINKO",
+      "portCode": "JPICW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ishikariwan-Shinko -> JPICW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5704,
+      "normalizedPortLabel": "KUSHIRO",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kushiro -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5706,
+      "normalizedPortLabel": "LUSAKA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lusaka -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5724,
+      "normalizedPortLabel": "SHIBUSHI",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shibushi -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5731,
+      "normalizedPortLabel": "TOKUSHIMA",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tokushima -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5737,
+      "normalizedPortLabel": "YATSUSHIRO",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yatsushiro -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5742,
+      "normalizedPortLabel": "HAI PHONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hai Phong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5890,
+      "normalizedPortLabel": "SKEKHOU",
+      "portCode": "CNSHE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Skekhou -> CNSHE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5901,
+      "normalizedPortLabel": "BARBERA",
+      "portCode": "SOBBO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Barbera -> SOBBO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5911,
+      "normalizedPortLabel": "HODEIDA",
+      "portCode": "YEHOD",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hodeida -> YEHOD.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5917,
+      "normalizedPortLabel": "KAOUSHIUNG",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kaoushiung -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5953,
+      "normalizedPortLabel": "TAWAU",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawau -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5987,
+      "normalizedPortLabel": "NOVORROSSISK",
+      "portCode": "RUNVS",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Novorrossisk -> RUNVS.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6058,
+      "normalizedPortLabel": "JALI",
+      "portCode": "AEDXB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jali -> AEDXB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6145,
+      "normalizedPortLabel": "GUIGA",
+      "portCode": "ECGYE",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guiga -> ECGYE.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6177,
+      "normalizedPortLabel": "NANHAINANGANG",
+      "portCode": "CNNAH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nanhainangang -> CNNAH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6200,
+      "normalizedPortLabel": "SHUNDERONGQI",
+      "portCode": "CNROQ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shunderongqi -> CNROQ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6220,
+      "normalizedPortLabel": "ZHAOQING NEW PORT",
+      "portCode": "CNZQG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhaoqing New Port -> CNZQG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6296,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6314,
+      "normalizedPortLabel": "JAKARATA",
+      "portCode": "IDJKT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jakarata -> IDJKT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6325,
+      "normalizedPortLabel": "LEAM CHABANG",
+      "portCode": "THLCH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Leam Chabang -> THLCH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6338,
+      "normalizedPortLabel": "PADANG",
+      "portCode": "MYPEN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Padang -> MYPEN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6341,
+      "normalizedPortLabel": "PANJANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panjang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6368,
+      "normalizedPortLabel": "SUDAN",
+      "portCode": "SDPZU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sudan -> SDPZU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6420,
+      "normalizedPortLabel": "UMM AL QWAIN",
+      "portCode": "AEQIW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Umm Al Qwain -> AEQIW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6528,
+      "normalizedPortLabel": "BUENA VENTURA",
+      "portCode": "COBUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Buena Ventura -> COBUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6546,
+      "normalizedPortLabel": "FUNAFATI",
+      "portCode": "TVFUN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Funafati -> TVFUN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6547,
+      "normalizedPortLabel": "FUTUNA",
+      "portCode": "WFSIG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Futuna -> WFSIG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6558,
+      "normalizedPortLabel": "KINABALU",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kinabalu -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6559,
+      "normalizedPortLabel": "KOTA",
+      "portCode": "MYBKI",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Kota -> MYBKI.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6565,
+      "normalizedPortLabel": "LAZARO CARDINAS",
+      "portCode": "SEA-0222",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lazaro Cardinas -> SEA-0222.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6589,
+      "normalizedPortLabel": "PUERTO QUETZEL",
+      "portCode": "SEA-0203",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Puerto Quetzel -> SEA-0203.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6592,
+      "normalizedPortLabel": "RARTONGA",
+      "portCode": "CKRAR",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Rartonga -> CKRAR.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6594,
+      "normalizedPortLabel": "REUNION",
+      "portCode": "RELPT",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Reunion -> RELPT.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6602,
+      "normalizedPortLabel": "SANTO",
+      "portCode": "BRSSZ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Santo -> BRSSZ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6621,
+      "normalizedPortLabel": "TIANJIN XINGANG",
+      "portCode": "CNXGG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tianjin Xingang -> CNXGG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6627,
+      "normalizedPortLabel": "VAVAU",
+      "portCode": "PHDVO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Vavau -> PHDVO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6628,
+      "normalizedPortLabel": "WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wallis -> WFMAU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6677,
+      "normalizedPortLabel": "CAT LAI HO CHI MINH",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Cat Lai, Ho Chi Minh -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6681,
+      "normalizedPortLabel": "CHANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Changzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6685,
+      "normalizedPortLabel": "CHIWAN",
+      "portCode": "CNCHN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Chiwan -> CNCHN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6702,
+      "normalizedPortLabel": "FOVIA SHANGHAIN JIUJIANG",
+      "portCode": "CNSHA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Fovia Shanghain Jiujiang -> CNSHA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6711,
+      "normalizedPortLabel": "GAOVIA SHANGHAI",
+      "portCode": "CNSHA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Gaovia Shanghai -> CNSHA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6713,
+      "normalizedPortLabel": "GUATEMALA CITY",
+      "portCode": "GHTEM",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Guatemala City -> GHTEM.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6728,
+      "normalizedPortLabel": "HUIZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Huizhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6754,
+      "normalizedPortLabel": "LIAN HUA VIA SHANGHAIN",
+      "portCode": "CNSHA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Lian Hua Via Shanghain -> CNSHA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6777,
+      "normalizedPortLabel": "NANGANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nangang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6783,
+      "normalizedPortLabel": "NIVIA NINGBOO",
+      "portCode": "CNNGB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Nivia Ningboo -> CNNGB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6788,
+      "normalizedPortLabel": "PANJANG",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Panjang -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6798,
+      "normalizedPortLabel": "PUERTO QUETZAL",
+      "portCode": "GTPRQ",
+      "notes": "Row-level override for duplicate Puerto Quetzal seaport records; prefer official GTPRQ.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6812,
+      "normalizedPortLabel": "SANSHUI NEW PORT",
+      "portCode": "SEA-0053",
+      "notes": "Row-level override for Sanshui New Port -> SEA-0053 Sanshui, Guangdong.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6817,
+      "normalizedPortLabel": "SENDAI MIYAGI",
+      "portCode": "JPSDJ",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sendai, Miyagi -> JPSDJ.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6825,
+      "normalizedPortLabel": "SHUNDE LELIU WHARF",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde Leliu Wharf -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6826,
+      "normalizedPortLabel": "SHUNDE NEW PORT",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for Shunde New Port -> CNSUD Shunde Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6838,
+      "normalizedPortLabel": "TAICANG",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Taicang -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6842,
+      "normalizedPortLabel": "TAWAO",
+      "portCode": "PHDVO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tawao -> PHDVO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6844,
+      "normalizedPortLabel": "TIANJIN XINGANG",
+      "portCode": "CNTXG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Tianjin, Xingang -> CNTXG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6848,
+      "normalizedPortLabel": "ULSAN",
+      "portCode": "KRPUS",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ulsan -> KRPUS.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6853,
+      "normalizedPortLabel": "WU ZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Wu Zhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6863,
+      "normalizedPortLabel": "YANGPU PT",
+      "portCode": "CNHUA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yangpu Pt -> CNHUA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6865,
+      "normalizedPortLabel": "YANTIAN SHENZHEN CHINA",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yantian, Shenzhen, China -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6869,
+      "normalizedPortLabel": "YUEYANG",
+      "portCode": "SEA-0063",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yueyang -> SEA-0063.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6873,
+      "normalizedPortLabel": "ZHAOQING NEW PORT",
+      "portCode": "CNZQG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhaoqing New Port -> CNZQG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6876,
+      "normalizedPortLabel": "ZHONGVIA SHANGHAIN",
+      "portCode": "CNSHA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhongvia Shanghain -> CNSHA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6884,
+      "normalizedPortLabel": "DHAKA",
+      "portCode": "SEA-0244",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Dhaka -> SEA-0244.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6890,
+      "normalizedPortLabel": "SHUWAIK",
+      "portCode": "KWSWK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Shuwaik -> KWSWK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6974,
+      "normalizedPortLabel": "HALIFAX",
+      "portCode": "SEA-0217",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Halifax -> SEA-0217.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6975,
+      "normalizedPortLabel": "HIPHONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Hiphong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7005,
+      "normalizedPortLabel": "SUEZ EL SUWEIS",
+      "portCode": "EGSOK",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Suez/El Suweis -> EGSOK.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7013,
+      "normalizedPortLabel": "YAN TIAN",
+      "portCode": "CNYTN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Yan Tian -> CNYTN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7017,
+      "normalizedPortLabel": "ANQING",
+      "portCode": "CNNKG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Anqing -> CNNKG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7028,
+      "normalizedPortLabel": "BERCELONA",
+      "portCode": "ESBCN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Bercelona -> ESBCN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7033,
+      "normalizedPortLabel": "CHANGZHOU",
+      "portCode": "CNCAN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Changzhou -> CNCAN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7047,
+      "normalizedPortLabel": "GYDNIA",
+      "portCode": "PLGDY",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Gydnia -> PLGDY.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7055,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7061,
+      "normalizedPortLabel": "KOPER",
+      "portCode": "JPUKB",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Koper -> JPUKB.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7065,
+      "normalizedPortLabel": "LUZHOU",
+      "portCode": "CNFZH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Luzhou -> CNFZH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7080,
+      "normalizedPortLabel": "PIREAUS",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Pireaus -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7098,
+      "normalizedPortLabel": "TAICANG",
+      "portCode": "TWTWN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Taicang -> TWTWN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7111,
+      "normalizedPortLabel": "ZHENJIANG",
+      "portCode": "SEA-0066",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Zhenjiang -> SEA-0066.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7230,
+      "normalizedPortLabel": "ISTANBUL AMBARLI",
+      "portCode": "TRAMR",
+      "notes": "Row-level override for combined workbook label Istanbul (Ambarli) -> TRAMR Ambarli.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7256,
+      "normalizedPortLabel": "BELWAN",
+      "portCode": "IDBLW",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Belwan -> IDBLW.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7259,
+      "normalizedPortLabel": "VLADIVOSTOK FISH PORT",
+      "portCode": "RUFIP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Vladivostok Fish Port -> RUFIP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7390,
+      "normalizedPortLabel": "SUDAN",
+      "portCode": "SDPZU",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sudan -> SDPZU.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7402,
+      "normalizedPortLabel": "QINDAO",
+      "portCode": "CNTAO",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Qindao -> CNTAO.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7409,
+      "normalizedPortLabel": "HO CHI MIN",
+      "portCode": "VNSGN",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Ho Chi Min -> VNSGN.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7410,
+      "normalizedPortLabel": "HAIPONG",
+      "portCode": "VNHPH",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Haipong -> VNHPH.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7506,
+      "normalizedPortLabel": "CAIMEP",
+      "portCode": "VNCMP",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Caimep -> VNCMP.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7528,
+      "normalizedPortLabel": "JIANGMEN",
+      "portCode": "SEA-0043",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Jiangmen -> SEA-0043.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7530,
+      "normalizedPortLabel": "SANSHUI",
+      "portCode": "SEA-0053",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sanshui -> SEA-0053.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7531,
+      "normalizedPortLabel": "XINTANG",
+      "portCode": "CNXGG",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Xintang -> CNXGG.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7584,
+      "normalizedPortLabel": "SOUSSE",
+      "portCode": "USUSA",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Sousse -> USUSA.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7586,
+      "normalizedPortLabel": "ALGER",
+      "portCode": "SEA-0224",
+      "notes": "Recovered override from good review snapshot on 2026-04-05: Alger -> SEA-0224.",
+      "source": "recovered-diff-override-2026-04-05"
+    },
+    {
+      "rowNumber": 981,
+      "normalizedPortLabel": "POINTE DE GALETS",
+      "portCode": "RELPT",
+      "notes": "Row-level override for workbook label Pointe De Galets -> RELPT Le Port, supported by UNECE RE LPT and Port Reunion official history naming the site Port de la Pointe des Galets.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2771,
+      "normalizedPortLabel": "POINTE DE GALETS",
+      "portCode": "RELPT",
+      "notes": "Row-level override for workbook label Pointe De Galets -> RELPT Le Port, supported by UNECE RE LPT and Port Reunion official history naming the site Port de la Pointe des Galets.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3867,
+      "normalizedPortLabel": "POINTE DE GALETS",
+      "portCode": "RELPT",
+      "notes": "Row-level override for workbook label Pointe De Galets -> RELPT Le Port, supported by UNECE RE LPT and Port Reunion official history naming the site Port de la Pointe des Galets.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4403,
+      "normalizedPortLabel": "POINTE DE GALETS",
+      "portCode": "RELPT",
+      "notes": "Row-level override for workbook label Pointe De Galets -> RELPT Le Port, supported by UNECE RE LPT and Port Reunion official history naming the site Port de la Pointe des Galets.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 663,
+      "normalizedPortLabel": "GJEMNES HOEGSET",
+      "portCode": "NOGJM",
+      "notes": "Row-level override for workbook label Gjemnes/Hoegset -> NOGJM Gjemnes, supported by UNECE NO GJM and official Gjemnes municipality references to Hogset within the same local port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1388,
+      "normalizedPortLabel": "GJEMNES HOEGSET",
+      "portCode": "NOGJM",
+      "notes": "Row-level override for workbook label Gjemnes/Hoegset -> NOGJM Gjemnes, supported by UNECE NO GJM and official Gjemnes municipality references to Hogset within the same local port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2459,
+      "normalizedPortLabel": "GJEMNES HOEGSET",
+      "portCode": "NOGJM",
+      "notes": "Row-level override for workbook label Gjemnes/Hoegset -> NOGJM Gjemnes, supported by UNECE NO GJM and official Gjemnes municipality references to Hogset within the same local port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4087,
+      "normalizedPortLabel": "GJEMNES HOEGSET",
+      "portCode": "NOGJM",
+      "notes": "Row-level override for workbook label Gjemnes/Hoegset -> NOGJM Gjemnes, supported by UNECE NO GJM and official Gjemnes municipality references to Hogset within the same local port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 102,
+      "normalizedPortLabel": "JAZAN",
+      "portCode": "SAJEC",
+      "notes": "Row-level override for workbook label Jazan -> SAJEC Jazan Economic City, backed by UNECE SA JEC.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4211,
+      "normalizedPortLabel": "KLONGTEOY",
+      "portCode": "THBKK",
+      "notes": "Row-level override for workbook label Klongteoy -> THBKK Bangkok, using Bangkok seaport record for Khlong Toei/Bangkok Port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5574,
+      "normalizedPortLabel": "KLONGTEOY",
+      "portCode": "THBKK",
+      "notes": "Row-level override for workbook label Klongteoy -> THBKK Bangkok, using Bangkok seaport record for Khlong Toei/Bangkok Port area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4553,
+      "normalizedPortLabel": "TAIZHOU",
+      "portCode": "CNTAZ",
+      "notes": "Row-level override for workbook label Taizhou -> CNTAZ Taizhou Pt, using the official seaport entry rather than other Taizhou inland records.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7099,
+      "normalizedPortLabel": "TAIZHOU",
+      "portCode": "CNTAZ",
+      "notes": "Row-level override for workbook label Taizhou -> CNTAZ Taizhou Pt, using the official seaport entry rather than other Taizhou inland records.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5240,
+      "normalizedPortLabel": "MATA UTU IN WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Row-level override for workbook label Mata Utu in Wallis -> WFMAU Mata'utu.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5241,
+      "normalizedPortLabel": "MATA UTU IN WALLIS",
+      "portCode": "WFMAU",
+      "notes": "Row-level override for workbook label Mata Utu in Wallis -> WFMAU Mata'utu.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4116,
+      "normalizedPortLabel": "HIBIKINADA",
+      "portCode": "JPKKJ",
+      "notes": "Row-level override for workbook label Hibikinada -> JPKKJ Kitakyushu, based on official Kitakyushu port usage of the Hibikinada area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5693,
+      "normalizedPortLabel": "HIBIKINADA",
+      "portCode": "JPKKJ",
+      "notes": "Row-level override for workbook label Hibikinada -> JPKKJ Kitakyushu, based on official Kitakyushu port usage of the Hibikinada area.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 1756,
+      "normalizedPortLabel": "LIRQU N",
+      "portCode": "CLLQN",
+      "notes": "Row-level override for workbook label Lirquen -> CLLQN Lirquen.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3120,
+      "normalizedPortLabel": "HAUNGPU",
+      "portCode": "CNHUA",
+      "notes": "Row-level override for workbook typo Haungpu -> CNHUA Huangpu Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3572,
+      "normalizedPortLabel": "BELE PORT",
+      "portCode": "RELPT",
+      "notes": "Row-level override for workbook typo Bele Port -> RELPT Le Port.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 3765,
+      "normalizedPortLabel": "IMBITUMBA",
+      "portCode": "BRIBB",
+      "notes": "Row-level override for workbook typo Imbitumba -> BRIBB Imbituba.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4039,
+      "normalizedPortLabel": "DUISBURG D3T CY",
+      "portCode": "DEDUI",
+      "notes": "Row-level override for workbook label Duisburg D3t Cy -> DEDUI Duisburg.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4919,
+      "normalizedPortLabel": "DUISBURG D3T CY",
+      "portCode": "DEDUI",
+      "notes": "Row-level override for workbook label Duisburg D3t Cy -> DEDUI Duisburg.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4342,
+      "normalizedPortLabel": "NAQETSU",
+      "portCode": "JPNAO",
+      "notes": "Row-level override for workbook typo Naqetsu -> JPNAO Naoetsu.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4987,
+      "normalizedPortLabel": "KRISTIANSAND S",
+      "portCode": "NOKRS",
+      "notes": "Row-level override for workbook label Kristiansand S. -> NOKRS Kristiansand.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4647,
+      "normalizedPortLabel": "YOMISHIMA",
+      "portCode": "JPIYM",
+      "notes": "Row-level override for workbook typo Yomishima -> JPIYM Iyomishima.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4492,
+      "normalizedPortLabel": "SANTO THOMAS DE CASTILLA",
+      "portCode": "GTSTC",
+      "notes": "Row-level override for workbook typo Santo Thomas De Castilla -> GTSTC Puerto Santo Tomas de Castilla.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7261,
+      "normalizedPortLabel": "KALININGGRAD",
+      "portCode": "RUKGD",
+      "notes": "Row-level override for workbook typo Kalininggrad -> RUKGD Kaliningrad.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6310,
+      "normalizedPortLabel": "IRBIK",
+      "portCode": "IRBIK",
+      "notes": "Row-level override for workbook shorthand Irbik -> IRBIK Imam Khomeini Pt/Mahshahr City.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6311,
+      "normalizedPortLabel": "IRBUZ",
+      "portCode": "IRBUZ",
+      "notes": "Row-level override for workbook shorthand Irbuz -> IRBUZ Bushehr.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6354,
+      "normalizedPortLabel": "RUNVS",
+      "portCode": "RUNVS",
+      "notes": "Row-level override for workbook shorthand Runvs -> RUNVS Novorossiysk.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6359,
+      "normalizedPortLabel": "SDPZU",
+      "portCode": "SDPZU",
+      "notes": "Row-level override for workbook shorthand Sdpzu -> SDPZU Port Sudan.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 5540,
+      "normalizedPortLabel": "BHARAIN",
+      "portCode": "SEA-0097",
+      "notes": "Row-level override for workbook typo Bharain -> SEA-0097 Bahrain.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6540,
+      "normalizedPortLabel": "DIJBOUTI",
+      "portCode": "SEA-0104",
+      "notes": "Row-level override for workbook typo Dijbouti -> SEA-0104 Djibouti.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6697,
+      "normalizedPortLabel": "DOU MEN",
+      "portCode": "CNDOU",
+      "notes": "Row-level override for workbook spaced label Dou Men -> CNDOU Doumen Pt.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6765,
+      "normalizedPortLabel": "MAWEI",
+      "portCode": "CNFZH",
+      "notes": "Row-level override for workbook label Mawei -> CNFZH Fuzhou, using the existing Fuzhou/Mawei seaport record.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 7057,
+      "normalizedPortLabel": "IZMIT YARMICA",
+      "portCode": "TRIZT",
+      "notes": "Row-level override for workbook typo Izmit Yarmica -> TRIZT Izmit.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 650,
+      "normalizedPortLabel": "GAOLAN ZUHAI PROVINCE",
+      "portCode": "CNGON",
+      "notes": "Row-level override for workbook label Gaolan, Zuhai Province -> UNECE CN GON Gaolan to avoid Zhuhai collision.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 2445,
+      "normalizedPortLabel": "GAOLAN ZUHAI PROVINCE",
+      "portCode": "CNGON",
+      "notes": "Row-level override for workbook label Gaolan, Zuhai Province -> UNECE CN GON Gaolan to avoid Zhuhai collision.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4073,
+      "normalizedPortLabel": "GAOLAN ZUHAI PROVINCE",
+      "portCode": "CNGON",
+      "notes": "Row-level override for workbook label Gaolan, Zuhai Province -> UNECE CN GON Gaolan to avoid Zhuhai collision.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 6709,
+      "normalizedPortLabel": "GAOLAN ZUHAI PROVINCE",
+      "portCode": "CNGON",
+      "notes": "Row-level override for workbook label Gaolan, Zuhai Province -> UNECE CN GON Gaolan to avoid Zhuhai collision.",
+      "source": "manual-override-2026-04-05"
+    },
+    {
+      "rowNumber": 4054,
+      "normalizedPortLabel": "FOSHAN JIUJIANG",
+      "portCode": "CNJUJ",
+      "notes": "Row-level override for workbook label Foshan Jiujiang -> UNECE CN JUJ Jiujiang (Guangdong seaport), avoiding ambiguity with generic Foshan.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6701,
+      "normalizedPortLabel": "FOSHAN JIUJIANG",
+      "portCode": "CNJUJ",
+      "notes": "Row-level override for workbook label Foshan Jiujiang -> UNECE CN JUJ Jiujiang (Guangdong seaport), avoiding ambiguity with generic Foshan.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 3945,
+      "normalizedPortLabel": "BIK",
+      "portCode": "IRBIK",
+      "notes": "Row-level override for workbook shorthand BIK -> IRBIK Imam Khomeini Pt/ Mahshahr City.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4142,
+      "normalizedPortLabel": "ICD PANGAON",
+      "portCode": "BDPGN",
+      "notes": "Row-level override for workbook label ICD Pangaon -> BDPGN Pangaon.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4997,
+      "normalizedPortLabel": "LELIU",
+      "portCode": "CNSUD",
+      "notes": "Row-level override for workbook shorthand Leliu -> CNSUD Shunde Pt based on existing Shunde Leliu aliasing.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 5078,
+      "normalizedPortLabel": "SANBU",
+      "portCode": "MYSBW",
+      "notes": "Row-level override for workbook shorthand Sanbu -> MYSBW Sibu, Sarawak based on existing Sibu mappings.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6828,
+      "normalizedPortLabel": "SI HUI",
+      "portCode": "CNXIN",
+      "notes": "Row-level override for workbook shorthand Si Hui -> CNXIN Xinhui Pt based on existing Si Hui (Ma Fang) and Xinhui mappings.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4523,
+      "normalizedPortLabel": "SI HUI MA FANG",
+      "portCode": "CNXIN",
+      "notes": "Row-level override for workbook label Si Hui (Ma Fang) -> CNXIN Xinhui Pt based on existing Xinhui/Si Hui pattern.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6829,
+      "normalizedPortLabel": "SI HUI MA FANG",
+      "portCode": "CNXIN",
+      "notes": "Row-level override for workbook label Si Hui (Ma Fang) -> CNXIN Xinhui Pt based on existing Xinhui/Si Hui pattern.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4143,
+      "normalizedPortLabel": "ICD PHUOC LONG 1",
+      "portCode": "VNIPH",
+      "notes": "Row-level override for workbook label ICD Phuoc Long 1 -> VNIPH Phuoc Long ICD.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6731,
+      "normalizedPortLabel": "ICD PHUOC LONG 1",
+      "portCode": "VNIPH",
+      "notes": "Row-level override for workbook label ICD Phuoc Long 1 -> VNIPH Phuoc Long ICD.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4144,
+      "normalizedPortLabel": "ICD PHUOC LONG 3",
+      "portCode": "VNIPH",
+      "notes": "Row-level override for workbook label ICD Phuoc Long 3 -> VNIPH Phuoc Long ICD.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6732,
+      "normalizedPortLabel": "ICD PHUOC LONG 3",
+      "portCode": "VNIPH",
+      "notes": "Row-level override for workbook label ICD Phuoc Long 3 -> VNIPH Phuoc Long ICD.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 4473,
+      "normalizedPortLabel": "SAKATA",
+      "portCode": "JPSKT",
+      "notes": "Row-level override for workbook label Sakata -> JPSKT Sakata.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 6862,
+      "normalizedPortLabel": "YANGPU",
+      "portCode": "CNYPG",
+      "notes": "Row-level override for workbook label Yangpu -> CNYPG Yangpu Pt.",
+      "source": "manual-override-2026-04-06"
+    },
+    {
+      "rowNumber": 3949,
+      "normalizedPortLabel": "BITUNG MENADO",
+      "portCode": "IDBIT",
+      "notes": "Row-level override for workbook combined label Bitung/Menado -> IDBIT Bitung, Sulawesi.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 4481,
+      "normalizedPortLabel": "SAN JUAN PUERTO RICO",
+      "portCode": "PRSJU",
+      "notes": "Row-level override for workbook label San Juan, Puerto Rico -> PRSJU San Juan seaport.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 4611,
+      "normalizedPortLabel": "VICTORIA",
+      "portCode": "SCPOV",
+      "notes": "Row-level override for workbook label Victoria -> SCPOV Port Victoria, Seychelles.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 5746,
+      "normalizedPortLabel": "LEAM CHA BANG",
+      "portCode": "THLCH",
+      "notes": "Row-level override for workbook typo Leam CHA Bang -> THLCH Laem Chabang.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 5965,
+      "normalizedPortLabel": "B ABBAS",
+      "portCode": "IRBND",
+      "notes": "Row-level override for workbook shorthand B.abbas -> IRBND Bandar Abbas.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 3814,
+      "normalizedPortLabel": "MARSAXLOKK",
+      "portCode": "MTMAR",
+      "notes": "Row-level override for workbook label Marsaxlokk -> MTMAR Marsaxlokk.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 4619,
+      "normalizedPortLabel": "VOSTOCHNY",
+      "portCode": "RUVYP",
+      "notes": "Row-level override for workbook label Vostochny -> RUVYP Vostochnyy Port.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 6860,
+      "normalizedPortLabel": "YANG ZHOU",
+      "portCode": "CNYZH",
+      "notes": "Row-level override for workbook spaced label Yang Zhou -> CNYZH Yangzhou.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 6866,
+      "normalizedPortLabel": "YICHANG",
+      "portCode": "CNYCG",
+      "notes": "Row-level override for workbook label Yichang -> CNYCG Yichang.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 7590,
+      "normalizedPortLabel": "CHORNOMORSK",
+      "portCode": "UAILK",
+      "notes": "Row-level override for workbook label Chornomorsk -> UAILK Chornomors'k.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 4432,
+      "normalizedPortLabel": "PSA DONGGUAN",
+      "portCode": "CNDGG",
+      "notes": "Row-level override for workbook label Psa, Dongguan -> CNDGG Dongguan.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 6797,
+      "normalizedPortLabel": "PSA DONGGUAN",
+      "portCode": "CNDGG",
+      "notes": "Row-level override for workbook label Psa, Dongguan -> CNDGG Dongguan.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 7018,
+      "normalizedPortLabel": "ANTALYA",
+      "portCode": "TRAYT",
+      "notes": "Row-level override for workbook label Antalya -> TRAYT Antalya, using the UNECE location entry with port function.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 7216,
+      "normalizedPortLabel": "NOVOROSISYK",
+      "portCode": "RUNVS",
+      "notes": "Row-level override for workbook typo Novorosisyk -> RUNVS Novorossiysk.",
+      "source": "manual-override-2026-04-07"
+    },
+    {
+      "rowNumber": 1712,
+      "normalizedPortLabel": "CURACAO",
+      "portCode": "CWCUR",
+      "notes": "Row-level override for workbook territory label Curacao -> CWCUR Curacao, using the official UN/LOCODE location with port function.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 1525,
+      "normalizedPortLabel": "VENLO",
+      "portCode": "NLVEN",
+      "notes": "Row-level override for workbook label Venlo -> NLVEN Venlo, using the official UN/LOCODE location with port function.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4609,
+      "normalizedPortLabel": "VENLO",
+      "portCode": "NLVEN",
+      "notes": "Row-level override for workbook label Venlo -> NLVEN Venlo, using the official UN/LOCODE location with port function.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4480,
+      "normalizedPortLabel": "SAN JUA",
+      "portCode": "PRSJU",
+      "notes": "Row-level override for workbook typo San Jua -> PRSJU San Juan seaport.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4512,
+      "normalizedPortLabel": "SHIMNOSEKI",
+      "portCode": "JPSHS",
+      "notes": "Row-level override for workbook typo Shimnoseki -> JPSHS Shimonoseki.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4951,
+      "normalizedPortLabel": "HALMSTAD",
+      "portCode": "SEHAD",
+      "notes": "Row-level override for workbook label Halmstad -> SEHAD Halmstad, using the official UN/LOCODE entry with port function.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 6304,
+      "normalizedPortLabel": "HOCHIMINHCITY",
+      "portCode": "VNSGN",
+      "notes": "Row-level override for workbook condensed label Hochiminhcity -> VNSGN Ho Chi Minh City.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4115,
+      "normalizedPortLabel": "HIBIKI",
+      "portCode": "JPKKJ",
+      "notes": "Row-level override for workbook shorthand Hibiki -> JPKKJ Kitakyushu, using the existing Kitakyushu/Hibikinada seaport pattern.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4154,
+      "normalizedPortLabel": "ISHAKARI",
+      "portCode": "JPICW",
+      "notes": "Row-level override for workbook typo Ishakari -> JPICW Ishikariwan Shinko.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 6306,
+      "normalizedPortLabel": "HUDAYDAH",
+      "portCode": "YEHOD",
+      "notes": "Row-level override for workbook spelling Hudaydah -> YEHOD Hodeidah.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 152,
+      "normalizedPortLabel": "GUAM",
+      "portCode": "GUGUM",
+      "notes": "Row-level override for workbook territory label Guam -> GUGUM Guam, using the official UN/LOCODE location with port function.",
+      "source": "manual-override-2026-04-09"
+    },
+    {
+      "rowNumber": 4093,
+      "normalizedPortLabel": "GUAM",
+      "portCode": "GUGUM",
+      "notes": "Row-level override for workbook territory label Guam -> GUGUM Guam, using the official UN/LOCODE location with port function.",
+      "source": "manual-override-2026-04-09"
+    }
+  ]
+}

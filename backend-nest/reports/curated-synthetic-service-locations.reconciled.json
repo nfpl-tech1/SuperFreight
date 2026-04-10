@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-04-10T09:25:51.093Z",
+  "mappings": [
+    {
+      "syntheticCode": "SEA-0119",
+      "canonicalName": "Johannesburg",
+      "countryName": "South Africa",
+      "locationKind": "INLAND_CITY",
+      "aliases": [
+        "ZAJNB"
+      ],
+      "notes": "Curated inland-city replacement for SEA-0119. Cross-checked against OG DB carrier coverage; UN/LOCODE reference ZAJNB."
+    },
+    {
+      "syntheticCode": "SEA-0244",
+      "canonicalName": "Kamalapur/Dhaka",
+      "countryName": "Bangladesh",
+      "locationKind": "ICD",
+      "aliases": [
+        "ICD Dhaka",
+        "Icd Dhaka",
+        "Icd Dhaka/Kamalapur",
+        "BDKAM"
+      ],
+      "notes": "Curated ICD replacement for SEA-0244. Cross-checked against OG DB carrier coverage; UN/LOCODE reference BDKAM."
+    },
+    {
+      "syntheticCode": "SEA-0064",
+      "canonicalName": "Yunfu",
+      "countryName": "China",
+      "locationKind": "INLAND_CITY",
+      "aliases": [
+        "Yunfu, Guangdong",
+        "CNYUF"
+      ],
+      "notes": "Curated inland-city replacement for SEA-0064. Cross-checked against OG DB carrier coverage; UN/LOCODE reference CNYUF."
+    }
+  ],
+  "migratedSyntheticPorts": 0,
+  "createdServiceLocations": 0,
+  "items": []
+}

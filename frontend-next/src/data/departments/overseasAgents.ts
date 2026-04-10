@@ -1,0 +1,26 @@
+import type { DepartmentDefinition } from "@/types/rfq";
+import { INCOTERM_OPTIONS } from "@/lib/inquiryQuotePlanning";
+
+export const overseasAgents: DepartmentDefinition = {
+    id: "overseas_agents",
+    name: "Overseas Agents",
+    group: "Overseas Agents",
+    fields: [
+        { key: "trade_lane", label: "Trade Lane", type: "select", required: true, options: ["Export", "Import", "Cross Trade"], ui: { hideInPreview: true }, halfWidth: true },
+        { key: "source", label: "Origin", type: "text", required: true, halfWidth: true },
+        { key: "destination", label: "Destination", type: "text", required: true, halfWidth: true },
+        { key: "incoterm", label: "Incoterm", type: "select", required: true, options: [...INCOTERM_OPTIONS], halfWidth: true },
+        { key: "mode", label: "Mode", type: "select", required: true, options: ["AIR", "FCL", "LCL"], default: "FCL", halfWidth: true },
+        { key: "container_mix", label: "Container Mix", type: "multiline", required: true, ui: { placeholder: "1 x 20GP\n2 x 40HC" }, rules: { visible_if: { mode: "FCL" } } },
+        { key: "gross_weight_kg", label: "Gross Weight (kg)", type: "number", required: true, rules: { min: 1, visible_if: { mode: "FCL" } }, halfWidth: true },
+        { key: "dimensions", label: "Dimensions (L x W x H in cm)", type: "multiline", required: true, ui: { placeholder: "Example: 120 x 80 x 95 cm, 2 packages" }, rules: { visible_if: { mode: ["AIR", "LCL"] } } },
+        { key: "commodity_description", label: "Commodity", type: "multiline", required: true },
+        { key: "stackable", label: "Stackable", type: "radio", required: true, options: ["Yes", "No"], ui: { helpText: "Enter stackable yes or no" }, rules: { visible_if: { mode: ["AIR", "LCL"] } }, halfWidth: true },
+        { key: "haz_type", label: "Haz Type", type: "radio", required: true, options: ["Non Haz", "Haz"], default: "Non Haz" },
+        { key: "hazardous_imdg_class", label: "IMDG Class", type: "text", required: true, rules: { visible_if: { haz_type: "Haz" } }, halfWidth: true },
+        { key: "hazardous_un_number", label: "UN Number", type: "text", required: true, rules: { visible_if: { haz_type: "Haz" } }, halfWidth: true },
+        { key: "reefer_required", label: "Reefer Required", type: "radio", required: true, options: ["Yes", "No"], default: "No" },
+        { key: "reefer_temperature_range", label: "Reefer Temp Range", type: "text", required: true, ui: { placeholder: "Example: -5 C to 0 C" }, rules: { visible_if: { reefer_required: "Yes" } }, halfWidth: true },
+        { key: "other_notes", label: "Other Notes", type: "multiline", required: false },
+    ],
+};

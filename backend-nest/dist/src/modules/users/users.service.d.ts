@@ -1,0 +1,78 @@
+import { Repository } from 'typeorm';
+import { AppRole } from './entities/app-role.entity';
+import { UserRoleAssignment } from './entities/user-role-assignment.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDepartment } from './entities/user-department.entity';
+import { User } from './entities/user.entity';
+import { OsUserPayload } from '../auth/os-auth.helpers';
+export declare class UsersService {
+    private readonly userRepo;
+    private readonly deptRepo;
+    private readonly appRoleRepo;
+    private readonly assignmentRepo;
+    constructor(userRepo: Repository<User>, deptRepo: Repository<UserDepartment>, appRoleRepo: Repository<AppRole>, assignmentRepo: Repository<UserRoleAssignment>);
+    findAll(skip?: number, limit?: number): Promise<User[]>;
+    findById(id: string): Promise<User | null>;
+    findByEmail(email: string): Promise<User | null>;
+    findByOsUserId(osUserId: string): Promise<User | null>;
+    create(dto: CreateUserDto): Promise<User>;
+    update(id: string, dto: UpdateUserDto): Promise<User>;
+    updateDepartments(userId: string, departments: string[]): Promise<User>;
+    syncFromOsUser(osUser: OsUserPayload): Promise<User>;
+    markOutlookConnected(userId: string, connectedAt: Date): Promise<User>;
+    updateSignature(userId: string, signature: string | null): Promise<User>;
+    private ensureDefaultRoleAssignment;
+    private replaceDepartments;
+    private findExistingOsUser;
+    format(user: User): {
+        id: string;
+        osUserId: string | null;
+        email: string;
+        name: string;
+        role: import("./entities/user.entity").Role;
+        isActive: boolean;
+        isAppAdmin: boolean;
+        isTeamLead: boolean;
+        userType: string | null;
+        departmentSlug: string | null;
+        departmentName: string | null;
+        orgId: string | null;
+        orgName: string | null;
+        outlookConnected: boolean;
+        outlookConnectedAt: Date | null;
+        emailSignature: string | null;
+        departments: import("./entities/user-department.entity").Department[];
+        customRoles: {
+            id: string;
+            name: string;
+            permissions: import("./entities/role-permission.entity").RolePermission[];
+            scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
+        }[];
+    };
+    formatMany(users: User[]): {
+        id: string;
+        osUserId: string | null;
+        email: string;
+        name: string;
+        role: import("./entities/user.entity").Role;
+        isActive: boolean;
+        isAppAdmin: boolean;
+        isTeamLead: boolean;
+        userType: string | null;
+        departmentSlug: string | null;
+        departmentName: string | null;
+        orgId: string | null;
+        orgName: string | null;
+        outlookConnected: boolean;
+        outlookConnectedAt: Date | null;
+        emailSignature: string | null;
+        departments: import("./entities/user-department.entity").Department[];
+        customRoles: {
+            id: string;
+            name: string;
+            permissions: import("./entities/role-permission.entity").RolePermission[];
+            scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
+        }[];
+    }[];
+}

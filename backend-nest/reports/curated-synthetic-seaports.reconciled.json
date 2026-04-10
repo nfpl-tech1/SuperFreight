@@ -1,0 +1,1237 @@
+{
+  "generatedAt": "2026-04-10T06:33:07.835Z",
+  "mappings": [
+    {
+      "syntheticCode": "SEA-0007",
+      "code": "EGPSD",
+      "name": "(EGPSD) Port Said",
+      "cityName": "Port Said",
+      "countryName": "Egypt"
+    },
+    {
+      "syntheticCode": "SEA-0087",
+      "code": "KEMBA",
+      "name": "(KEMBA) Mombasa",
+      "cityName": "Mombasa",
+      "countryName": "Kenya"
+    },
+    {
+      "syntheticCode": "SEA-0097",
+      "code": "BHKBS",
+      "name": "(BHKBS) Khalifa Bin Salman Port",
+      "cityName": "Khalifa Bin Salman Port",
+      "countryName": "Bahrain",
+      "aliases": [
+        "Bahrain",
+        "Khalifa",
+        "Khalifa Port"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0099",
+      "code": "SAJED",
+      "name": "(SAJED) Jeddah",
+      "cityName": "Jeddah",
+      "countryName": "Saudi Arabia"
+    },
+    {
+      "syntheticCode": "SEA-0104",
+      "code": "DJJIB",
+      "name": "(DJJIB) Djibouti",
+      "cityName": "Djibouti",
+      "countryName": "Djibouti",
+      "aliases": [
+        "Djibouti (City)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0106",
+      "code": "PHMNL",
+      "name": "(PHMNL) Manila",
+      "cityName": "Manila",
+      "countryName": "Philippines"
+    },
+    {
+      "syntheticCode": "SEA-0110",
+      "code": "MACAS",
+      "name": "(MACAS) Casablanca",
+      "cityName": "Casablanca",
+      "countryName": "Morocco"
+    },
+    {
+      "syntheticCode": "SEA-0112",
+      "code": "JOAQJ",
+      "name": "(JOAQJ) Aqaba",
+      "cityName": "Aqaba",
+      "countryName": "Jordan",
+      "aliases": [
+        "Al 'Aqabah"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0122",
+      "code": "NAWVB",
+      "name": "(NAWVB) Walvis Bay",
+      "cityName": "Walvis Bay",
+      "countryName": "Namibia"
+    },
+    {
+      "syntheticCode": "SEA-0126",
+      "code": "OMSLL",
+      "name": "(OMSLL) Salalah",
+      "cityName": "Salalah",
+      "countryName": "Oman"
+    },
+    {
+      "syntheticCode": "SEA-0157",
+      "code": "YEADE",
+      "name": "(YEADE) Aden",
+      "cityName": "Aden",
+      "countryName": "Yemen"
+    },
+    {
+      "syntheticCode": "SEA-0165",
+      "code": "AOLOB",
+      "name": "(AOLOB) Lobito",
+      "cityName": "Lobito",
+      "countryName": "Angola"
+    },
+    {
+      "syntheticCode": "SEA-0167",
+      "code": "AOLAD",
+      "name": "(AOLAD) Luanda",
+      "cityName": "Luanda",
+      "countryName": "Angola"
+    },
+    {
+      "syntheticCode": "SEA-0224",
+      "code": "DZALG",
+      "name": "(DZALG) Algiers",
+      "cityName": "Algiers",
+      "countryName": "Algeria",
+      "aliases": [
+        "Alger",
+        "Algier"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0225",
+      "code": "DZAAE",
+      "name": "(DZAAE) Annaba",
+      "cityName": "Annaba",
+      "countryName": "Algeria",
+      "aliases": [
+        "Annaba (ex Bone)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0226",
+      "code": "DZBJA",
+      "name": "(DZBJA) Bejaia",
+      "cityName": "Bejaia",
+      "countryName": "Algeria",
+      "aliases": [
+        "Bejaia (ex Bougie)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0230",
+      "code": "DZORN",
+      "name": "(DZORN) Oran",
+      "cityName": "Oran",
+      "countryName": "Algeria"
+    },
+    {
+      "syntheticCode": "SEA-0231",
+      "code": "DZSKK",
+      "name": "(DZSKK) Skikda",
+      "cityName": "Skikda",
+      "countryName": "Algeria",
+      "aliases": [
+        "Skikada",
+        "Skikda (ex Philippeville)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0243",
+      "code": "BDCGP",
+      "name": "(BDCGP) Chattogram",
+      "cityName": "Chattogram",
+      "countryName": "Bangladesh",
+      "aliases": [
+        "Chittagong"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0010",
+      "code": "BRSSA",
+      "name": "(BRSSA) Salvador",
+      "cityName": "Salvador",
+      "countryName": "Brazil"
+    },
+    {
+      "syntheticCode": "SEA-0012",
+      "code": "BRPNG",
+      "name": "(BRPNG) Paranagua",
+      "cityName": "Paranagua",
+      "countryName": "Brazil",
+      "aliases": [
+        "Paranagua",
+        "Paranagua, PR"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0082",
+      "code": "USLGB",
+      "name": "(USLGB) Long Beach",
+      "cityName": "Long Beach",
+      "countryName": "USA"
+    },
+    {
+      "syntheticCode": "SEA-0085",
+      "code": "CAVAN",
+      "name": "(CAVAN) Vancouver",
+      "cityName": "Vancouver",
+      "countryName": "Canada"
+    },
+    {
+      "syntheticCode": "SEA-0089",
+      "code": "TZZNZ",
+      "name": "(TZZNZ) Zanzibar",
+      "cityName": "Zanzibar",
+      "countryName": "Tanzania"
+    },
+    {
+      "syntheticCode": "SEA-0103",
+      "code": "TNSFA",
+      "name": "(TNSFA) Sfax",
+      "cityName": "Sfax",
+      "countryName": "Tunisia"
+    },
+    {
+      "syntheticCode": "SEA-0115",
+      "code": "BJCOO",
+      "name": "(BJCOO) Cotonou",
+      "cityName": "Cotonou",
+      "countryName": "Benin"
+    },
+    {
+      "syntheticCode": "SEA-0120",
+      "code": "SRPBM",
+      "name": "(SRPBM) Paramaribo",
+      "cityName": "Paramaribo",
+      "countryName": "Suriname"
+    },
+    {
+      "syntheticCode": "SEA-0131",
+      "code": "USMSY",
+      "name": "(USMSY) New Orleans",
+      "cityName": "New Orleans",
+      "countryName": "USA"
+    },
+    {
+      "syntheticCode": "SEA-0139",
+      "code": "AUADL",
+      "name": "(AUADL) Adelaide",
+      "cityName": "Adelaide",
+      "countryName": "Australia"
+    },
+    {
+      "syntheticCode": "SEA-0140",
+      "code": "AUBEL",
+      "name": "(AUBEL) Bell Bay",
+      "cityName": "Bell Bay",
+      "countryName": "Australia"
+    },
+    {
+      "syntheticCode": "SEA-0141",
+      "code": "AUBNE",
+      "name": "(AUBNE) Brisbane",
+      "cityName": "Brisbane",
+      "countryName": "Australia"
+    },
+    {
+      "syntheticCode": "SEA-0145",
+      "code": "NZAKL",
+      "name": "(NZAKL) Auckland",
+      "cityName": "Auckland",
+      "countryName": "New Zealand",
+      "aliases": [
+        "Auckland Metroport"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0146",
+      "code": "NZBLU",
+      "name": "(NZBLU) Bluff",
+      "cityName": "Bluff",
+      "countryName": "New Zealand"
+    },
+    {
+      "syntheticCode": "SEA-0148",
+      "code": "NZNPE",
+      "name": "(NZNPE) Napier",
+      "cityName": "Napier",
+      "countryName": "New Zealand"
+    },
+    {
+      "syntheticCode": "SEA-0151",
+      "code": "NZWLG",
+      "name": "(NZWLG) Wellington",
+      "cityName": "Wellington",
+      "countryName": "New Zealand"
+    },
+    {
+      "syntheticCode": "SEA-0153",
+      "code": "FJLTK",
+      "name": "(FJLTK) Lautoka",
+      "cityName": "Lautoka",
+      "countryName": "Fiji"
+    },
+    {
+      "syntheticCode": "SEA-0161",
+      "code": "SNDKR",
+      "name": "(SNDKR) Dakar",
+      "cityName": "Dakar",
+      "countryName": "Senegal"
+    },
+    {
+      "syntheticCode": "SEA-0162",
+      "code": "CMDLA",
+      "name": "(CMDLA) Douala",
+      "cityName": "Douala",
+      "countryName": "Cameroon"
+    },
+    {
+      "syntheticCode": "SEA-0166",
+      "code": "TGLFW",
+      "name": "(TGLFW) Lome",
+      "cityName": "Lome",
+      "countryName": "Togo",
+      "aliases": [
+        "Lome"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0173",
+      "code": "NGONN",
+      "name": "(NGONN) Onne",
+      "cityName": "Onne",
+      "countryName": "Nigeria"
+    },
+    {
+      "syntheticCode": "SEA-0186",
+      "code": "BRRIO",
+      "name": "(BRRIO) Rio de Janeiro",
+      "cityName": "Rio de Janeiro",
+      "countryName": "Brazil"
+    },
+    {
+      "syntheticCode": "SEA-0015",
+      "code": "UYMVD",
+      "name": "(UYMVD) Montevideo",
+      "cityName": "Montevideo",
+      "countryName": "Uruguay"
+    },
+    {
+      "syntheticCode": "SEA-0189",
+      "code": "BRSUA",
+      "name": "(BRSUA) Suape Pt / Ipojuca",
+      "cityName": "Ipojuca",
+      "countryName": "Brazil",
+      "aliases": [
+        "Suape"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0198",
+      "code": "PEPAI",
+      "name": "(PEPAI) Paita",
+      "cityName": "Paita",
+      "countryName": "Peru"
+    },
+    {
+      "syntheticCode": "SEA-0199",
+      "code": "CLSAI",
+      "name": "(CLSAI) San Antonio",
+      "cityName": "San Antonio",
+      "countryName": "Chile"
+    },
+    {
+      "syntheticCode": "SEA-0202",
+      "code": "CRCAL",
+      "name": "(CRCAL) Caldera",
+      "cityName": "Caldera",
+      "countryName": "Costa Rica",
+      "aliases": [
+        "Puerto Caldera"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0220",
+      "code": "MXATM",
+      "name": "(MXATM) Altamira",
+      "cityName": "Altamira",
+      "countryName": "Mexico"
+    },
+    {
+      "syntheticCode": "SEA-0221",
+      "code": "MXZLO",
+      "name": "(MXZLO) Manzanillo",
+      "cityName": "Manzanillo",
+      "countryName": "Mexico"
+    },
+    {
+      "syntheticCode": "SEA-0222",
+      "code": "MXLZC",
+      "name": "(MXLZC) Lazaro Cardenas",
+      "cityName": "Lazaro Cardenas",
+      "countryName": "Mexico",
+      "aliases": [
+        "Lazaro Cardenas, Michoacan"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0223",
+      "code": "MAAGA",
+      "name": "(MAAGA) Agadir",
+      "cityName": "Agadir",
+      "countryName": "Morocco"
+    },
+    {
+      "syntheticCode": "SEA-0227",
+      "code": "LYBEN",
+      "name": "(LYBEN) Benghazi",
+      "cityName": "Benghazi",
+      "countryName": "Libya",
+      "aliases": [
+        "Bingazi"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0229",
+      "code": "MANDR",
+      "name": "(MANDR) Nador",
+      "cityName": "Nador",
+      "countryName": "Morocco"
+    },
+    {
+      "syntheticCode": "SEA-0235",
+      "code": "ZACPT",
+      "name": "(ZACPT) Cape Town",
+      "cityName": "Cape Town",
+      "countryName": "South Africa"
+    },
+    {
+      "syntheticCode": "SEA-0240",
+      "code": "MZBEW",
+      "name": "(MZBEW) Beira",
+      "cityName": "Beira",
+      "countryName": "Mozambique"
+    },
+    {
+      "syntheticCode": "SEA-0241",
+      "code": "MZMNC",
+      "name": "(MZMNC) Nacala",
+      "cityName": "Nacala",
+      "countryName": "Mozambique"
+    },
+    {
+      "syntheticCode": "SEA-0242",
+      "code": "MZMPM",
+      "name": "(MZMPM) Maputo",
+      "cityName": "Maputo",
+      "countryName": "Mozambique"
+    },
+    {
+      "syntheticCode": "SEA-0245",
+      "code": "ITTRS",
+      "name": "(ITTRS) Trieste",
+      "cityName": "Trieste",
+      "countryName": "Italy"
+    },
+    {
+      "syntheticCode": "SEA-0246",
+      "code": "ITGOA",
+      "name": "(ITGOA) Genova",
+      "cityName": "Genova",
+      "countryName": "Italy",
+      "aliases": [
+        "Genoa"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0249",
+      "code": "ITGIT",
+      "name": "(ITGIT) Gioia Tauro",
+      "cityName": "Gioia Tauro",
+      "countryName": "Italy"
+    },
+    {
+      "syntheticCode": "SEA-0257",
+      "code": "ITSAL",
+      "name": "(ITSAL) Salerno",
+      "cityName": "Salerno",
+      "countryName": "Italy"
+    },
+    {
+      "syntheticCode": "SEA-0017",
+      "code": "KRKWA",
+      "name": "(KRKWA) Kwangyang",
+      "cityName": "Kwangyang",
+      "countryName": "Korea",
+      "aliases": [
+        "Gwangyang"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0038",
+      "code": "CNCHQ",
+      "name": "(CNCHQ) Chongqing Pt",
+      "cityName": "Chongqing",
+      "countryName": "China",
+      "aliases": [
+        "Chongqing"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0043",
+      "code": "CNJMN",
+      "name": "(CNJMN) Jiangmen",
+      "cityName": "Jiangmen",
+      "countryName": "China",
+      "aliases": [
+        "Jiangmen, Guangdong"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0053",
+      "code": "CNSJQ",
+      "name": "(CNSJQ) Sanshui",
+      "cityName": "Sanshui",
+      "countryName": "China",
+      "aliases": [
+        "Sanshui, Guangdong"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0057",
+      "code": "CNWEG",
+      "name": "(CNWEG) Weihai Pt",
+      "cityName": "Weihai",
+      "countryName": "China",
+      "aliases": [
+        "Weihai",
+        "Weihai, Shandong"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0063",
+      "code": "CNYYA",
+      "name": "(CNYYA) Yueyang",
+      "cityName": "Yueyang",
+      "countryName": "China",
+      "aliases": [
+        "Yueyang, Hunan"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0066",
+      "code": "CNZHE",
+      "name": "(CNZHE) Zhenjiang",
+      "cityName": "Zhenjiang",
+      "countryName": "China",
+      "aliases": [
+        "Zhenjiang, Jiangsu",
+        "Chinkiang"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0069",
+      "code": "JPHSM",
+      "name": "(JPHSM) Hososhima",
+      "cityName": "Hososhima",
+      "countryName": "Japan"
+    },
+    {
+      "syntheticCode": "SEA-0071",
+      "code": "JPMIZ",
+      "name": "(JPMIZ) Mizushima",
+      "cityName": "Mizushima",
+      "countryName": "Japan"
+    },
+    {
+      "syntheticCode": "SEA-0076",
+      "code": "JPTAK",
+      "name": "(JPTAK) Takamatsu",
+      "cityName": "Takamatsu",
+      "countryName": "Japan"
+    },
+    {
+      "syntheticCode": "SEA-0083",
+      "code": "USOAK",
+      "name": "(USOAK) Oakland",
+      "cityName": "Oakland",
+      "countryName": "USA",
+      "aliases": [
+        "Oakland (CA)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0086",
+      "code": "CAMTR",
+      "name": "(CAMTR) Montreal",
+      "cityName": "Montreal",
+      "countryName": "Canada"
+    },
+    {
+      "syntheticCode": "SEA-0091",
+      "code": "CNDCB",
+      "name": "(CNDCB) Da Chan Bay",
+      "cityName": "Da Chan Bay",
+      "countryName": "China"
+    },
+    {
+      "syntheticCode": "SEA-0102",
+      "code": "CIABJ",
+      "name": "(CIABJ) Abidjan",
+      "cityName": "Abidjan",
+      "countryName": "Ivory Coast"
+    },
+    {
+      "syntheticCode": "SEA-0118",
+      "code": "FRFOS",
+      "name": "(FRFOS) Fos-sur-Mer",
+      "cityName": "Fos-sur-Mer",
+      "countryName": "France",
+      "aliases": [
+        "Fos sur Mer"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0125",
+      "code": "SAKAC",
+      "name": "(SAKAC) King Abdullah City",
+      "cityName": "King Abdullah City",
+      "countryName": "Saudi Arabia",
+      "aliases": [
+        "King Abdullah Port"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0132",
+      "code": "USPEF",
+      "name": "(USPEF) Port Everglades",
+      "cityName": "Port Everglades",
+      "countryName": "USA",
+      "aliases": [
+        "Port Everglades / Miami"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0133",
+      "code": "USBAL",
+      "name": "(USBAL) Baltimore",
+      "cityName": "Baltimore",
+      "countryName": "USA"
+    },
+    {
+      "syntheticCode": "SEA-0134",
+      "code": "USPHL",
+      "name": "(USPHL) Philadelphia",
+      "cityName": "Philadelphia",
+      "countryName": "USA",
+      "aliases": [
+        "Philadelphia (PA)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0135",
+      "code": "USBOS",
+      "name": "(USBOS) Boston",
+      "cityName": "Boston",
+      "countryName": "USA",
+      "aliases": [
+        "Boston (MA)"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0147",
+      "code": "NZLYT",
+      "name": "(NZLYT) Lyttelton",
+      "cityName": "Lyttelton",
+      "countryName": "New Zealand",
+      "aliases": [
+        "Lyttleton"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0149",
+      "code": "NZNSN",
+      "name": "(NZNSN) Nelson",
+      "cityName": "Nelson",
+      "countryName": "New Zealand"
+    },
+    {
+      "syntheticCode": "SEA-0156",
+      "code": "SOKMU",
+      "name": "(SOKMU) Kismayu",
+      "cityName": "Kismayu",
+      "countryName": "Somalia"
+    },
+    {
+      "syntheticCode": "SEA-0152",
+      "code": "NCNOU",
+      "name": "(NCNOU) Noumea",
+      "cityName": "Noumea",
+      "countryName": "New Caledonia"
+    },
+    {
+      "syntheticCode": "SEA-0154",
+      "code": "SOMGQ",
+      "name": "(SOMGQ) Mogadishu",
+      "cityName": "Mogadishu",
+      "countryName": "Somalia"
+    },
+    {
+      "syntheticCode": "SEA-0158",
+      "code": "YEMKX",
+      "name": "(YEMKX) Mukalla",
+      "cityName": "Mukalla",
+      "countryName": "Yemen"
+    },
+    {
+      "syntheticCode": "SEA-0159",
+      "code": "GMBJL",
+      "name": "(GMBJL) Banjul",
+      "cityName": "Banjul",
+      "countryName": "Gambia"
+    },
+    {
+      "syntheticCode": "SEA-0160",
+      "code": "GNCKY",
+      "name": "(GNCKY) Conakry",
+      "cityName": "Conakry",
+      "countryName": "Guinea"
+    },
+    {
+      "syntheticCode": "SEA-0163",
+      "code": "SLFNA",
+      "name": "(SLFNA) Freetown",
+      "cityName": "Freetown",
+      "countryName": "Sierra Leone"
+    },
+    {
+      "syntheticCode": "SEA-0164",
+      "code": "GALBV",
+      "name": "(GALBV) Libreville",
+      "cityName": "Libreville",
+      "countryName": "Gabon"
+    },
+    {
+      "syntheticCode": "SEA-0169",
+      "code": "LRMLW",
+      "name": "(LRMLW) Monrovia",
+      "cityName": "Monrovia",
+      "countryName": "Liberia",
+      "aliases": [
+        "Monrovia Freeport"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0170",
+      "code": "AOMSZ",
+      "name": "(AOMSZ) Namibe",
+      "cityName": "Namibe",
+      "countryName": "Angola"
+    },
+    {
+      "syntheticCode": "SEA-0171",
+      "code": "MRNDB",
+      "name": "(MRNDB) Nouadhibou",
+      "cityName": "Nouadhibou",
+      "countryName": "Mauritania"
+    },
+    {
+      "syntheticCode": "SEA-0172",
+      "code": "MRNKC",
+      "name": "(MRNKC) Nouakchott",
+      "cityName": "Nouakchott",
+      "countryName": "Mauritania"
+    },
+    {
+      "syntheticCode": "SEA-0174",
+      "code": "NGPHC",
+      "name": "(NGPHC) Port Harcourt",
+      "cityName": "Port Harcourt",
+      "countryName": "Nigeria"
+    },
+    {
+      "syntheticCode": "SEA-0175",
+      "code": "CISPY",
+      "name": "(CISPY) San-Pedro",
+      "cityName": "San-Pedro",
+      "countryName": "Ivory Coast"
+    },
+    {
+      "syntheticCode": "SEA-0176",
+      "code": "GHTKD",
+      "name": "(GHTKD) Takoradi",
+      "cityName": "Takoradi",
+      "countryName": "Ghana"
+    },
+    {
+      "syntheticCode": "SEA-0177",
+      "code": "CDMAT",
+      "name": "(CDMAT) Matadi",
+      "cityName": "Matadi",
+      "countryName": "Congo"
+    },
+    {
+      "syntheticCode": "SEA-0178",
+      "code": "PYBCM",
+      "name": "(PYBCM) Barrio Caacupe Mi",
+      "cityName": "Barrio Caacupe Mi",
+      "countryName": "Paraguay",
+      "aliases": [
+        "Caacupemi Asuncion",
+        "Caacupe-mi Asuncion"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0179",
+      "code": "PYPIL",
+      "name": "(PYPIL) Pilar",
+      "cityName": "Pilar",
+      "countryName": "Paraguay",
+      "aliases": [
+        "Caacupemi Pilar",
+        "Caacupe-mi Pilar"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0190",
+      "code": "BRVDC",
+      "name": "(BRVDC) Vila do Conde Pt / Barcarena",
+      "cityName": "Vila do Conde",
+      "countryName": "Brazil",
+      "aliases": [
+        "Vila Do Conde",
+        "Villa Do Conde"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0181",
+      "code": "VELAG",
+      "name": "(VELAG) La Guaira",
+      "cityName": "La Guaira",
+      "countryName": "Venezuela",
+      "aliases": [
+        "La Guaira - Euro"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0182",
+      "code": "BRMAO",
+      "name": "(BRMAO) Manaus",
+      "cityName": "Manaus",
+      "countryName": "Brazil"
+    },
+    {
+      "syntheticCode": "SEA-0184",
+      "code": "BRPEC",
+      "name": "(BRPEC) Pecem",
+      "cityName": "Pecem",
+      "countryName": "Brazil",
+      "aliases": [
+        "Pecem Pt / Sao Goncalo do Amarante"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0185",
+      "code": "VEPBL",
+      "name": "(VEPBL) Puerto Cabello",
+      "cityName": "Puerto Cabello",
+      "countryName": "Venezuela",
+      "aliases": [
+        "Puerto Cabello - Euro"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0187",
+      "code": "BRRIG",
+      "name": "(BRRIG) Rio Grande",
+      "cityName": "Rio Grande",
+      "countryName": "Brazil"
+    },
+    {
+      "syntheticCode": "SEA-0188",
+      "code": "ARROS",
+      "name": "(ARROS) Rosario",
+      "cityName": "Rosario",
+      "countryName": "Argentina"
+    },
+    {
+      "syntheticCode": "SEA-0191",
+      "code": "ARZAE",
+      "name": "(ARZAE) Zarate",
+      "cityName": "Zarate",
+      "countryName": "Argentina"
+    },
+    {
+      "syntheticCode": "SEA-0192",
+      "code": "CLARI",
+      "name": "(CLARI) Arica",
+      "cityName": "Arica",
+      "countryName": "Chile"
+    },
+    {
+      "syntheticCode": "SEA-0195",
+      "code": "COCTG",
+      "name": "(COCTG) Cartagena",
+      "cityName": "Cartagena",
+      "countryName": "Colombia"
+    },
+    {
+      "syntheticCode": "SEA-0196",
+      "code": "CLCNL",
+      "name": "(CLCNL) Coronel",
+      "cityName": "Coronel",
+      "countryName": "Chile"
+    },
+    {
+      "syntheticCode": "SEA-0201",
+      "code": "SVAQJ",
+      "name": "(SVAQJ) Acajutla",
+      "cityName": "Acajutla",
+      "countryName": "El Salvador"
+    },
+    {
+      "syntheticCode": "SEA-0204",
+      "code": "PAROD",
+      "name": "(PAROD) Rodman",
+      "cityName": "Rodman",
+      "countryName": "Panama"
+    },
+    {
+      "syntheticCode": "SEA-0206",
+      "code": "CRMOB",
+      "name": "(CRMOB) Moin",
+      "cityName": "Moin",
+      "countryName": "Costa Rica"
+    },
+    {
+      "syntheticCode": "SEA-0207",
+      "code": "PACTB",
+      "name": "(PACTB) Cristobal",
+      "cityName": "Cristobal",
+      "countryName": "Panama"
+    },
+    {
+      "syntheticCode": "SEA-0208",
+      "code": "HTPAP",
+      "name": "(HTPAP) Port-au-Prince",
+      "cityName": "Port-au-Prince",
+      "countryName": "Haiti",
+      "aliases": [
+        "PORT AU PRINCE"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0209",
+      "code": "DOCAU",
+      "name": "(DOCAU) Caucedo",
+      "cityName": "Caucedo",
+      "countryName": "Dominican Republic",
+      "aliases": [
+        "CAUCEDO"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0210",
+      "code": "TTPOS",
+      "name": "(TTPOS) Port of Spain",
+      "cityName": "Port of Spain",
+      "countryName": "Trinidad and Tobago",
+      "aliases": [
+        "PORT OF SPAIN"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0211",
+      "code": "DOINA",
+      "name": "(DOINA) Haina",
+      "cityName": "Haina",
+      "countryName": "Dominican Republic",
+      "aliases": [
+        "RIO HAINA"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0212",
+      "code": "JMKIN",
+      "name": "(JMKIN) Kingston",
+      "cityName": "Kingston",
+      "countryName": "Jamaica",
+      "aliases": [
+        "KINGSTON"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0213",
+      "code": "BSNAS",
+      "name": "(BSNAS) Nassau",
+      "cityName": "Nassau",
+      "countryName": "Bahamas",
+      "aliases": [
+        "NASSAU"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0214",
+      "code": "BSFPO",
+      "name": "(BSFPO) Freeport, Grand Bahama",
+      "cityName": "Freeport, Grand Bahama",
+      "countryName": "Bahamas",
+      "aliases": [
+        "FREEPORT",
+        "Freeport"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0215",
+      "code": "BBBGI",
+      "name": "(BBBGI) Bridgetown",
+      "cityName": "Bridgetown",
+      "countryName": "Barbados",
+      "aliases": [
+        "BRIDGETOWN"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0216",
+      "code": "GYGEO",
+      "name": "(GYGEO) Georgetown",
+      "cityName": "Georgetown",
+      "countryName": "Guyana",
+      "aliases": [
+        "GEORGETOWN"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0218",
+      "code": "CATOR",
+      "name": "(CATOR) Toronto",
+      "cityName": "Toronto",
+      "countryName": "Canada"
+    },
+    {
+      "syntheticCode": "SEA-0228",
+      "code": "LYKHO",
+      "name": "(LYKHO) Al Khums",
+      "cityName": "Al Khums",
+      "countryName": "Libya",
+      "aliases": [
+        "Khoms"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0232",
+      "code": "LBKYE",
+      "name": "(LBKYE) Tripoli",
+      "cityName": "Tripoli",
+      "countryName": "Lebanon"
+    },
+    {
+      "syntheticCode": "SEA-0233",
+      "code": "TZTGT",
+      "name": "(TZTGT) Tanga",
+      "cityName": "Tanga",
+      "countryName": "Tanzania"
+    },
+    {
+      "syntheticCode": "SEA-0236",
+      "code": "ZAZBA",
+      "name": "(ZAZBA) Coega",
+      "cityName": "Coega",
+      "countryName": "South Africa"
+    },
+    {
+      "syntheticCode": "SEA-0237",
+      "code": "MUPLU",
+      "name": "(MUPLU) Port Louis",
+      "cityName": "Port Louis",
+      "countryName": "Mauritius"
+    },
+    {
+      "syntheticCode": "SEA-0238",
+      "code": "MGMJN",
+      "name": "(MGMJN) Majunga",
+      "cityName": "Majunga",
+      "countryName": "Madagascar"
+    },
+    {
+      "syntheticCode": "SEA-0239",
+      "code": "MGDIE",
+      "name": "(MGDIE) Antsiranana",
+      "cityName": "Antsiranana",
+      "countryName": "Madagascar",
+      "aliases": [
+        "Diego Suarez"
+      ]
+    },
+    {
+      "syntheticCode": "SEA-0247",
+      "code": "ITLIV",
+      "name": "(ITLIV) Livorno",
+      "cityName": "Livorno",
+      "countryName": "Italy"
+    },
+    {
+      "syntheticCode": "SEA-0250",
+      "code": "ITRAN",
+      "name": "(ITRAN) Ravenna",
+      "cityName": "Ravenna",
+      "countryName": "Italy"
+    }
+  ],
+  "migratedSyntheticPorts": 0,
+  "createdCanonicalPorts": 0,
+  "skippedSyntheticCodes": [
+    "SEA-0007",
+    "SEA-0087",
+    "SEA-0097",
+    "SEA-0099",
+    "SEA-0104",
+    "SEA-0106",
+    "SEA-0110",
+    "SEA-0112",
+    "SEA-0122",
+    "SEA-0126",
+    "SEA-0157",
+    "SEA-0165",
+    "SEA-0167",
+    "SEA-0224",
+    "SEA-0225",
+    "SEA-0226",
+    "SEA-0230",
+    "SEA-0231",
+    "SEA-0243",
+    "SEA-0010",
+    "SEA-0012",
+    "SEA-0082",
+    "SEA-0085",
+    "SEA-0089",
+    "SEA-0103",
+    "SEA-0115",
+    "SEA-0120",
+    "SEA-0131",
+    "SEA-0139",
+    "SEA-0140",
+    "SEA-0141",
+    "SEA-0145",
+    "SEA-0146",
+    "SEA-0148",
+    "SEA-0151",
+    "SEA-0153",
+    "SEA-0161",
+    "SEA-0162",
+    "SEA-0166",
+    "SEA-0173",
+    "SEA-0186",
+    "SEA-0015",
+    "SEA-0189",
+    "SEA-0198",
+    "SEA-0199",
+    "SEA-0202",
+    "SEA-0220",
+    "SEA-0221",
+    "SEA-0222",
+    "SEA-0223",
+    "SEA-0227",
+    "SEA-0229",
+    "SEA-0235",
+    "SEA-0240",
+    "SEA-0241",
+    "SEA-0242",
+    "SEA-0245",
+    "SEA-0246",
+    "SEA-0249",
+    "SEA-0257",
+    "SEA-0017",
+    "SEA-0038",
+    "SEA-0043",
+    "SEA-0053",
+    "SEA-0057",
+    "SEA-0063",
+    "SEA-0066",
+    "SEA-0069",
+    "SEA-0071",
+    "SEA-0076",
+    "SEA-0083",
+    "SEA-0086",
+    "SEA-0091",
+    "SEA-0102",
+    "SEA-0118",
+    "SEA-0125",
+    "SEA-0132",
+    "SEA-0133",
+    "SEA-0134",
+    "SEA-0135",
+    "SEA-0147",
+    "SEA-0149",
+    "SEA-0156",
+    "SEA-0152",
+    "SEA-0154",
+    "SEA-0158",
+    "SEA-0159",
+    "SEA-0160",
+    "SEA-0163",
+    "SEA-0164",
+    "SEA-0169",
+    "SEA-0170",
+    "SEA-0171",
+    "SEA-0172",
+    "SEA-0174",
+    "SEA-0175",
+    "SEA-0176",
+    "SEA-0177",
+    "SEA-0178",
+    "SEA-0179",
+    "SEA-0190",
+    "SEA-0181",
+    "SEA-0182",
+    "SEA-0184",
+    "SEA-0185",
+    "SEA-0187",
+    "SEA-0188",
+    "SEA-0191",
+    "SEA-0192",
+    "SEA-0195",
+    "SEA-0196",
+    "SEA-0201",
+    "SEA-0204",
+    "SEA-0206",
+    "SEA-0207",
+    "SEA-0208",
+    "SEA-0209",
+    "SEA-0210",
+    "SEA-0211",
+    "SEA-0212",
+    "SEA-0213",
+    "SEA-0214",
+    "SEA-0215",
+    "SEA-0216",
+    "SEA-0218",
+    "SEA-0228",
+    "SEA-0232",
+    "SEA-0233",
+    "SEA-0236",
+    "SEA-0237",
+    "SEA-0238",
+    "SEA-0239",
+    "SEA-0247",
+    "SEA-0250"
+  ],
+  "items": []
+}

@@ -1,0 +1,73 @@
+const DEFAULT_UPPERCASE_WORDS = new Set([
+  'AIR',
+  'BHD',
+  'BV',
+  'CHA',
+  'CFS',
+  'DC',
+  'DHL',
+  'FCL',
+  'IATA',
+  'INC',
+  'LCL',
+  'LLC',
+  'LLP',
+  'LTD',
+  'NVOCC',
+  'PTE',
+  'PTY',
+  'PVT',
+  'SEA',
+  'SDN',
+  'SRO',
+  'UAE',
+  'UK',
+  'USA',
+  'WCA',
+]);
+
+type SmartTitleCaseOptions = {
+  preserveGenericAcronyms?: boolean;
+};
+
+export function toSmartTitleCase(
+  value: string,
+  uppercaseWords = DEFAULT_UPPERCASE_WORDS,
+  options: SmartTitleCaseOptions = {},
+) {
+  const preserveGenericAcronyms = options.preserveGenericAcronyms ?? true;
+
+  return value
+    .split(/(\s+|[-/,&()])/)
+    .map((token) =>
+      transformToken(token, uppercaseWords, preserveGenericAcronyms),
+    )
+    .join('');
+}
+
+function transformToken(
+  token: string,
+  uppercaseWords: Set<string>,
+  preserveGenericAcronyms: boolean,
+) {
+  if (!/[A-Za-z]/.test(token)) {
+    return token;
+  }
+
+  const core = token.replace(/[^A-Za-z0-9]/g, '');
+  if (!core) {
+    return token;
+  }
+
+  const uppercaseCore = core.toUpperCase();
+  if (
+    uppercaseWords.has(uppercaseCore) ||
+    (preserveGenericAcronyms && /^[A-Z]{2,4}$/.test(uppercaseCore)) ||
+    /^(?:[A-Za-z]\.)+[A-Za-z]?\.?$/.test(token)
+  ) {
+    return token.toUpperCase();
+  }
+
+  const lower = token.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}

@@ -1,0 +1,60 @@
+import { DataSource } from 'typeorm';
+type ImportMode = 'dry-run' | 'apply';
+export type CarrierExportCoveragePortOverride = {
+    rowNumber: number;
+    normalizedPortLabel: string | null;
+    portCode: string | null;
+    notes?: string | null;
+    source?: string | null;
+};
+type PortSuggestion = {
+    code: string;
+    name: string;
+    cityName: string | null;
+    countryName: string;
+    score: number;
+    rationale: string;
+};
+export type CarrierExportCoverageReviewStatus = 'matched' | 'vendor_not_in_master' | 'office_unresolved' | 'vendor_not_in_db' | 'db_office_not_found' | 'port_unresolved' | 'port_ambiguous';
+export type CarrierExportCoverageReviewItem = {
+    rowNumber: number;
+    status: CarrierExportCoverageReviewStatus;
+    carrierName: string;
+    contactName: string | null;
+    portLabel: string;
+    normalizedPortLabel: string | null;
+    resolvedOfficeName: string | null;
+    officeConfidence: 'high' | 'medium' | null;
+    officeMatchReasons: string[];
+    vendorId: string | null;
+    dbOfficeId: string | null;
+    dbOfficeName: string | null;
+    portId: string | null;
+    portCode: string | null;
+    portName: string | null;
+    linkAction: 'none' | 'dry-run' | 'created' | 'existing';
+    notes: string | null;
+    suggestions: PortSuggestion[];
+};
+export type CarrierExportCoverageImportSummary = {
+    mode: ImportMode;
+    workbookPath: string;
+    exportRowsRead: number;
+    masterRowsRead: number;
+    uniqueVendorsInMaster: number;
+    rowsMatchedToOffice: number;
+    rowsMatchedToPort: number;
+    rowsReadyToLink: number;
+    uniqueOfficePortPairsReady: number;
+    linksCreated: number;
+    linksAlreadyPresent: number;
+    statusCounts: Record<CarrierExportCoverageReviewStatus, number>;
+};
+export type CarrierExportCoverageImportOptions = {
+    mode: ImportMode;
+    workbookPath: string;
+    portOverrides?: CarrierExportCoveragePortOverride[];
+    onReviewItem?: (item: CarrierExportCoverageReviewItem) => void;
+};
+export declare function runCarrierExportCoverageImport(dataSource: DataSource, options: CarrierExportCoverageImportOptions): Promise<CarrierExportCoverageImportSummary>;
+export {};

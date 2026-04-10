@@ -1,0 +1,39 @@
+import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
+import { CustomerDraft } from '../customer-quotes/entities/customer-draft.entity';
+import { Rfq } from '../rfqs/entities/rfq.entity';
+import { FreightQuote } from '../shipments/entities/freight-quote.entity';
+import { User } from '../users/entities/user.entity';
+import { CreateInquiryDto } from './dto/create-inquiry.dto';
+import { TransferInquiryDto } from './dto/transfer-inquiry.dto';
+import { UpdateInquiryDto } from './dto/update-inquiry.dto';
+import { Inquiry } from './entities/inquiry.entity';
+import { Job } from './entities/job.entity';
+import { JobServicePart } from './entities/job-service-part.entity';
+import { OwnershipAssignment } from './entities/ownership-assignment.entity';
+export declare class InquiriesService {
+    private readonly config;
+    private readonly customerDraftRepo;
+    private readonly freightQuoteRepo;
+    private readonly rfqRepo;
+    private readonly inquiryRepo;
+    private readonly jobRepo;
+    private readonly servicePartRepo;
+    private readonly ownershipRepo;
+    constructor(config: ConfigService, customerDraftRepo: Repository<CustomerDraft>, freightQuoteRepo: Repository<FreightQuote>, rfqRepo: Repository<Rfq>, inquiryRepo: Repository<Inquiry>, jobRepo: Repository<Job>, servicePartRepo: Repository<JobServicePart>, ownershipRepo: Repository<OwnershipAssignment>);
+    list(currentUser: User): Promise<Inquiry[]>;
+    create(dto: CreateInquiryDto, currentUser: User): Promise<Inquiry>;
+    update(id: string, dto: UpdateInquiryDto, currentUser: User): Promise<Inquiry>;
+    transfer(id: string, dto: TransferInquiryDto, currentUser: User): Promise<Inquiry>;
+    remove(id: string, currentUser: User): Promise<{
+        success: boolean;
+        id: string;
+    }>;
+    private createInquiryRecord;
+    private createJobRecord;
+    private syncJobFromInquiry;
+    private createFreightServicePart;
+    private recordOwnershipTransfer;
+    private generateInquiryNumber;
+    private findAccessibleInquiryOrThrow;
+}
