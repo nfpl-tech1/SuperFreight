@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 function isAddressInUseError(error: unknown): error is NodeJS.ErrnoException {
   return (
@@ -58,16 +59,37 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // CORS must be set before listen so browser preflight requests succeed.
-  app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  const configuredOrigins = (
+    process.env.FRONTEND_URLS ||
+    process.env.FRONTEND_URL ||
+    'http://localhost:3000'
+  )
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  const corsOptions: CorsOptions = {
+    origin(origin, callback) {
+      // Allow non-browser requests and health checks with no Origin header.
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (configuredOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked origin: ${origin}`), false);
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
-  });
-  console.log(
-    'CORS origin:',
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-  );
+  };
+
+  app.enableCors(corsOptions);
+  console.log('CORS origins:', configuredOrigins);
 
   const port = Number(process.env.PORT ?? 8000);
   const host = process.env.HOST ?? '0.0.0.0';
