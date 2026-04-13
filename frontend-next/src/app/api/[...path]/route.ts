@@ -13,9 +13,21 @@ const HOP_BY_HOP_HEADERS = new Set([
   "upgrade",
 ]);
 
+function normalizeBackendOrigin(value: string | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  return value
+    .trim()
+    .replace(/\/api\/?$/, "")
+    .replace(/\/$/, "");
+}
+
 function getBackendApiOrigin() {
   return (
-    process.env.BACKEND_API_ORIGIN?.replace(/\/$/, "") ||
+    normalizeBackendOrigin(process.env.BACKEND_API_ORIGIN) ||
+    normalizeBackendOrigin(process.env.NEXT_PUBLIC_API_URL) ||
     "http://localhost:8000"
   );
 }
@@ -30,7 +42,12 @@ function copyRequestHeaders(request: NextRequest) {
   const headers = new Headers();
 
   request.headers.forEach((value, key) => {
-    if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase())) {
+    const normalizedKey = key.toLowerCase();
+
+    if (
+      !HOP_BY_HOP_HEADERS.has(normalizedKey) &&
+      normalizedKey !== "origin"
+    ) {
       headers.set(key, value);
     }
   });
