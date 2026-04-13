@@ -59,32 +59,48 @@ async function proxyRequest(
   request: NextRequest,
   context: { params: Promise<{ path: string[] }> },
 ) {
-  const { path } = await context.params;
-  const method = request.method.toUpperCase();
-  const backendUrl = buildBackendUrl(request, path);
-  const headers = copyRequestHeaders(request);
-  const body =
-    method === "GET" || method === "HEAD" ? undefined : await request.arrayBuffer();
+  try {
+    const { path } = await context.params;
+    const method = request.method.toUpperCase();
+    const backendUrl = buildBackendUrl(request, path);
+    const headers = copyRequestHeaders(request);
+    const body =
+      method === "GET" || method === "HEAD"
+        ? undefined
+        : new Uint8Array(await request.arrayBuffer());
 
-  const response = await fetch(backendUrl, {
-    method,
-    headers,
-    body,
-    redirect: "manual",
-  });
+    const response = await fetch(backendUrl, {
+      method,
+      headers,
+      body,
+      redirect: "manual",
+    });
 
-  const responseHeaders = new Headers();
-  response.headers.forEach((value, key) => {
-    if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase())) {
-      responseHeaders.set(key, value);
-    }
-  });
+    const responseHeaders = new Headers();
+    response.headers.forEach((value, key) => {
+      if (!HOP_BY_HOP_HEADERS.has(key.toLowerCase())) {
+        responseHeaders.set(key, value);
+      }
+    });
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: responseHeaders,
-  });
+    const responseBody =
+      method === "HEAD" ? null : await response.arrayBuffer();
+
+    return new Response(responseBody, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: responseHeaders,
+    });
+  } catch (error) {
+    console.error("API proxy request failed", error);
+
+    return Response.json(
+      {
+        detail: "API proxy request failed",
+      },
+      { status: 502 },
+    );
+  }
 }
 
 export const dynamic = "force-dynamic";
