@@ -17,6 +17,22 @@ function escapeAttribute(value: string) {
   return value.replace(/"/g, "&quot;");
 }
 
+function resolvePreviewValue(values: FormValues, key: string) {
+  const rawValue = values[key];
+  const formattedValue = Array.isArray(rawValue)
+    ? rawValue.join(", ")
+    : String(rawValue ?? "");
+
+  if (!formattedValue.trim()) {
+    return "";
+  }
+
+  const unitValue = values[`${key}_unit`];
+  const formattedUnit = typeof unitValue === "string" ? unitValue.trim() : "";
+
+  return formattedUnit ? `${formattedValue} ${formattedUnit}` : formattedValue;
+}
+
 function getColumnWidth(rows: PreviewRow[]) {
   const maxLength = rows.reduce((max, row) => {
     return Math.max(max, row.label.length, row.value.length);
@@ -25,18 +41,25 @@ function getColumnWidth(rows: PreviewRow[]) {
   return Math.max(maxLength * 8 + 24, 120);
 }
 
-export function buildPreviewRows(fields: FieldDefinition[], values: FormValues): PreviewRow[] {
+export function buildPreviewRows(
+  fields: FieldDefinition[],
+  values: FormValues,
+): PreviewRow[] {
   return fields
-    .filter((field) => isFieldVisible(field, values) && !field.ui?.hideInPreview)
+    .filter(
+      (field) => isFieldVisible(field, values) && !field.ui?.hideInPreview,
+    )
     .map((field) => {
-      const value = values[field.key];
-      const display = Array.isArray(value) ? value.join(", ") : String(value ?? "");
+      const display = resolvePreviewValue(values, field.key);
       return { label: field.label, value: display };
     })
     .filter((row) => row.value.trim() !== "");
 }
 
-export function buildPreviewTableHtml(rows: PreviewRow[], resolveValue?: (row: PreviewRow) => string) {
+export function buildPreviewTableHtml(
+  rows: PreviewRow[],
+  resolveValue?: (row: PreviewRow) => string,
+) {
   if (rows.length === 0) {
     return `<p style="color:#64748b;font-style:italic;margin:12px 0;">[Fill in the form to generate data table...]</p>`;
   }
@@ -60,7 +83,9 @@ export function buildPreviewTableHtml(rows: PreviewRow[], resolveValue?: (row: P
 /*  Template-based preview builder                                     */
 /* ------------------------------------------------------------------ */
 
-export function resolveTemplate(input: TemplateResolverInput): EmailTemplate | null {
+export function resolveTemplate(
+  input: TemplateResolverInput,
+): EmailTemplate | null {
   return resolveEmailTemplate(input);
 }
 
@@ -97,7 +122,9 @@ export function buildTemplatePreviewEmailHtml(
   resolveValue?: (row: PreviewRow) => string,
 ): string {
   const tableHtml = buildTemplateTableHtml(template, values, resolveValue);
-  const rateTableHtml = template.rateTable ? buildRateTableHtml(template.rateTable) : "";
+  const rateTableHtml = template.rateTable
+    ? buildRateTableHtml(template.rateTable)
+    : "";
 
   return `
 <div style="font-family:Arial,sans-serif;font-size:13px;color:#333;line-height:1.5;">
@@ -150,7 +177,11 @@ export function buildPreviewEmailHtml({
 </div>`;
 }
 
-export function buildPreviewSubjectLine(departmentId: string, inquiryNumber: string, values: FormValues) {
+export function buildPreviewSubjectLine(
+  departmentId: string,
+  inquiryNumber: string,
+  values: FormValues,
+) {
   const isTransport = departmentId === "road_freight";
   const origin = (values.source || values.origin || "[Origin]") as string;
   const destination = (values.destination || "[Destination]") as string;

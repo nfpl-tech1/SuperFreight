@@ -15,7 +15,7 @@ export function buildInquiryCreateInput(
   inquiryNumber: string,
 ): DeepPartial<Inquiry> {
   return {
-    inquiryNumber,
+    inquiryNumber: dto.inquiryNumber?.trim() || inquiryNumber,
     inquiryType: dto.inquiryType,
     status: InquiryStatus.PENDING,
     customerName: dto.customerName,
@@ -36,6 +36,9 @@ export function buildInquiryUpdateInput(
 ): DeepPartial<Inquiry> {
   const patch: DeepPartial<Inquiry> = {};
 
+  if ('inquiryNumber' in dto) {
+    patch.inquiryNumber = dto.inquiryNumber?.trim() || '';
+  }
   if ('customerName' in dto) {
     patch.customerName = dto.customerName?.trim() || '';
   }

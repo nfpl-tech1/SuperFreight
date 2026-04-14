@@ -248,13 +248,22 @@ const EXPORT_CHA_AIR: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "Rate"],
     rows: [
-      { particular: "1st time Exporter registration", rates: { Rate: "INR 4500/ 1st time expense" } },
+      {
+        particular: "1st time Exporter registration",
+        rates: { Rate: "INR 4500/ 1st time expense" },
+      },
       { particular: "Agency Charges", rates: { Rate: "INR 3500" } },
       { particular: "Examination Charges", rates: { Rate: "INR 750" } },
       { particular: "Opening/Repacking", rates: { Rate: "INR 750" } },
-      { particular: "Loading/Unloading", rates: { Rate: "INR 750 per vehicle" } },
+      {
+        particular: "Loading/Unloading",
+        rates: { Rate: "INR 750 per vehicle" },
+      },
       { particular: "Transportation charges", rates: { Rate: "" } },
-      { particular: "IF fumigation, Palletization", rates: { Rate: "At actual" } },
+      {
+        particular: "IF fumigation, Palletization",
+        rates: { Rate: "At actual" },
+      },
       { particular: "Insurances Charges", rates: { Rate: "At actual" } },
     ],
   },
@@ -282,13 +291,22 @@ const EXPORT_CHA_LCL: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "Rate"],
     rows: [
-      { particular: "1st time Exporter registration", rates: { Rate: "INR 4500/ 1st time expense" } },
+      {
+        particular: "1st time Exporter registration",
+        rates: { Rate: "INR 4500/ 1st time expense" },
+      },
       { particular: "Agency Charges", rates: { Rate: "INR 3500" } },
       { particular: "Examination Charges", rates: { Rate: "INR 750" } },
       { particular: "Opening/Repacking", rates: { Rate: "INR 750" } },
-      { particular: "Loading/Unloading", rates: { Rate: "INR 750 per vehicle" } },
+      {
+        particular: "Loading/Unloading",
+        rates: { Rate: "INR 750 per vehicle" },
+      },
       { particular: "Transportation charges", rates: { Rate: "" } },
-      { particular: "IF fumigation, Palletization", rates: { Rate: "At actual" } },
+      {
+        particular: "IF fumigation, Palletization",
+        rates: { Rate: "At actual" },
+      },
       { particular: "Insurances Charges", rates: { Rate: "At actual" } },
     ],
   },
@@ -316,11 +334,26 @@ const EXPORT_CHA_FCL_DOCK: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particular", "20FT", "40FT"],
     rows: [
-      { particular: "Agency Charges", rates: { "20FT": "INR 3000/20FT", "40FT": "INR 4500/40FT" } },
-      { particular: "Examination Charges", rates: { "20FT": "INR 500/20FT", "40FT": "INR 750/40FT" } },
-      { particular: "Opening repacking Charges", rates: { "20FT": "INR 500/20FT", "40FT": "INR 500/40FT" } },
-      { particular: "Loading unloading Charges", rates: { "20FT": "INR 750/truck", "40FT": "INR 750/truck" } },
-      { particular: "CFS Charges", rates: { "20FT": "INR 11000/20FT", "40FT": "INR 14500/40FT" } },
+      {
+        particular: "Agency Charges",
+        rates: { "20FT": "INR 3000/20FT", "40FT": "INR 4500/40FT" },
+      },
+      {
+        particular: "Examination Charges",
+        rates: { "20FT": "INR 500/20FT", "40FT": "INR 750/40FT" },
+      },
+      {
+        particular: "Opening repacking Charges",
+        rates: { "20FT": "INR 500/20FT", "40FT": "INR 500/40FT" },
+      },
+      {
+        particular: "Loading unloading Charges",
+        rates: { "20FT": "INR 750/truck", "40FT": "INR 750/truck" },
+      },
+      {
+        particular: "CFS Charges",
+        rates: { "20FT": "INR 11000/20FT", "40FT": "INR 14500/40FT" },
+      },
     ],
   },
 };
@@ -347,12 +380,30 @@ const EXPORT_CHA_FCL_FACTORY: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "20FT", "40FT"],
     rows: [
-      { particular: "Agency Charges", rates: { "20FT": "INR 3000/20FT", "40FT": "INR 4500/40FT" } },
-      { particular: "Examination Charges", rates: { "20FT": "INR 500/20FT", "40FT": "INR 750/40FT" } },
-      { particular: "Opening repacking Charges", rates: { "20FT": "INR 500/20FT", "40FT": "INR 500/40FT" } },
-      { particular: "Loading unloading Charges", rates: { "20FT": "INR 750/truck", "40FT": "INR 750/truck" } },
-      { particular: "CFS Charges", rates: { "20FT": "INR 11000/20FT", "40FT": "INR 14500/40FT" } },
-      { particular: "On wheel Charges", rates: { "20FT": "INR 6000/20FT", "40FT": "INR 8000/40FT" } },
+      {
+        particular: "Agency Charges",
+        rates: { "20FT": "INR 3000/20FT", "40FT": "INR 4500/40FT" },
+      },
+      {
+        particular: "Examination Charges",
+        rates: { "20FT": "INR 500/20FT", "40FT": "INR 750/40FT" },
+      },
+      {
+        particular: "Opening repacking Charges",
+        rates: { "20FT": "INR 500/20FT", "40FT": "INR 500/40FT" },
+      },
+      {
+        particular: "Loading unloading Charges",
+        rates: { "20FT": "INR 750/truck", "40FT": "INR 750/truck" },
+      },
+      {
+        particular: "CFS Charges",
+        rates: { "20FT": "INR 11000/20FT", "40FT": "INR 14500/40FT" },
+      },
+      {
+        particular: "On wheel Charges",
+        rates: { "20FT": "INR 6000/20FT", "40FT": "INR 8000/40FT" },
+      },
     ],
   },
 };
@@ -774,7 +825,10 @@ const IMPORT_CHA_AIR: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "Air"],
     rows: [
-      { particular: "First time import registration (if required)", rates: { Air: "" } },
+      {
+        particular: "First time import registration (if required)",
+        rates: { Air: "" },
+      },
       { particular: "Agency Charges", rates: { Air: "" } },
       { particular: "Documentation Charges", rates: { Air: "" } },
       { particular: "Examination Charges", rates: { Air: "" } },
@@ -808,15 +862,30 @@ const IMPORT_CHA_FCL: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "20FT", "40FT"],
     rows: [
-      { particular: "First time import registration (if required)", rates: { "20FT": "", "40FT": "" } },
+      {
+        particular: "First time import registration (if required)",
+        rates: { "20FT": "", "40FT": "" },
+      },
       { particular: "Agency Charges", rates: { "20FT": "", "40FT": "" } },
-      { particular: "Documentation Charges", rates: { "20FT": "", "40FT": "" } },
+      {
+        particular: "Documentation Charges",
+        rates: { "20FT": "", "40FT": "" },
+      },
       { particular: "Examination Charges", rates: { "20FT": "", "40FT": "" } },
-      { particular: "Unloading & loading Charges", rates: { "20FT": "", "40FT": "" } },
-      { particular: "Opening & repacking Charges", rates: { "20FT": "", "40FT": "" } },
+      {
+        particular: "Unloading & loading Charges",
+        rates: { "20FT": "", "40FT": "" },
+      },
+      {
+        particular: "Opening & repacking Charges",
+        rates: { "20FT": "", "40FT": "" },
+      },
       { particular: "Receipted Charges", rates: { "20FT": "", "40FT": "" } },
       { particular: "CFS charges", rates: { "20FT": "", "40FT": "" } },
-      { particular: "Transportation Charges", rates: { "20FT": "", "40FT": "" } },
+      {
+        particular: "Transportation Charges",
+        rates: { "20FT": "", "40FT": "" },
+      },
       { particular: "GST", rates: { "20FT": "", "40FT": "" } },
     ],
   },
@@ -846,7 +915,10 @@ const IMPORT_CHA_LCL: EmailTemplate = {
   rateTable: {
     columnHeaders: ["Particulars", "Rate"],
     rows: [
-      { particular: "First time import registration (if required)", rates: { Rate: "" } },
+      {
+        particular: "First time import registration (if required)",
+        rates: { Rate: "" },
+      },
       { particular: "Agency Charges", rates: { Rate: "" } },
       { particular: "Documentation Charges", rates: { Rate: "" } },
       { particular: "Examination Charges", rates: { Rate: "" } },
@@ -995,8 +1067,17 @@ export interface TemplateResolverInput {
   isExwClubbed?: boolean;
 }
 
-export function resolveEmailTemplate(input: TemplateResolverInput): EmailTemplate | null {
-  const { departmentId, formValues, tradeLane, incoterm, stuffingType, isExwClubbed } = input;
+export function resolveEmailTemplate(
+  input: TemplateResolverInput,
+): EmailTemplate | null {
+  const {
+    departmentId,
+    formValues,
+    tradeLane,
+    incoterm,
+    stuffingType,
+    isExwClubbed,
+  } = input;
   const mode = normalizeMode(formValues);
   const normalizedTradeLane = (tradeLane ?? "").trim().toUpperCase();
   const normalizedIncoterm = (incoterm ?? "").trim().toUpperCase();
@@ -1012,7 +1093,10 @@ export function resolveEmailTemplate(input: TemplateResolverInput): EmailTemplat
   }
 
   // Import freight templates — select by incoterm (FOB vs EXW)
-  if (isImport && (departmentId === "ocean_freight" || departmentId === "air_freight")) {
+  if (
+    isImport &&
+    (departmentId === "ocean_freight" || departmentId === "air_freight")
+  ) {
     const variant = normalizedIncoterm === "EXW" ? "exw" : "fob";
     const match = EMAIL_TEMPLATES.find(
       (t) =>
@@ -1031,7 +1115,10 @@ export function resolveEmailTemplate(input: TemplateResolverInput): EmailTemplat
     ["DAP", "DDU", "DDP"].includes(normalizedIncoterm)
   ) {
     const ddp = EMAIL_TEMPLATES.find(
-      (t) => t.departmentId === departmentId && t.variant === "ddp" && matchesMode(t, mode),
+      (t) =>
+        t.departmentId === departmentId &&
+        t.variant === "ddp" &&
+        matchesMode(t, mode),
     );
     if (ddp) return ddp;
   }
@@ -1088,16 +1175,29 @@ function matchesTradeLane(template: EmailTemplate, tradeLane: string): boolean {
 /*  Email HTML builder from template                                   */
 /* ================================================================== */
 
-export function resolveFieldValue(fieldRow: EmailFieldRow, formValues: FormValues): string {
+export function resolveFieldValue(
+  fieldRow: EmailFieldRow,
+  formValues: FormValues,
+): string {
   if (fieldRow.source.startsWith("=")) {
     return fieldRow.source.slice(1);
   }
   const raw = formValues[fieldRow.source];
   if (raw === undefined || raw === null) return "";
-  return Array.isArray(raw) ? raw.join(", ") : String(raw);
+  const formattedValue = Array.isArray(raw) ? raw.join(", ") : String(raw);
+  if (!formattedValue.trim()) {
+    return "";
+  }
+
+  const rawUnit = formValues[`${fieldRow.source}_unit`];
+  const formattedUnit = typeof rawUnit === "string" ? rawUnit.trim() : "";
+
+  return formattedUnit ? `${formattedValue} ${formattedUnit}` : formattedValue;
 }
 
-export function buildRateTableHtml(rateTable: EmailTemplate["rateTable"]): string {
+export function buildRateTableHtml(
+  rateTable: EmailTemplate["rateTable"],
+): string {
   if (!rateTable || rateTable.rows.length === 0) return "";
 
   const headers = rateTable.columnHeaders;
@@ -1157,7 +1257,9 @@ export function buildTemplateEmailHtml(
 </table>`
       : "";
 
-  const rateTableHtml = template.rateTable ? buildRateTableHtml(template.rateTable) : "";
+  const rateTableHtml = template.rateTable
+    ? buildRateTableHtml(template.rateTable)
+    : "";
 
   const html = `
 <div style="font-family:Arial,sans-serif;font-size:13px;color:#333;line-height:1.5;">
@@ -1175,7 +1277,9 @@ ${template.postamble ? `<p style="margin:0;">${template.postamble}</p><br/>` : "
 </div>`;
 
   // Build subject from form values
-  const origin = (formValues.source || formValues.origin || "[Origin]") as string;
+  const origin = (formValues.source ||
+    formValues.origin ||
+    "[Origin]") as string;
   const destination = (formValues.destination || "[Destination]") as string;
   const inquiryRef = "[Inquiry Number]";
 

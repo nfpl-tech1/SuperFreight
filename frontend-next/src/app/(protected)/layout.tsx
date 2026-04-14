@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useIsCompactDesktop } from "@/hooks/use-is-compact-desktop";
 import { Bell, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 export default function ProtectedLayout({
@@ -18,15 +19,21 @@ export default function ProtectedLayout({
   const router = useRouter();
   const pathname = usePathname();
   const isMobile = useIsMobile();
+  const isCompactDesktop = useIsCompactDesktop();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const isVendorsRoute = pathname === "/vendors";
+  const effectiveSidebarCollapsed = isCompactDesktop || sidebarCollapsed;
   const desktopShellClass = isVendorsRoute
     ? "h-svh overflow-hidden"
     : "min-h-svh";
   const desktopMainOverflowClass = "overflow-auto";
   const desktopMainPaddingClass = isVendorsRoute
-    ? "px-8 pb-4 pt-4"
-    : "p-8";
+    ? isCompactDesktop
+      ? "px-4 pb-4 pt-4 lg:px-5"
+      : "px-5 pb-4 pt-4 2xl:px-8"
+    : isCompactDesktop
+      ? "p-4 lg:p-5"
+      : "p-5 2xl:p-8";
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -82,30 +89,30 @@ export default function ProtectedLayout({
 
   return (
     <div className={`relative flex w-full overflow-visible ${desktopShellClass}`}>
-      <AppSidebar collapsed={sidebarCollapsed} />
+      <AppSidebar collapsed={effectiveSidebarCollapsed} />
       <div className="flex min-h-0 flex-1 flex-col min-w-0">
-        <header className="h-14 shrink-0 flex items-center justify-between px-6 bg-white border-b border-border">
+        <header className="h-14 shrink-0 flex items-center justify-between gap-3 border-b border-border bg-white px-4 lg:px-5 2xl:px-6">
           <div className="flex items-center">
             <button
               onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
-              title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              title={effectiveSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={effectiveSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
-              {sidebarCollapsed ? (
+              {effectiveSidebarCollapsed ? (
                 <PanelLeftOpen className="h-5 w-5" strokeWidth={2.1} />
               ) : (
                 <PanelLeftClose className="h-5 w-5" strokeWidth={2.1} />
               )}
             </button>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 lg:gap-5">
             <button className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" aria-label="Notifications">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border-2 border-white" />
             </button>
             <div className="flex items-center gap-3">
-              <div className="flex flex-col items-end">
+              <div className="hidden flex-col items-end xl:flex">
                 <span className="text-sm font-semibold text-foreground leading-tight">
                   {user?.name || "User"}
                 </span>
@@ -123,7 +130,11 @@ export default function ProtectedLayout({
             </div>
           </div>
         </header>
-        <main className={`min-h-0 flex-1 bg-background ${desktopMainPaddingClass} ${desktopMainOverflowClass}`}>{children}</main>
+        <main
+          className={`min-h-0 flex-1 bg-background transition-[padding] ${desktopMainPaddingClass} ${desktopMainOverflowClass}`}
+        >
+          {children}
+        </main>
       </div>
     </div>
   );

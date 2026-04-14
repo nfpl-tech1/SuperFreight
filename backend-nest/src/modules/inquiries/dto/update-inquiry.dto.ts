@@ -9,6 +9,10 @@ import {
 export class UpdateInquiryDto {
   @IsOptional()
   @IsString()
+  inquiryNumber?: string;
+
+  @IsOptional()
+  @IsString()
   customerName?: string;
 
   @IsOptional()

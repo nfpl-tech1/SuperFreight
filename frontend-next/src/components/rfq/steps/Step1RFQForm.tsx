@@ -3,7 +3,11 @@
 import { DynamicFormRenderer } from "@/components/rfq/DynamicFormRenderer";
 import { RFQPreview } from "@/components/rfq/RFQPreview";
 import type { Inquiry } from "@/lib/api";
-import type { DepartmentDefinition, FormValues, ValidationResult } from "@/types/rfq";
+import type {
+  DepartmentDefinition,
+  FormValues,
+  ValidationResult,
+} from "@/types/rfq";
 
 interface Props {
   inquiryId: string;
@@ -14,6 +18,7 @@ interface Props {
   inquiries: Inquiry[];
   tradeLane?: string;
   incoterm?: string;
+  isExwClubbed?: boolean;
   onFieldChange: (key: string, value: string | string[]) => void;
   onCopyReady?: (fn: () => Promise<void>) => void;
 }
@@ -27,6 +32,7 @@ export function Step1RFQForm({
   inquiries,
   tradeLane,
   incoterm,
+  isExwClubbed,
   onFieldChange,
   onCopyReady,
 }: Props) {
@@ -38,11 +44,15 @@ export function Step1RFQForm({
           inquiryNumber={inquiryNumber}
           departmentId={department.id}
           departmentName={department.name}
-          companyName={inquiries.find((inquiry) => inquiry.id === inquiryId)?.customerName || "Company Name"}
+          companyName={
+            inquiries.find((inquiry) => inquiry.id === inquiryId)
+              ?.customerName || "Company Name"
+          }
           fields={department.fields}
           values={formValues}
           tradeLane={tradeLane}
           incoterm={incoterm}
+          isExwClubbed={isExwClubbed}
           onSendViaOutlook={() => {}}
           hideSendButton
           hideCopyButton

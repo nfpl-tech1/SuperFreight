@@ -42,6 +42,12 @@ type VendorRecipientLookups = {
   ccByOfficeId: Map<string, VendorCcRecipient[]>;
 };
 
+type MailAttachment = {
+  fileName: string;
+  contentType: string;
+  contentBytes: string;
+};
+
 @Injectable()
 export class RfqsService {
   constructor(
@@ -66,12 +72,16 @@ export class RfqsService {
     return this.rfqRepo.find({ order: { createdAt: 'DESC' } });
   }
 
-  async create(dto: CreateRfqDto, user: User) {
+  async create(
+    dto: CreateRfqDto,
+    user: User,
+    files: Express.Multer.File[] = [],
+  ) {
     const rfq = await this.createDraftRfq(dto, user);
     await this.saveFieldSpecs(rfq.id, dto);
 
     if (dto.sendNow) {
-      await this.completeRfqSend(rfq, dto, user);
+      await this.completeRfqSend(rfq, dto, user, files);
     }
 
     return this.rfqRepo.findOne({ where: { id: rfq.id } });
@@ -93,8 +103,18 @@ export class RfqsService {
     );
   }
 
-  private async completeRfqSend(rfq: Rfq, dto: CreateRfqDto, user: User) {
-    await this.sendRfqToSelectedVendors(rfq, dto, user);
+  private async completeRfqSend(
+    rfq: Rfq,
+    dto: CreateRfqDto,
+    user: User,
+    files: Express.Multer.File[],
+  ) {
+    await this.sendRfqToSelectedVendors(
+      rfq,
+      dto,
+      user,
+      this.buildMailAttachments(files),
+    );
     await this.markRfqAsSent(rfq, dto.mailSubject);
     await this.markInquiryAsRfqSent(rfq.inquiryId);
   }
@@ -103,6 +123,7 @@ export class RfqsService {
     rfq: Rfq,
     dto: CreateRfqDto,
     user: User,
+    attachments: MailAttachment[],
   ) {
     const inquiry = await this.findInquiryForRfqOrThrow(rfq.inquiryId);
 
@@ -118,6 +139,7 @@ export class RfqsService {
         recipient,
         mailDraft.subjectLine,
         mailDraft.bodyHtml,
+        attachments,
       );
     }
   }
@@ -139,6 +161,7 @@ export class RfqsService {
     recipient: VendorRecipient,
     subjectLine: string,
     bodyHtml: string,
+    attachments: MailAttachment[],
   ) {
     await this.outlookService.sendMail(user, {
       subject: subjectLine,
@@ -151,7 +174,16 @@ export class RfqsService {
       }),
       to: [{ address: recipient.email, name: recipient.contactName }],
       cc: recipient.cc.map((address) => ({ address })),
+      attachments,
     });
+  }
+
+  private buildMailAttachments(files: Express.Multer.File[]) {
+    return files.map<MailAttachment>((file) => ({
+      fileName: file.originalname,
+      contentType: file.mimetype || 'application/octet-stream',
+      contentBytes: file.buffer.toString('base64'),
+    }));
   }
 
   private async markRfqAsSent(rfq: Rfq, mailSubject?: string | null) {

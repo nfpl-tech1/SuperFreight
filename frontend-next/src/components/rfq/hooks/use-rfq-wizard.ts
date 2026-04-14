@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useDeferredValue, useRef } from "react";
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useDeferredValue,
+  useRef,
+} from "react";
 import { ApiError } from "@/lib/api";
 import type {
   FilterableVendor,
@@ -12,7 +19,15 @@ import type {
   WizardStep,
 } from "@/types/rfq";
 import { validateAllFields } from "@/lib/validation";
-import { api, Inquiry, OutlookStatus, Rfq, VendorCatalogPage, VendorDetail, VendorListQuery } from "@/lib/api";
+import {
+  api,
+  Inquiry,
+  OutlookStatus,
+  Rfq,
+  VendorCatalogPage,
+  VendorDetail,
+  VendorListQuery,
+} from "@/lib/api";
 import { planQuoteTypesForInquiry } from "@/lib/inquiryQuotePlanning";
 import { toast } from "sonner";
 import type { RfqPreviewDraft } from "@/components/rfq/RFQPreview";
@@ -72,15 +87,24 @@ export function useRFQWizard() {
   const [availableInquiries, setAvailableInquiries] = useState<Inquiry[]>([]);
   const [rfqs, setRfqs] = useState<Rfq[]>([]);
   const [vendorSource, setVendorSource] = useState<FilterableVendor[]>([]);
-  const [vendorDirectory, setVendorDirectory] = useState<Record<string, FilterableVendor>>({});
-  const [vendorDetailsById, setVendorDetailsById] = useState<Record<string, VendorDetail>>({});
+  const [vendorDirectory, setVendorDirectory] = useState<
+    Record<string, FilterableVendor>
+  >({});
+  const [vendorDetailsById, setVendorDetailsById] = useState<
+    Record<string, VendorDetail>
+  >({});
   const [vendorLookups, setVendorLookups] = useState<VendorLookupBundle>(
     buildVendorLookups([]),
   );
   const [vendorCategoryNames, setVendorCategoryNames] = useState<string[]>([]);
-  const [vendorTypeCodeByName, setVendorTypeCodeByName] = useState<Record<string, string>>({});
-  const [locationOptions, setLocationOptions] = useState<VendorLocationOption[]>([]);
-  const [isLoadingLocationOptions, setIsLoadingLocationOptions] = useState(false);
+  const [vendorTypeCodeByName, setVendorTypeCodeByName] = useState<
+    Record<string, string>
+  >({});
+  const [locationOptions, setLocationOptions] = useState<
+    VendorLocationOption[]
+  >([]);
+  const [isLoadingLocationOptions, setIsLoadingLocationOptions] =
+    useState(false);
   const [vendorPage, setVendorPage] = useState(1);
   const [vendorTotal, setVendorTotal] = useState(0);
   const [vendorTotalPages, setVendorTotalPages] = useState(0);
@@ -88,16 +112,26 @@ export function useRFQWizard() {
   const [isLoadingVendors, setIsLoadingVendors] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  const [outlookStatus, setOutlookStatus] = useState<OutlookStatus | null>(null);
-  const vendorCatalogCacheRef = useRef<Map<string, VendorCatalogPage>>(new Map());
-  const vendorCatalogRequestRef = useRef<Map<string, Promise<VendorCatalogPage>>>(new Map());
+  const [outlookStatus, setOutlookStatus] = useState<OutlookStatus | null>(
+    null,
+  );
+  const vendorCatalogCacheRef = useRef<Map<string, VendorCatalogPage>>(
+    new Map(),
+  );
+  const vendorCatalogRequestRef = useRef<
+    Map<string, Promise<VendorCatalogPage>>
+  >(new Map());
   const locationSuggestionAppliedRef = useRef<string | null>(null);
 
   const initialState = useMemo(() => loadWizardState(), []);
-  const [currentStep, setCurrentStep] = useState<WizardStep>(initialState.currentStep as WizardStep);
+  const [currentStep, setCurrentStep] = useState<WizardStep>(
+    initialState.currentStep as WizardStep,
+  );
   const [inquiryId, setInquiryId] = useState(initialState.inquiryId);
   const [departmentId, setDepartmentId] = useState(initialState.departmentId);
-  const [quoteDrafts, setQuoteDrafts] = useState<Record<string, QuoteDraftState>>(initialState.quoteDrafts);
+  const [quoteDrafts, setQuoteDrafts] = useState<
+    Record<string, QuoteDraftState>
+  >(initialState.quoteDrafts);
 
   useEffect(() => {
     persistWizardState({
@@ -117,42 +151,51 @@ export function useRFQWizard() {
       api.getVendorLookups(),
       api.getOutlookStatus(),
     ])
-      .then(([inquiriesResult, rfqsResult, vendorLookupsResult, outlookStatusResult]) => {
-        if (cancelled) {
-          return;
-        }
+      .then(
+        ([
+          inquiriesResult,
+          rfqsResult,
+          vendorLookupsResult,
+          outlookStatusResult,
+        ]) => {
+          if (cancelled) {
+            return;
+          }
 
-        setAvailableInquiries(
-          inquiriesResult.status === "fulfilled" ? inquiriesResult.value : [],
-        );
-        setRfqs(rfqsResult.status === "fulfilled" ? rfqsResult.value : []);
-        setOutlookStatus(
-          outlookStatusResult.status === "fulfilled" ? outlookStatusResult.value : null,
-        );
-
-        if (vendorLookupsResult.status === "fulfilled") {
-          const categoryNames = vendorLookupsResult.value.vendorTypes.map(
-            (vendorType) => vendorType.typeName,
+          setAvailableInquiries(
+            inquiriesResult.status === "fulfilled" ? inquiriesResult.value : [],
           );
-          setVendorCategoryNames(categoryNames);
-          setVendorTypeCodeByName(
-            Object.fromEntries(
-              vendorLookupsResult.value.vendorTypes.map((vendorType) => [
-                vendorType.typeName,
-                vendorType.typeCode,
-              ]),
-            ),
+          setRfqs(rfqsResult.status === "fulfilled" ? rfqsResult.value : []);
+          setOutlookStatus(
+            outlookStatusResult.status === "fulfilled"
+              ? outlookStatusResult.value
+              : null,
           );
-          setVendorLookups(buildVendorLookups([], categoryNames));
-        } else {
-          setVendorLookups(buildVendorLookups([]));
-          setVendorCategoryNames([]);
-          setVendorTypeCodeByName({});
-          toast.error("Failed to load vendor filter lookups.");
-        }
 
-        setIsVendorCatalogReady(true);
-      })
+          if (vendorLookupsResult.status === "fulfilled") {
+            const categoryNames = vendorLookupsResult.value.vendorTypes.map(
+              (vendorType) => vendorType.typeName,
+            );
+            setVendorCategoryNames(categoryNames);
+            setVendorTypeCodeByName(
+              Object.fromEntries(
+                vendorLookupsResult.value.vendorTypes.map((vendorType) => [
+                  vendorType.typeName,
+                  vendorType.typeCode,
+                ]),
+              ),
+            );
+            setVendorLookups(buildVendorLookups([], categoryNames));
+          } else {
+            setVendorLookups(buildVendorLookups([]));
+            setVendorCategoryNames([]);
+            setVendorTypeCodeByName({});
+            toast.error("Failed to load vendor filter lookups.");
+          }
+
+          setIsVendorCatalogReady(true);
+        },
+      )
       .catch(() => {
         if (!cancelled) {
           setAvailableInquiries([]);
@@ -179,10 +222,7 @@ export function useRFQWizard() {
     [availableInquiries, inquiryId],
   );
 
-  const department = useMemo(
-    () => getDepartment(departmentId),
-    [departmentId],
-  );
+  const department = useMemo(() => getDepartment(departmentId), [departmentId]);
 
   const quotePlan = useMemo(
     () => planQuoteTypesForInquiry(currentInquiry),
@@ -215,7 +255,12 @@ export function useRFQWizard() {
     }
 
     const departmentIds = Array.from(
-      new Set([departmentId, ...recommendedQuoteTypes.map((recommendation) => recommendation.departmentId)]),
+      new Set([
+        departmentId,
+        ...recommendedQuoteTypes.map(
+          (recommendation) => recommendation.departmentId,
+        ),
+      ]),
     ).filter(Boolean);
 
     if (departmentIds.length === 0) {
@@ -240,10 +285,21 @@ export function useRFQWizard() {
 
       return changed ? next : prev;
     });
-  }, [currentInquiry, departmentId, latestInquiryRfqsByDepartment, recommendedQuoteTypes]);
+  }, [
+    currentInquiry,
+    departmentId,
+    latestInquiryRfqsByDepartment,
+    recommendedQuoteTypes,
+  ]);
 
   const currentQuoteDraft = useMemo(
-    () => resolveQuoteDraft(departmentId, quoteDrafts, latestInquiryRfqsByDepartment, currentInquiry),
+    () =>
+      resolveQuoteDraft(
+        departmentId,
+        quoteDrafts,
+        latestInquiryRfqsByDepartment,
+        currentInquiry,
+      ),
     [currentInquiry, departmentId, latestInquiryRfqsByDepartment, quoteDrafts],
   );
 
@@ -295,7 +351,12 @@ export function useRFQWizard() {
         vendorTypeCodeByName,
         vendorSelectionProfile,
       ),
-    [deferredLocationQuery, filterCriteria, vendorSelectionProfile, vendorTypeCodeByName],
+    [
+      deferredLocationQuery,
+      filterCriteria,
+      vendorSelectionProfile,
+      vendorTypeCodeByName,
+    ],
   );
 
   const vendorQuery = useMemo(
@@ -310,7 +371,13 @@ export function useRFQWizard() {
         RFQ_VENDOR_PAGE_SIZE,
         vendorSelectionProfile,
       ),
-    [deferredLocationQuery, filterCriteria, vendorPage, vendorSelectionProfile, vendorTypeCodeByName],
+    [
+      deferredLocationQuery,
+      filterCriteria,
+      vendorPage,
+      vendorSelectionProfile,
+      vendorTypeCodeByName,
+    ],
   );
 
   const locationOptionsQueryKey = useMemo(
@@ -336,7 +403,8 @@ export function useRFQWizard() {
     let cancelled = false;
     setIsLoadingLocationOptions(true);
 
-    api.getVendorLocationOptions(locationOptionsQuery)
+    api
+      .getVendorLocationOptions(locationOptionsQuery)
       .then((response) => {
         if (cancelled) {
           return;
@@ -369,11 +437,19 @@ export function useRFQWizard() {
     return () => {
       cancelled = true;
     };
-  }, [currentStep, filterCriteria, isVendorCatalogReady, locationOptionsQuery, locationOptionsQueryKey]);
+  }, [
+    currentStep,
+    filterCriteria,
+    isVendorCatalogReady,
+    locationOptionsQuery,
+    locationOptionsQueryKey,
+  ]);
 
   const applyVendorCatalogPage = useCallback(
     (response: VendorCatalogPage) => {
-      const mappedVendors = response.items.map(mapVendorListItemToFilterableVendor);
+      const mappedVendors = response.items.map(
+        mapVendorListItemToFilterableVendor,
+      );
       setVendorSource(mappedVendors);
       setVendorDirectory((currentDirectory) =>
         mergeVendorDirectoryEntries(currentDirectory, mappedVendors),
@@ -397,7 +473,8 @@ export function useRFQWizard() {
         return pendingRequest;
       }
 
-      const requestPromise = api.getVendors(query)
+      const requestPromise = api
+        .getVendors(query)
         .then((response) => {
           vendorCatalogCacheRef.current.set(queryKey, response);
           return response;
@@ -452,7 +529,9 @@ export function useRFQWizard() {
           };
           const nextQueryKey = JSON.stringify(nextQuery);
 
-          void requestVendorCatalogPage(nextQuery, nextQueryKey).catch(() => undefined);
+          void requestVendorCatalogPage(nextQuery, nextQueryKey).catch(
+            () => undefined,
+          );
         }
       })
       .catch(() => {
@@ -485,7 +564,10 @@ export function useRFQWizard() {
   ]);
 
   const missingSelectedVendorDetailIds = useMemo(
-    () => Array.from(selectedVendorIds).filter((vendorId) => !vendorDetailsById[vendorId]),
+    () =>
+      Array.from(selectedVendorIds).filter(
+        (vendorId) => !vendorDetailsById[vendorId],
+      ),
     [selectedVendorIds, vendorDetailsById],
   );
 
@@ -497,7 +579,9 @@ export function useRFQWizard() {
     let cancelled = false;
 
     Promise.allSettled(
-      missingSelectedVendorDetailIds.map((vendorId) => api.getVendorDetail(vendorId)),
+      missingSelectedVendorDetailIds.map((vendorId) =>
+        api.getVendorDetail(vendorId),
+      ),
     ).then((results) => {
       if (cancelled) {
         return;
@@ -568,7 +652,10 @@ export function useRFQWizard() {
   );
 
   const updateQuoteDraft = useCallback(
-    (targetDepartmentId: string, updater: (draft: QuoteDraftState) => QuoteDraftState) => {
+    (
+      targetDepartmentId: string,
+      updater: (draft: QuoteDraftState) => QuoteDraftState,
+    ) => {
       setQuoteDrafts((prev) => {
         const existingDraft = resolveQuoteDraft(
           targetDepartmentId,
@@ -628,81 +715,128 @@ export function useRFQWizard() {
     vendorSelectionProfile.recommendedLocationFocus,
   ]);
 
-  const handleInquiryChange = useCallback((id: string) => {
-    setInquiryId(id);
-    const nextDepartmentSelection = getDepartmentForInquiry(id, availableInquiries, departmentId);
-    if (!nextDepartmentSelection) {
-      return;
-    }
+  const handleInquiryChange = useCallback(
+    (id: string) => {
+      setInquiryId(id);
+      const nextDepartmentSelection = getDepartmentForInquiry(
+        id,
+        availableInquiries,
+        departmentId,
+      );
+      if (!nextDepartmentSelection) {
+        return;
+      }
 
-    const nextInquiryRfqs = rfqs.filter((rfq) => rfq.inquiryId === id);
-    const nextDepartmentId = nextDepartmentSelection.nextDepartment.id;
+      const nextInquiryRfqs = rfqs.filter((rfq) => rfq.inquiryId === id);
+      const nextDepartmentId = nextDepartmentSelection.nextDepartment.id;
 
-    setQuoteDrafts(
-      buildInitialQuoteDraftsForInquiry(
-        nextDepartmentSelection.inquiry,
-        nextDepartmentId,
-        nextInquiryRfqs,
-      ),
-    );
-    setVendorPage(1);
-    setDepartmentId(nextDepartmentId);
-    setCurrentStep(1);
-  }, [availableInquiries, departmentId, rfqs]);
-
-  const handleDepartmentChange = useCallback((id: string) => {
-    if (id === departmentId) {
-      return;
-    }
-
-    const existingDraft = resolveQuoteDraft(
-      id,
-      quoteDrafts,
-      latestInquiryRfqsByDepartment,
-      currentInquiry,
-    );
-
-    if (!quoteDrafts[id]) {
-      setQuoteDrafts((prev) => ({
-        ...prev,
-        [id]: existingDraft,
-      }));
-    }
-
-    setVendorPage(1);
-    setDepartmentId(id);
-
-    const targetQuoteReady = isQuoteReady(draftedRfqCounts[id]);
-    if (currentStep > 1 && !targetQuoteReady) {
+      setQuoteDrafts(
+        buildInitialQuoteDraftsForInquiry(
+          nextDepartmentSelection.inquiry,
+          nextDepartmentId,
+          nextInquiryRfqs,
+        ),
+      );
+      setVendorPage(1);
+      setDepartmentId(nextDepartmentId);
       setCurrentStep(1);
-    }
-  }, [currentInquiry, currentStep, departmentId, draftedRfqCounts, latestInquiryRfqsByDepartment, quoteDrafts]);
+    },
+    [availableInquiries, departmentId, rfqs],
+  );
 
-  const handleFieldChange = useCallback((key: string, value: string | string[]) => {
-    updateQuoteDraft(departmentId, (draft) => updateQuoteDraftFormValue(draft, key, value));
-  }, [departmentId, updateQuoteDraft]);
+  const handleDepartmentChange = useCallback(
+    (id: string) => {
+      if (id === departmentId) {
+        return;
+      }
 
-  const toggleResponseField = useCallback((id: string) => {
-    updateQuoteDraft(departmentId, (draft) => toggleQuoteDraftResponseField(draft, id));
-  }, [departmentId, updateQuoteDraft]);
+      const existingDraft = resolveQuoteDraft(
+        id,
+        quoteDrafts,
+        latestInquiryRfqsByDepartment,
+        currentInquiry,
+      );
 
-  const addCustomField = useCallback((label: string) => {
-    const id = `custom_${Date.now()}`;
-    updateQuoteDraft(departmentId, (draft) => addQuoteDraftCustomField(draft, id, label));
-  }, [departmentId, updateQuoteDraft]);
+      if (!quoteDrafts[id]) {
+        setQuoteDrafts((prev) => ({
+          ...prev,
+          [id]: existingDraft,
+        }));
+      }
 
-  const removeCustomField = useCallback((id: string) => {
-    updateQuoteDraft(departmentId, (draft) => removeQuoteDraftResponseField(draft, id));
-  }, [departmentId, updateQuoteDraft]);
+      setVendorPage(1);
+      setDepartmentId(id);
 
-  const handleFilterCriteriaChange = useCallback((criteria: VendorFilterCriteria) => {
-    setVendorPage(1);
-    updateQuoteDraft(departmentId, (draft) => replaceQuoteDraftFilterCriteria(draft, criteria));
-  }, [departmentId, updateQuoteDraft]);
+      const targetQuoteReady = isQuoteReady(draftedRfqCounts[id]);
+      if (currentStep > 1 && !targetQuoteReady) {
+        setCurrentStep(1);
+      }
+    },
+    [
+      currentInquiry,
+      currentStep,
+      departmentId,
+      draftedRfqCounts,
+      latestInquiryRfqsByDepartment,
+      quoteDrafts,
+    ],
+  );
 
-  const toggleVendor = useCallback((id: string) => {
-    updateQuoteDraft(departmentId, (draft) => toggleQuoteDraftVendorSelection(draft, id));
-  }, [departmentId, updateQuoteDraft]);
+  const handleFieldChange = useCallback(
+    (key: string, value: string | string[]) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        updateQuoteDraftFormValue(draft, key, value),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
+  const toggleResponseField = useCallback(
+    (id: string) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        toggleQuoteDraftResponseField(draft, id),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
+  const addCustomField = useCallback(
+    (label: string) => {
+      const id = `custom_${Date.now()}`;
+      updateQuoteDraft(departmentId, (draft) =>
+        addQuoteDraftCustomField(draft, id, label),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
+  const removeCustomField = useCallback(
+    (id: string) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        removeQuoteDraftResponseField(draft, id),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
+  const handleFilterCriteriaChange = useCallback(
+    (criteria: VendorFilterCriteria) => {
+      setVendorPage(1);
+      updateQuoteDraft(departmentId, (draft) =>
+        replaceQuoteDraftFilterCriteria(draft, criteria),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
+  const toggleVendor = useCallback(
+    (id: string) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        toggleQuoteDraftVendorSelection(draft, id),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
 
   const selectAllVendors = useCallback(() => {
     updateQuoteDraft(departmentId, (draft) =>
@@ -726,11 +860,14 @@ export function useRFQWizard() {
     updateQuoteDraft(departmentId, clearQuoteDraftVendors);
   }, [departmentId, updateQuoteDraft]);
 
-  const setSelectedVendorOffice = useCallback((vendorId: string, officeId: string, checked: boolean) => {
-    updateQuoteDraft(departmentId, (draft) =>
-      setQuoteDraftVendorOfficeSelection(draft, vendorId, officeId, checked),
-    );
-  }, [departmentId, updateQuoteDraft]);
+  const setSelectedVendorOffice = useCallback(
+    (vendorId: string, officeId: string, checked: boolean) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        setQuoteDraftVendorOfficeSelection(draft, vendorId, officeId, checked),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
 
   const goToPreviousVendorPage = useCallback(() => {
     setVendorPage((currentPage) => Math.max(currentPage - 1, 1));
@@ -738,7 +875,9 @@ export function useRFQWizard() {
 
   const goToNextVendorPage = useCallback(() => {
     setVendorPage((currentPage) =>
-      vendorTotalPages > 0 ? Math.min(currentPage + 1, vendorTotalPages) : currentPage + 1,
+      vendorTotalPages > 0
+        ? Math.min(currentPage + 1, vendorTotalPages)
+        : currentPage + 1,
     );
   }, [vendorTotalPages]);
 
@@ -747,27 +886,43 @@ export function useRFQWizard() {
       return;
     }
 
-    updateQuoteDraft(departmentId, (draft) => setQuoteDraftLocationScope(draft, "COUNTRY"));
+    updateQuoteDraft(departmentId, (draft) =>
+      setQuoteDraftLocationScope(draft, "COUNTRY"),
+    );
     setVendorPage(1);
-  }, [departmentId, filterCriteria.selectedLocationCountryName, updateQuoteDraft]);
+  }, [
+    departmentId,
+    filterCriteria.selectedLocationCountryName,
+    updateQuoteDraft,
+  ]);
 
   const resetVendorScopeToExact = useCallback(() => {
     if (!filterCriteria.selectedLocationId) {
       return;
     }
 
-    updateQuoteDraft(departmentId, (draft) => setQuoteDraftLocationScope(draft, "EXACT"));
+    updateQuoteDraft(departmentId, (draft) =>
+      setQuoteDraftLocationScope(draft, "EXACT"),
+    );
     setVendorPage(1);
   }, [departmentId, filterCriteria.selectedLocationId, updateQuoteDraft]);
 
-  const validateStep = useCallback((step: WizardStep): string | null => {
-    return getWizardStepError(step, {
+  const validateStep = useCallback(
+    (step: WizardStep): string | null => {
+      return getWizardStepError(step, {
+        inquiryId,
+        isFormValid: validation.isValid,
+        selectedResponseFieldCount: selectedResponseFields.length,
+        selectedVendorCount: selectedVendorIds.size,
+      });
+    },
+    [
       inquiryId,
-      isFormValid: validation.isValid,
-      selectedResponseFieldCount: selectedResponseFields.length,
-      selectedVendorCount: selectedVendorIds.size,
-    });
-  }, [inquiryId, selectedResponseFields.length, selectedVendorIds.size, validation.isValid]);
+      selectedResponseFields.length,
+      selectedVendorIds.size,
+      validation.isValid,
+    ],
+  );
 
   const goToStep = useCallback((step: WizardStep) => {
     setCurrentStep(step);
@@ -780,14 +935,22 @@ export function useRFQWizard() {
       return "Save the current quote tab in step 1 before moving forward.";
     }
 
-    updateQuoteDraft(departmentId, (draft) => markQuoteDraftStepCompleted(draft, currentStep));
+    updateQuoteDraft(departmentId, (draft) =>
+      markQuoteDraftStepCompleted(draft, currentStep),
+    );
 
     if (currentStep < 4) {
       setCurrentStep((currentStep + 1) as WizardStep);
     }
 
     return null;
-  }, [currentQuoteIsReady, currentStep, departmentId, updateQuoteDraft, validateStep]);
+  }, [
+    currentQuoteIsReady,
+    currentStep,
+    departmentId,
+    updateQuoteDraft,
+    validateStep,
+  ]);
 
   const goBack = useCallback(() => {
     if (currentStep > 1) {
@@ -805,45 +968,62 @@ export function useRFQWizard() {
     setQuoteDrafts(nextState.quoteDrafts);
   }, []);
 
-  const buildRfqPayload = useCallback((mailDraft?: RfqPreviewDraft | null) => {
-    if (!inquiryId) {
-      throw new ApiError(400, "Please select an inquiry number.");
-    }
+  const buildRfqPayload = useCallback(
+    (mailDraft?: RfqPreviewDraft | null, attachments: File[] = []) => {
+      if (!inquiryId) {
+        throw new ApiError(400, "Please select an inquiry number.");
+      }
 
-    const stepOneError = validateStep(1);
-    if (stepOneError) {
-      throw new ApiError(400, stepOneError);
-    }
+      const stepOneError = validateStep(1);
+      if (stepOneError) {
+        throw new ApiError(400, stepOneError);
+      }
 
-    const inquiry = availableInquiries.find((item) => item.id === inquiryId);
-    const unresolvedDispatchTargets = getUnresolvedDispatchTargets(selectedVendorDispatchTargets);
-
-    if (unresolvedDispatchTargets.length > 0) {
-      throw new ApiError(
-        400,
-        "Resolve the sending offices for all selected vendors before sending the RFQ.",
+      const inquiry = availableInquiries.find((item) => item.id === inquiryId);
+      const unresolvedDispatchTargets = getUnresolvedDispatchTargets(
+        selectedVendorDispatchTargets,
       );
-    }
 
-    return {
-      inquiry,
-      payload: {
-        inquiryId,
-        inquiryNumber: inquiry?.inquiryNumber ?? inquiryId,
-        departmentId,
-        formValues,
-        vendorIds: Array.from(selectedVendorIds),
-        officeSelections: buildRfqOfficeSelections(selectedVendorDispatchTargets),
-        responseFields: selectedResponseFields.map((field) => ({
-          fieldKey: field.id,
-          fieldLabel: field.label,
-          isCustom: field.isCustom,
-        })),
-        mailSubject: mailDraft?.subjectLine,
-        mailBodyHtml: mailDraft?.html,
-      },
-    };
-  }, [availableInquiries, departmentId, formValues, inquiryId, selectedResponseFields, selectedVendorDispatchTargets, selectedVendorIds, validateStep]);
+      if (unresolvedDispatchTargets.length > 0) {
+        throw new ApiError(
+          400,
+          "Resolve the sending offices for all selected vendors before sending the RFQ.",
+        );
+      }
+
+      return {
+        inquiry,
+        payload: {
+          inquiryId,
+          inquiryNumber: inquiry?.inquiryNumber ?? inquiryId,
+          departmentId,
+          formValues,
+          vendorIds: Array.from(selectedVendorIds),
+          officeSelections: buildRfqOfficeSelections(
+            selectedVendorDispatchTargets,
+          ),
+          responseFields: selectedResponseFields.map((field) => ({
+            fieldKey: field.id,
+            fieldLabel: field.label,
+            isCustom: field.isCustom,
+          })),
+          mailSubject: mailDraft?.subjectLine,
+          mailBodyHtml: mailDraft?.html,
+          attachments,
+        },
+      };
+    },
+    [
+      availableInquiries,
+      departmentId,
+      formValues,
+      inquiryId,
+      selectedResponseFields,
+      selectedVendorDispatchTargets,
+      selectedVendorIds,
+      validateStep,
+    ],
+  );
 
   const refreshRfqs = useCallback(async () => {
     const latestRfqs = await api.getRfqs();
@@ -861,47 +1041,54 @@ export function useRFQWizard() {
         sendNow: false,
       });
       await refreshRfqs();
-      updateQuoteDraft(departmentId, (draft) => markQuoteDraftStepCompleted(draft, 1));
+      updateQuoteDraft(departmentId, (draft) =>
+        markQuoteDraftStepCompleted(draft, 1),
+      );
     } finally {
       setIsSavingDraft(false);
     }
   }, [buildRfqPayload, departmentId, refreshRfqs, updateQuoteDraft]);
 
-  const saveRfq = useCallback(async (mailDraft?: RfqPreviewDraft | null) => {
-    const { inquiry, payload } = buildRfqPayload(mailDraft);
+  const saveRfq = useCallback(
+    async (mailDraft?: RfqPreviewDraft | null, attachments: File[] = []) => {
+      const { inquiry, payload } = buildRfqPayload(mailDraft, attachments);
 
-    setIsSubmitting(true);
-    try {
-      await api.createRfq({
-        ...payload,
-        sendNow: true,
-      });
+      setIsSubmitting(true);
+      try {
+        await api.createRfq({
+          ...payload,
+          sendNow: true,
+        });
 
-      const latestRfqs = await refreshRfqs();
-      const latestOutlookStatus = await api.getOutlookStatus().catch(() => null);
-      setOutlookStatus(latestOutlookStatus);
+        const latestRfqs = await refreshRfqs();
+        const latestOutlookStatus = await api
+          .getOutlookStatus()
+          .catch(() => null);
+        setOutlookStatus(latestOutlookStatus);
 
-      updateQuoteDraft(departmentId, (draft) =>
-        markQuoteDraftStepsCompleted(draft, [1, 2, 3, 4]),
-      );
+        updateQuoteDraft(departmentId, (draft) =>
+          markQuoteDraftStepsCompleted(draft, [1, 2, 3, 4]),
+        );
 
-      if (!inquiry) {
-        clearAll();
-        return;
+        if (!inquiry) {
+          clearAll();
+          return;
+        }
+
+        const nextDepartmentId = getNextRecommendedDepartmentIdAfterSend(
+          inquiry,
+          latestRfqs,
+          departmentId,
+        );
+
+        setDepartmentId(nextDepartmentId);
+        setCurrentStep(nextDepartmentId === departmentId ? 4 : 1);
+      } finally {
+        setIsSubmitting(false);
       }
-
-      const nextDepartmentId = getNextRecommendedDepartmentIdAfterSend(
-        inquiry,
-        latestRfqs,
-        departmentId,
-      );
-
-      setDepartmentId(nextDepartmentId);
-      setCurrentStep(nextDepartmentId === departmentId ? 4 : 1);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [buildRfqPayload, clearAll, departmentId, refreshRfqs, updateQuoteDraft]);
+    },
+    [buildRfqPayload, clearAll, departmentId, refreshRfqs, updateQuoteDraft],
+  );
 
   return {
     currentStep,

@@ -46,11 +46,26 @@ function formatValue(value: unknown) {
   return String(value ?? '').trim();
 }
 
+function resolveValueWithUnit(
+  formValues: Record<string, unknown>,
+  key: string,
+  value: unknown,
+) {
+  const formattedValue = formatValue(value);
+  if (!formattedValue) {
+    return '';
+  }
+
+  const unit = formatValue(formValues[`${key}_unit`]);
+  return unit ? `${formattedValue} ${unit}` : formattedValue;
+}
+
 function buildFormRows(formValues: Record<string, unknown>) {
   return Object.entries(formValues)
+    .filter(([key]) => !key.endsWith('_unit'))
     .map(([key, value]) => ({
       label: humanizeKey(key),
-      value: formatValue(value),
+      value: resolveValueWithUnit(formValues, key, value),
     }))
     .filter((row) => row.value);
 }

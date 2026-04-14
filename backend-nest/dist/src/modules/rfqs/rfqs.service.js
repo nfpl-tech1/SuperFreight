@@ -49,11 +49,11 @@ let RfqsService = class RfqsService {
     list() {
         return this.rfqRepo.find({ order: { createdAt: 'DESC' } });
     }
-    async create(dto, user) {
+    async create(dto, user, files = []) {
         const rfq = await this.createDraftRfq(dto, user);
         await this.saveFieldSpecs(rfq.id, dto);
         if (dto.sendNow) {
-            await this.completeRfqSend(rfq, dto, user);
+            await this.completeRfqSend(rfq, dto, user, files);
         }
         return this.rfqRepo.findOne({ where: { id: rfq.id } });
     }
@@ -64,17 +64,17 @@ let RfqsService = class RfqsService {
     async saveFieldSpecs(rfqId, dto) {
         await this.fieldSpecRepo.save((0, rfq_builders_1.buildRfqFieldSpecInputs)(rfqId, dto).map((fieldSpec) => this.fieldSpecRepo.create(fieldSpec)));
     }
-    async completeRfqSend(rfq, dto, user) {
-        await this.sendRfqToSelectedVendors(rfq, dto, user);
+    async completeRfqSend(rfq, dto, user, files) {
+        await this.sendRfqToSelectedVendors(rfq, dto, user, this.buildMailAttachments(files));
         await this.markRfqAsSent(rfq, dto.mailSubject);
         await this.markInquiryAsRfqSent(rfq.inquiryId);
     }
-    async sendRfqToSelectedVendors(rfq, dto, user) {
+    async sendRfqToSelectedVendors(rfq, dto, user, attachments) {
         const inquiry = await this.findInquiryForRfqOrThrow(rfq.inquiryId);
         const recipients = await this.resolveVendorRecipients(dto.vendorIds, dto.officeSelections ?? []);
         const mailDraft = (0, rfq_mail_builder_1.resolveMailDraft)(dto, inquiry, user.name ?? user.email);
         for (const recipient of recipients) {
-            await this.sendRfqMailToRecipient(user, recipient, mailDraft.subjectLine, mailDraft.bodyHtml);
+            await this.sendRfqMailToRecipient(user, recipient, mailDraft.subjectLine, mailDraft.bodyHtml, attachments);
         }
     }
     async findInquiryForRfqOrThrow(inquiryId) {
@@ -86,7 +86,7 @@ let RfqsService = class RfqsService {
         }
         return inquiry;
     }
-    async sendRfqMailToRecipient(user, recipient, subjectLine, bodyHtml) {
+    async sendRfqMailToRecipient(user, recipient, subjectLine, bodyHtml, attachments) {
         await this.outlookService.sendMail(user, {
             subject: subjectLine,
             htmlBody: (0, rfq_mail_builder_1.personalizeMailBodyHtml)(bodyHtml, {
@@ -98,7 +98,15 @@ let RfqsService = class RfqsService {
             }),
             to: [{ address: recipient.email, name: recipient.contactName }],
             cc: recipient.cc.map((address) => ({ address })),
+            attachments,
         });
+    }
+    buildMailAttachments(files) {
+        return files.map((file) => ({
+            fileName: file.originalname,
+            contentType: file.mimetype || 'application/octet-stream',
+            contentBytes: file.buffer.toString('base64'),
+        }));
     }
     async markRfqAsSent(rfq, mailSubject) {
         rfq.sent = true;

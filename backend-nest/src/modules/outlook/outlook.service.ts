@@ -79,9 +79,9 @@ export class OutlookService {
       },
     );
 
-    const payload = (await response.json().catch(() => null)) as
-      | OutlookTokenPayload
-      | null;
+    const payload = (await response
+      .json()
+      .catch(() => null)) as OutlookTokenPayload | null;
 
     if (!response.ok || !payload?.access_token) {
       throw new BadRequestException(
@@ -103,13 +103,11 @@ export class OutlookService {
       },
     );
 
-    const payload = (await response.json().catch(() => null)) as
-      | {
-          id?: string;
-          mail?: string | null;
-          userPrincipalName?: string | null;
-        }
-      | null;
+    const payload = (await response.json().catch(() => null)) as {
+      id?: string;
+      mail?: string | null;
+      userPrincipalName?: string | null;
+    } | null;
 
     if (!response.ok || !payload?.id) {
       throw new BadRequestException(
@@ -168,7 +166,11 @@ export class OutlookService {
       where: { userId },
     });
 
-    if (connection?.isConnected && !connection.accessToken && !connection.refreshToken) {
+    if (
+      connection?.isConnected &&
+      !connection.accessToken &&
+      !connection.refreshToken
+    ) {
       throw new BadRequestException(
         'Your Outlook mailbox was linked under an older setup. Please reconnect Outlook once from onboarding or profile to enable sending.',
       );
@@ -210,14 +212,12 @@ export class OutlookService {
       return;
     }
 
-    const payload = (await response.json().catch(() => null)) as
-      | {
-          error?: {
-            code?: string;
-            message?: string;
-          };
-        }
-      | null;
+    const payload = (await response.json().catch(() => null)) as {
+      error?: {
+        code?: string;
+        message?: string;
+      };
+    } | null;
 
     throw new BadRequestException(
       payload?.error?.message || 'Unable to send mail through Outlook.',
@@ -351,6 +351,11 @@ export class OutlookService {
       htmlBody: string;
       to: Array<{ address: string; name?: string | null }>;
       cc?: Array<{ address: string; name?: string | null }>;
+      attachments?: Array<{
+        fileName: string;
+        contentType: string;
+        contentBytes: string;
+      }>;
     },
   ) {
     const connection = await this.getValidConnectionForUser(user.id);
@@ -373,6 +378,12 @@ export class OutlookService {
             name: recipient.name ?? undefined,
           },
         })),
+        attachments: (payload.attachments ?? []).map((attachment) => ({
+          '@odata.type': '#microsoft.graph.fileAttachment',
+          name: attachment.fileName,
+          contentType: attachment.contentType,
+          contentBytes: attachment.contentBytes,
+        })),
       },
       saveToSentItems: true,
     };
@@ -380,9 +391,8 @@ export class OutlookService {
     try {
       await this.sendGraphMailRequest(connection.accessToken!, requestBody);
     } catch {
-      const refreshedConnection = await this.refreshConnectionAccessToken(
-        connection,
-      );
+      const refreshedConnection =
+        await this.refreshConnectionAccessToken(connection);
       await this.sendGraphMailRequest(
         refreshedConnection.accessToken!,
         requestBody,

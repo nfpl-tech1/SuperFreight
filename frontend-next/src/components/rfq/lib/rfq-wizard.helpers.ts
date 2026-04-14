@@ -1,8 +1,6 @@
 import { departments } from "@/data/departments";
 import { getDefaultResponseFields } from "@/data/responseFields";
-import {
-  getRecommendedDepartmentIdForInquiry,
-} from "@/lib/inquiryQuotePlanning";
+import { getRecommendedDepartmentIdForInquiry } from "@/lib/inquiryQuotePlanning";
 import type {
   DepartmentDefinition,
   FormValues,
@@ -10,7 +8,10 @@ import type {
   VendorFilterCriteria,
   WizardStep,
 } from "@/types/rfq";
-import { defaultFilterCriteria, normalizeVendorFilterCriteria } from "@/lib/vendorFilter";
+import {
+  defaultFilterCriteria,
+  normalizeVendorFilterCriteria,
+} from "@/lib/vendorFilter";
 import { Inquiry } from "@/lib/api";
 
 const STORAGE_KEY = "rfq_wizard_draft";
@@ -65,6 +66,11 @@ export function buildDefaults(department: DepartmentDefinition): FormValues {
     } else {
       values[field.key] = "";
     }
+
+    if (field.unitOptions?.length) {
+      values[`${field.key}_unit`] =
+        field.defaultUnit ?? field.unitOptions[0] ?? "";
+    }
   }
 
   return values;
@@ -114,7 +120,10 @@ export function addQuoteDraftCustomField(
 ): QuoteDraftState {
   return {
     ...draft,
-    responseFields: [...draft.responseFields, { id, label, isCustom: true, selected: true }],
+    responseFields: [
+      ...draft.responseFields,
+      { id, label, isCustom: true, selected: true },
+    ],
   };
 }
 
@@ -165,10 +174,7 @@ export function selectQuoteDraftVendors(
 ): QuoteDraftState {
   return {
     ...draft,
-    selectedVendorIds: new Set([
-      ...draft.selectedVendorIds,
-      ...vendorIds,
-    ]),
+    selectedVendorIds: new Set([...draft.selectedVendorIds, ...vendorIds]),
   };
 }
 
@@ -181,12 +187,16 @@ export function deselectQuoteDraftVendors(
   return {
     ...draft,
     selectedVendorIds: new Set(
-      Array.from(draft.selectedVendorIds).filter((vendorId) => !vendorIdSet.has(vendorId)),
+      Array.from(draft.selectedVendorIds).filter(
+        (vendorId) => !vendorIdSet.has(vendorId),
+      ),
     ),
   };
 }
 
-export function clearQuoteDraftVendors(draft: QuoteDraftState): QuoteDraftState {
+export function clearQuoteDraftVendors(
+  draft: QuoteDraftState,
+): QuoteDraftState {
   return {
     ...draft,
     selectedVendorIds: new Set<string>(),
@@ -208,7 +218,9 @@ export function setQuoteDraftVendorOfficeSelection(
       ...draft.selectedVendorOfficeIds,
       [vendorId]: checked
         ? Array.from(new Set([...selectedOfficeIds, officeId]))
-        : selectedOfficeIds.filter((selectedOfficeId) => selectedOfficeId !== officeId),
+        : selectedOfficeIds.filter(
+            (selectedOfficeId) => selectedOfficeId !== officeId,
+          ),
     },
   };
 }
@@ -261,7 +273,9 @@ export function markQuoteDraftStepsCompleted(
   };
 }
 
-function serializeQuoteDraft(quoteDraft: QuoteDraftState): SerializedQuoteDraft {
+function serializeQuoteDraft(
+  quoteDraft: QuoteDraftState,
+): SerializedQuoteDraft {
   return {
     formValues: quoteDraft.formValues,
     responseFields: quoteDraft.responseFields,
@@ -287,7 +301,9 @@ function deserializeQuoteDraft(
       ([vendorId, officeIds]) => [
         vendorId,
         Array.isArray(officeIds)
-          ? officeIds.filter((officeId): officeId is string => Boolean(officeId))
+          ? officeIds.filter((officeId): officeId is string =>
+              Boolean(officeId),
+            )
           : officeIds
             ? [officeIds]
             : [],
@@ -296,7 +312,10 @@ function deserializeQuoteDraft(
   );
 
   return {
-    formValues: quoteDraft.formValues ?? fallback.formValues,
+    formValues: {
+      ...fallback.formValues,
+      ...(quoteDraft.formValues ?? {}),
+    },
     responseFields: quoteDraft.responseFields ?? fallback.responseFields,
     filterCriteria: normalizeVendorFilterCriteria({
       ...fallback.filterCriteria,
@@ -333,18 +352,20 @@ export function loadWizardState(): WizardState {
     const parsed = JSON.parse(saved) as WizardDraftPayload;
 
     if (parsed.quoteDrafts) {
-      const nextQuoteDrafts = Object.entries(parsed.quoteDrafts).reduce<Record<string, QuoteDraftState>>(
-        (accumulator, [departmentId, quoteDraft]) => {
-          const department = departments.find((item) => item.id === departmentId);
-          if (!department) {
-            return accumulator;
-          }
-
-          accumulator[departmentId] = deserializeQuoteDraft(quoteDraft, department);
+      const nextQuoteDrafts = Object.entries(parsed.quoteDrafts).reduce<
+        Record<string, QuoteDraftState>
+      >((accumulator, [departmentId, quoteDraft]) => {
+        const department = departments.find((item) => item.id === departmentId);
+        if (!department) {
           return accumulator;
-        },
-        {},
-      );
+        }
+
+        accumulator[departmentId] = deserializeQuoteDraft(
+          quoteDraft,
+          department,
+        );
+        return accumulator;
+      }, {});
 
       if (Object.keys(nextQuoteDrafts).length === 0) {
         return fallback;
@@ -353,13 +374,17 @@ export function loadWizardState(): WizardState {
       return {
         currentStep: parsed.currentStep || fallback.currentStep,
         inquiryId: parsed.inquiryId || fallback.inquiryId,
-        departmentId: parsed.departmentId || Object.keys(nextQuoteDrafts)[0] || fallback.departmentId,
+        departmentId:
+          parsed.departmentId ||
+          Object.keys(nextQuoteDrafts)[0] ||
+          fallback.departmentId,
         quoteDrafts: nextQuoteDrafts,
       };
     }
 
     const departmentId = parsed.departmentId || fallback.departmentId;
-    const department = departments.find((item) => item.id === departmentId) ?? departments[0];
+    const department =
+      departments.find((item) => item.id === departmentId) ?? departments[0];
 
     return {
       currentStep: parsed.currentStep || fallback.currentStep,
@@ -406,7 +431,7 @@ export function clearPersistedWizardState() {
 export function getDepartmentForInquiry(
   inquiryId: string,
   availableInquiries: Inquiry[],
-  currentDepartmentId: string
+  currentDepartmentId: string,
 ) {
   const inquiry = availableInquiries.find((item) => item.id === inquiryId);
   if (!inquiry) {
@@ -417,7 +442,8 @@ export function getDepartmentForInquiry(
     inquiry,
     currentDepartmentId,
   );
-  const nextDepartment = departments.find((item) => item.id === nextDepartmentId) ?? departments[0];
+  const nextDepartment =
+    departments.find((item) => item.id === nextDepartmentId) ?? departments[0];
 
   return {
     inquiry,
@@ -480,7 +506,8 @@ export function applyInquiryDefaults(
   }
 
   if (fieldKeys.has("destination")) {
-    nextValues.destination = inquiry.destination ?? baseValues.destination ?? "";
+    nextValues.destination =
+      inquiry.destination ?? baseValues.destination ?? "";
   }
 
   if (fieldKeys.has("trade_lane")) {
@@ -496,7 +523,8 @@ export function applyInquiryDefaults(
   }
 
   if (fieldKeys.has("cargo_summary")) {
-    nextValues.cargo_summary = inquiry.cargoSummary ?? baseValues.cargo_summary ?? "";
+    nextValues.cargo_summary =
+      inquiry.cargoSummary ?? baseValues.cargo_summary ?? "";
   }
 
   if (fieldKeys.has("commodity_description")) {

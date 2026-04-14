@@ -35,5 +35,6 @@ export declare class InquiriesService {
     private createFreightServicePart;
     private recordOwnershipTransfer;
     private generateInquiryNumber;
+    private ensureInquiryNumberAvailable;
     private findAccessibleInquiryOrThrow;
 }

@@ -53,5 +53,10 @@ export declare class OutlookService {
             address: string;
             name?: string | null;
         }>;
+        attachments?: Array<{
+            fileName: string;
+            contentType: string;
+            contentBytes: string;
+        }>;
     }): Promise<void>;
 }

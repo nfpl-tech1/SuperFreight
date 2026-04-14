@@ -20,13 +20,14 @@ export declare class RfqsService {
     private readonly outlookService;
     constructor(rfqRepo: Repository<Rfq>, fieldSpecRepo: Repository<RfqFieldSpec>, inquiryRepo: Repository<Inquiry>, vendorRepo: Repository<VendorMaster>, officeRepo: Repository<VendorOffice>, contactRepo: Repository<VendorContact>, ccRepo: Repository<VendorCcRecipient>, outlookService: OutlookService);
     list(): Promise<Rfq[]>;
-    create(dto: CreateRfqDto, user: User): Promise<Rfq | null>;
+    create(dto: CreateRfqDto, user: User, files?: Express.Multer.File[]): Promise<Rfq | null>;
     private createDraftRfq;
     private saveFieldSpecs;
     private completeRfqSend;
     private sendRfqToSelectedVendors;
     private findInquiryForRfqOrThrow;
     private sendRfqMailToRecipient;
+    private buildMailAttachments;
     private markRfqAsSent;
     private markInquiryAsRfqSent;
     private resolveVendorRecipients;

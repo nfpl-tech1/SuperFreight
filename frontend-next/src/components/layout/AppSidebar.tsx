@@ -97,7 +97,7 @@ export function AppSidebar({ collapsed }: AppSidebarProps) {
   }
 
   return (
-    <aside className="sticky top-0 relative z-[60] h-svh w-64 shrink-0 overflow-visible flex flex-col border-r border-slate-200 bg-slate-50">
+    <aside className="sticky top-0 relative z-[60] h-svh w-60 shrink-0 overflow-visible flex flex-col border-r border-slate-200 bg-slate-50 2xl:w-64">
       <div className="h-14 flex items-center px-5 border-b border-slate-200">
         <BrandLogo
           alt="Nagarkot Forwarders"

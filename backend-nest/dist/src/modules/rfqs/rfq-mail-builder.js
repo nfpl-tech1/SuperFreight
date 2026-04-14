@@ -26,11 +26,20 @@ function formatValue(value) {
     }
     return String(value ?? '').trim();
 }
+function resolveValueWithUnit(formValues, key, value) {
+    const formattedValue = formatValue(value);
+    if (!formattedValue) {
+        return '';
+    }
+    const unit = formatValue(formValues[`${key}_unit`]);
+    return unit ? `${formattedValue} ${unit}` : formattedValue;
+}
 function buildFormRows(formValues) {
     return Object.entries(formValues)
+        .filter(([key]) => !key.endsWith('_unit'))
         .map(([key, value]) => ({
         label: humanizeKey(key),
-        value: formatValue(value),
+        value: resolveValueWithUnit(formValues, key, value),
     }))
         .filter((row) => row.value);
 }

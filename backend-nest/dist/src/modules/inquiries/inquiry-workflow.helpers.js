@@ -10,7 +10,7 @@ const inquiry_entity_1 = require("./entities/inquiry.entity");
 const job_service_part_entity_1 = require("./entities/job-service-part.entity");
 function buildInquiryCreateInput(dto, currentUserId, inquiryNumber) {
     return {
-        inquiryNumber,
+        inquiryNumber: dto.inquiryNumber?.trim() || inquiryNumber,
         inquiryType: dto.inquiryType,
         status: inquiry_entity_1.InquiryStatus.PENDING,
         customerName: dto.customerName,
@@ -27,6 +27,9 @@ function buildInquiryCreateInput(dto, currentUserId, inquiryNumber) {
 }
 function buildInquiryUpdateInput(dto) {
     const patch = {};
+    if ('inquiryNumber' in dto) {
+        patch.inquiryNumber = dto.inquiryNumber?.trim() || '';
+    }
     if ('customerName' in dto) {
         patch.customerName = dto.customerName?.trim() || '';
     }

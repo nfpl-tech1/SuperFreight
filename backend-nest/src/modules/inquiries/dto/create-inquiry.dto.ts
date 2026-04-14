@@ -7,6 +7,10 @@ import {
 } from '../entities/inquiry.entity';
 
 export class CreateInquiryDto {
+  @IsOptional()
+  @IsString()
+  inquiryNumber?: string;
+
   @IsString()
   customerName: string;
 

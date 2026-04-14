@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { api, Inquiry } from "@/lib/api";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useIsCompactDesktop } from "@/hooks/use-is-compact-desktop";
 import { toast } from "sonner";
 
 const statusConfig: Record<string, { dot: string; text: string; bg: string }> = {
@@ -19,6 +20,7 @@ const statusConfig: Record<string, { dot: string; text: string; bg: string }> = 
 
 export default function DashboardPage() {
   const isMobile = useIsMobile();
+  const isCompactDesktop = useIsCompactDesktop();
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
 
   useEffect(() => {
@@ -34,23 +36,24 @@ export default function DashboardPage() {
     ],
     [inquiries]
   );
+  const showDesktopTable = !isMobile && !isCompactDesktop;
 
   return (
     <div className="flex flex-col gap-6 min-h-full">
-      <div className="flex items-start justify-between">
-        <div>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold text-foreground tracking-tight">
             {isMobile ? "Dashboard" : "Dashboard Overview"}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Live view of inquiry capture, RFQs, and quote progress.</p>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="outline" className="font-medium px-6 py-2.5 rounded-lg text-sm shadow-sm">
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-end">
+          <Button asChild variant="outline" className="w-full rounded-lg px-5 py-2.5 text-sm font-medium shadow-sm sm:w-auto">
             <Link href="/inquiries">
               <Plus className="h-4 w-4 mr-1" /> New Inquiry
             </Link>
           </Button>
-          <Button asChild className="font-medium px-6 py-2.5 rounded-lg text-sm shadow-sm">
+          <Button asChild className="w-full rounded-lg px-5 py-2.5 text-sm font-medium shadow-sm sm:w-auto">
             <Link href="/rfq">
               <FileText className="h-4 w-4 mr-1" /> New RFQ
             </Link>
@@ -58,14 +61,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {summaryCards.map((card) => (
-          <div key={card.label} className="bg-white rounded-xl p-6 border border-border shadow-sm hover:shadow-md hover:-translate-y-px transition-all max-sm:p-4">
+          <div key={card.label} className="bg-white rounded-xl border border-border p-5 shadow-sm transition-all hover:-translate-y-px hover:shadow-md xl:p-6">
             <div className="flex items-start justify-between mb-2">
               <span className="text-[0.6875rem] font-semibold tracking-[0.06em] uppercase text-primary">{card.label}</span>
               <card.icon className="w-4 h-4 text-muted-foreground shrink-0" />
             </div>
-            <div className="text-[2.25rem] font-bold text-foreground leading-[1.1] mb-2 max-sm:text-[1.75rem]">{card.value}</div>
+            <div className="mb-2 text-[2rem] font-bold leading-[1.1] text-foreground sm:text-[2.15rem] xl:text-[2.25rem]">{card.value}</div>
             <div className="flex items-center text-xs font-medium text-slate-500">
               <TrendingUp className="h-3.5 w-3.5 mr-1" />
               {card.subtitle}
@@ -75,11 +78,11 @@ export default function DashboardPage() {
       </div>
 
       <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+        <div className="flex items-center justify-between border-b border-border px-4 py-4 sm:px-5 xl:px-6 xl:py-5">
           <h2 className="text-lg font-bold text-foreground">Recent Inquiries</h2>
         </div>
 
-        {!isMobile && (
+        {showDesktopTable && (
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
               <thead>
@@ -116,6 +119,35 @@ export default function DashboardPage() {
                 })}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {isCompactDesktop && (
+          <div className="grid gap-4 p-4 lg:grid-cols-2">
+            {inquiries.map((inquiry) => {
+              const status = statusConfig[inquiry.status] || statusConfig.PENDING;
+              return (
+                <div key={inquiry.id} className="rounded-xl border border-border/70 bg-[hsl(214_38%_98%)] p-4 shadow-sm">
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <span className="rounded bg-primary/10 px-2 py-0.5 text-[0.6875rem] font-bold text-primary">{inquiry.inquiryNumber}</span>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{new Date(inquiry.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <h3 className="text-sm font-semibold text-foreground">{inquiry.customerName}</h3>
+                  <div className="mt-1 flex items-center gap-1.5 text-[0.8125rem] text-muted-foreground">
+                    <span className="truncate">{inquiry.origin ?? "TBC"}</span>
+                    <ArrowRight className="h-3 w-3 shrink-0 text-slate-400" />
+                    <span className="truncate">{inquiry.destination ?? "TBC"}</span>
+                  </div>
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+                    <Badge variant="outline" className="rounded-full px-2.5 py-0.5 text-[0.6875rem] font-medium">{inquiry.shipmentMode ?? inquiry.inquiryType}</Badge>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[0.6875rem] font-medium ${status.bg}`}>
+                      <span className={`h-1 w-1 rounded-full shrink-0 ${status.dot}`} />
+                      <span className={status.text}>{inquiry.status.replaceAll("_", " ")}</span>
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
 

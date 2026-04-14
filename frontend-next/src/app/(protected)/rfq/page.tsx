@@ -10,6 +10,7 @@ import { Step1RFQForm } from "@/components/rfq/steps/Step1RFQForm";
 import { Step2ResponseFields } from "@/components/rfq/steps/Step2ResponseFields";
 import { Step3VendorSelection } from "@/components/rfq/steps/Step3VendorSelection";
 import { Step4ReviewSend } from "@/components/rfq/steps/Step4ReviewSend";
+import { shouldUseExwClubbedTemplate } from "@/lib/inquiryQuotePlanning";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -28,6 +29,7 @@ export default function RFQPage() {
   const compactHeaderSubtitle = wizard.currentInquiry
     ? `${wizard.currentInquiry.inquiryNumber} - ${wizard.currentInquiry.cargoSummary ?? wizard.currentInquiry.customerName}`
     : undefined;
+  const isExwClubbed = shouldUseExwClubbedTemplate(wizard.currentInquiry);
 
   const handleNext = () => {
     const error = wizard.goNext();
@@ -39,7 +41,9 @@ export default function RFQPage() {
       await wizard.saveDraftRfq();
       toast.success("Quote saved.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Unable to save quote.");
+      toast.error(
+        error instanceof Error ? error.message : "Unable to save quote.",
+      );
     }
   };
 
@@ -49,13 +53,16 @@ export default function RFQPage() {
         return (
           <Step1RFQForm
             inquiryId={wizard.inquiryId}
-            inquiryNumber={wizard.currentInquiry?.inquiryNumber ?? wizard.inquiryId}
+            inquiryNumber={
+              wizard.currentInquiry?.inquiryNumber ?? wizard.inquiryId
+            }
             department={wizard.department}
             formValues={wizard.formValues}
             validation={wizard.validation}
             inquiries={wizard.availableInquiries}
             tradeLane={wizard.currentInquiry?.tradeLane ?? undefined}
             incoterm={wizard.currentInquiry?.incoterm ?? undefined}
+            isExwClubbed={isExwClubbed}
             onFieldChange={wizard.handleFieldChange}
             onCopyReady={(fn) => {
               copyEmailFnRef.current = fn;
@@ -104,7 +111,9 @@ export default function RFQPage() {
             selectedVendors={wizard.selectedVendors}
             selectedVendorDispatchTargets={wizard.selectedVendorDispatchTargets}
             inquiryId={wizard.inquiryId}
-            inquiryNumber={wizard.currentInquiry?.inquiryNumber ?? wizard.inquiryId}
+            inquiryNumber={
+              wizard.currentInquiry?.inquiryNumber ?? wizard.inquiryId
+            }
             inquiryCustomer={
               wizard.availableInquiries.find(
                 (inquiry) => inquiry.id === wizard.inquiryId,
@@ -112,6 +121,7 @@ export default function RFQPage() {
             }
             tradeLane={wizard.currentInquiry?.tradeLane ?? undefined}
             incoterm={wizard.currentInquiry?.incoterm ?? undefined}
+            isExwClubbed={isExwClubbed}
             isSending={wizard.isSubmitting}
             outlookStatus={wizard.outlookStatus}
             onOfficeChange={wizard.setSelectedVendorOffice}
@@ -140,10 +150,17 @@ export default function RFQPage() {
       <div
         className={cn(
           "flex-1 min-h-0",
-          isMobile ? "overflow-visible px-4 py-4 pb-28" : "overflow-y-auto px-4 pt-4 pb-3",
+          isMobile
+            ? "overflow-visible px-4 py-4 pb-28"
+            : "overflow-y-auto px-4 pt-4 pb-3",
         )}
       >
-        <div className={cn("flex flex-col gap-4", isMobile ? "h-auto" : "min-h-full")}>
+        <div
+          className={cn(
+            "flex flex-col gap-4",
+            isMobile ? "h-auto" : "min-h-full",
+          )}
+        >
           <QuoteWorkspaceHeader
             inquiryId={wizard.inquiryId}
             inquiries={wizard.availableInquiries}
@@ -156,7 +173,9 @@ export default function RFQPage() {
             onSaveQuote={handleSaveQuote}
             isSavingQuote={wizard.isSavingDraft}
             compact={wizard.currentStep > 1}
-            compactTitle={wizard.currentStep > 1 ? compactHeaderTitle : undefined}
+            compactTitle={
+              wizard.currentStep > 1 ? compactHeaderTitle : undefined
+            }
             compactSubtitle={
               wizard.currentStep > 1 ? compactHeaderSubtitle : undefined
             }

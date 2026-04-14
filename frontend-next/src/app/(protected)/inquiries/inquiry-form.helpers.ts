@@ -7,6 +7,7 @@ export const TRADE_LANE_OPTIONS = ["Import", "Export", "Cross Trade"] as const;
 export const SHIPMENT_MODE_OPTIONS = ["AIR", "FCL", "LCL"] as const;
 
 export type InquiryFormState = {
+  inquiryNumber: string;
   customerName: string;
   customerRole: Inquiry["customerRole"] | "";
   tradeLane: string;
@@ -19,6 +20,7 @@ export type InquiryFormState = {
 
 export function createEmptyInquiryForm(): InquiryFormState {
   return {
+    inquiryNumber: "",
     customerName: "",
     customerRole: "",
     tradeLane: "Export",
@@ -30,8 +32,11 @@ export function createEmptyInquiryForm(): InquiryFormState {
   };
 }
 
-export function createInquiryFormFromInquiry(inquiry: Inquiry): InquiryFormState {
+export function createInquiryFormFromInquiry(
+  inquiry: Inquiry,
+): InquiryFormState {
   return {
+    inquiryNumber: inquiry.inquiryNumber,
     customerName: inquiry.customerName,
     customerRole: inquiry.customerRole ?? "",
     tradeLane: inquiry.tradeLane ?? "Export",
@@ -43,7 +48,9 @@ export function createInquiryFormFromInquiry(inquiry: Inquiry): InquiryFormState
   };
 }
 
-export function deriveInquiryType(form: InquiryFormState): Inquiry["inquiryType"] {
+export function deriveInquiryType(
+  form: InquiryFormState,
+): Inquiry["inquiryType"] {
   const recommendations = planQuoteTypesForInquiry({
     tradeLane: form.tradeLane,
     shipmentMode: form.shipmentMode,
@@ -69,7 +76,9 @@ export function deriveInquiryType(form: InquiryFormState): Inquiry["inquiryType"
   return "FREIGHT_ONLY";
 }
 
-export function isCustomerRoleRequired(form: Pick<InquiryFormState, "tradeLane">) {
+export function isCustomerRoleRequired(
+  form: Pick<InquiryFormState, "tradeLane">,
+) {
   return form.tradeLane === "Export";
 }
 
@@ -94,6 +103,7 @@ export function getLocationPlaceholder(
 export function buildInquiryPayload(form: InquiryFormState) {
   return {
     ...form,
+    inquiryNumber: form.inquiryNumber || undefined,
     inquiryType: deriveInquiryType(form),
     customerRole: form.customerRole || undefined,
     incoterm: form.incoterm || undefined,

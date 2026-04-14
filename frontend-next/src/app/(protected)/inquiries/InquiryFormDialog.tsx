@@ -3,6 +3,7 @@
 import { useDeferredValue, useEffect, useState } from "react";
 import {
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -47,12 +48,13 @@ function usePortLocationOptions(
   useEffect(() => {
     let cancelled = false;
 
-    api.getVendorLocationOptions({
-      locationKind: "PORT",
-      portMode,
-      pageSize: 20,
-      search: deferredQuery.trim() || undefined,
-    })
+    api
+      .getVendorLocationOptions({
+        locationKind: "PORT",
+        portMode,
+        pageSize: 20,
+        search: deferredQuery.trim() || undefined,
+      })
       .then((response) => {
         if (!cancelled) {
           setResult({
@@ -99,14 +101,10 @@ export function InquiryFormDialog({
   onSave,
 }: InquiryFormDialogProps) {
   const portMode = getPortModeForShipmentMode(form.shipmentMode);
-  const {
-    options: originOptions,
-    loading: loadingOriginOptions,
-  } = usePortLocationOptions(form.origin, portMode);
-  const {
-    options: destinationOptions,
-    loading: loadingDestinationOptions,
-  } = usePortLocationOptions(form.destination, portMode);
+  const { options: originOptions, loading: loadingOriginOptions } =
+    usePortLocationOptions(form.origin, portMode);
+  const { options: destinationOptions, loading: loadingDestinationOptions } =
+    usePortLocationOptions(form.destination, portMode);
 
   const updateField = <Key extends keyof InquiryFormState>(
     key: Key,
@@ -128,40 +126,73 @@ export function InquiryFormDialog({
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="max-h-[min(90svh,56rem)] overflow-y-auto sm:max-w-xl xl:max-w-2xl">
       <DialogHeader>
-        <DialogTitle>{mode === "edit" ? "Edit Inquiry" : "Create Inquiry"}</DialogTitle>
+        <DialogTitle>
+          {mode === "edit" ? "Edit Inquiry" : "Create Inquiry"}
+        </DialogTitle>
+        <DialogDescription>
+          Capture the key shipment details first. The layout stays single-column
+          on tighter laptop widths to keep each field readable.
+        </DialogDescription>
       </DialogHeader>
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label>Customer</Label>
-          <Input
-            value={form.customerName}
-            onChange={(event) => updateField("customerName", event.target.value)}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Trade Lane</Label>
-          <Select value={form.tradeLane} onValueChange={(value) => updateField("tradeLane", value)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {TRADE_LANE_OPTIONS.map((tradeLane) => (
-                <SelectItem key={tradeLane} value={tradeLane}>
-                  {tradeLane}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="grid gap-4 xl:grid-cols-2">
+          <div className="space-y-2">
+            <Label>Inquiry Number</Label>
+            <Input
+              value={form.inquiryNumber}
+              onChange={(event) =>
+                updateField("inquiryNumber", event.target.value)
+              }
+              placeholder={
+                mode === "edit" ? "Required" : "Auto-generated if left blank"
+              }
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Customer</Label>
+            <Input
+              value={form.customerName}
+              onChange={(event) =>
+                updateField("customerName", event.target.value)
+              }
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Trade Lane</Label>
+            <Select
+              value={form.tradeLane}
+              onValueChange={(value) => updateField("tradeLane", value)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {TRADE_LANE_OPTIONS.map((tradeLane) => (
+                  <SelectItem key={tradeLane} value={tradeLane}>
+                    {tradeLane}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="space-y-2">
           <Label>Customer Role</Label>
           <Select
             value={form.customerRole || undefined}
-            onValueChange={(value) => updateField("customerRole", value as InquiryFormState["customerRole"])}
+            onValueChange={(value) =>
+              updateField(
+                "customerRole",
+                value as InquiryFormState["customerRole"],
+              )
+            }
           >
-            <SelectTrigger><SelectValue placeholder="Select who sent the inquiry" /></SelectTrigger>
+            <SelectTrigger>
+              <SelectValue placeholder="Select who sent the inquiry" />
+            </SelectTrigger>
             <SelectContent>
               {CUSTOMER_ROLE_OPTIONS.map((customerRole) => (
                 <SelectItem key={customerRole} value={customerRole}>
@@ -172,12 +203,13 @@ export function InquiryFormDialog({
           </Select>
           {isCustomerRoleRequired ? (
             <p className="text-xs text-muted-foreground">
-              Export quote planning uses whether the inquiry came from the shipper or consignee/agent.
+              Export quote planning uses whether the inquiry came from the
+              shipper or consignee/agent.
             </p>
           ) : null}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4 xl:grid-cols-2">
           <div className="space-y-2">
             <VendorLocationPicker
               label="Origin"
@@ -207,14 +239,16 @@ export function InquiryFormDialog({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4 xl:grid-cols-2">
           <div className="space-y-2">
             <Label>Mode</Label>
             <Select
               value={form.shipmentMode}
               onValueChange={handleShipmentModeChange}
             >
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 {SHIPMENT_MODE_OPTIONS.map((shipmentMode) => (
                   <SelectItem key={shipmentMode} value={shipmentMode}>
@@ -230,7 +264,9 @@ export function InquiryFormDialog({
               value={form.incoterm || undefined}
               onValueChange={(value) => updateField("incoterm", value)}
             >
-              <SelectTrigger><SelectValue placeholder="Select incoterm" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Select incoterm" />
+              </SelectTrigger>
               <SelectContent>
                 {INCOTERM_OPTIONS.map((incoterm) => (
                   <SelectItem key={incoterm} value={incoterm}>
@@ -246,14 +282,20 @@ export function InquiryFormDialog({
           <Label>Cargo Description</Label>
           <Input
             value={form.cargoSummary}
-            onChange={(event) => updateField("cargoSummary", event.target.value)}
+            onChange={(event) =>
+              updateField("cargoSummary", event.target.value)
+            }
           />
         </div>
 
         <Button
           onClick={onSave}
           className="w-full"
-          disabled={!form.customerName || (isCustomerRoleRequired && !form.customerRole) || saving}
+          disabled={
+            !form.customerName ||
+            (isCustomerRoleRequired && !form.customerRole) ||
+            saving
+          }
         >
           {saving
             ? mode === "edit"

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -64,6 +68,17 @@ export class InquiriesService {
 
   async update(id: string, dto: UpdateInquiryDto, currentUser: User) {
     const inquiry = await this.findAccessibleInquiryOrThrow(id, currentUser);
+
+    if ('inquiryNumber' in dto) {
+      const nextInquiryNumber = dto.inquiryNumber?.trim() || '';
+      if (!nextInquiryNumber) {
+        throw new ConflictException('Inquiry number cannot be empty.');
+      }
+
+      if (nextInquiryNumber !== inquiry.inquiryNumber) {
+        await this.ensureInquiryNumberAvailable(nextInquiryNumber, inquiry.id);
+      }
+    }
 
     Object.assign(inquiry, buildInquiryUpdateInput(dto));
     const savedInquiry = await this.inquiryRepo.save(inquiry);
@@ -132,12 +147,18 @@ export class InquiriesService {
   }
 
   private async createInquiryRecord(dto: CreateInquiryDto, currentUser: User) {
+    const inquiryNumber = dto.inquiryNumber?.trim();
+
+    if (inquiryNumber) {
+      await this.ensureInquiryNumberAvailable(inquiryNumber);
+    }
+
     return this.inquiryRepo.save(
       this.inquiryRepo.create(
         buildInquiryCreateInput(
           dto,
           currentUser.id,
-          await this.generateInquiryNumber(),
+          inquiryNumber ?? (await this.generateInquiryNumber()),
         ),
       ),
     );
@@ -148,7 +169,9 @@ export class InquiriesService {
   }
 
   private async syncJobFromInquiry(inquiry: Inquiry) {
-    const job = await this.jobRepo.findOne({ where: { inquiryId: inquiry.id } });
+    const job = await this.jobRepo.findOne({
+      where: { inquiryId: inquiry.id },
+    });
     if (!job) {
       return;
     }
@@ -201,6 +224,21 @@ export class InquiriesService {
         where: { inquiryNumber },
       });
       if (!exists) return inquiryNumber;
+    }
+  }
+
+  private async ensureInquiryNumberAvailable(
+    inquiryNumber: string,
+    excludeInquiryId?: string,
+  ) {
+    const existingInquiry = await this.inquiryRepo.findOne({
+      where: { inquiryNumber },
+    });
+
+    if (existingInquiry && existingInquiry.id !== excludeInquiryId) {
+      throw new ConflictException(
+        `Inquiry number ${inquiryNumber} is already in use.`,
+      );
     }
   }
 

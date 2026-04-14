@@ -62,6 +62,15 @@ let InquiriesService = class InquiriesService {
     }
     async update(id, dto, currentUser) {
         const inquiry = await this.findAccessibleInquiryOrThrow(id, currentUser);
+        if ('inquiryNumber' in dto) {
+            const nextInquiryNumber = dto.inquiryNumber?.trim() || '';
+            if (!nextInquiryNumber) {
+                throw new common_1.ConflictException('Inquiry number cannot be empty.');
+            }
+            if (nextInquiryNumber !== inquiry.inquiryNumber) {
+                await this.ensureInquiryNumberAvailable(nextInquiryNumber, inquiry.id);
+            }
+        }
         Object.assign(inquiry, (0, inquiry_workflow_helpers_1.buildInquiryUpdateInput)(dto));
         const savedInquiry = await this.inquiryRepo.save(inquiry);
         await this.syncJobFromInquiry(savedInquiry);
@@ -111,13 +120,19 @@ let InquiriesService = class InquiriesService {
         };
     }
     async createInquiryRecord(dto, currentUser) {
-        return this.inquiryRepo.save(this.inquiryRepo.create((0, inquiry_workflow_helpers_1.buildInquiryCreateInput)(dto, currentUser.id, await this.generateInquiryNumber())));
+        const inquiryNumber = dto.inquiryNumber?.trim();
+        if (inquiryNumber) {
+            await this.ensureInquiryNumberAvailable(inquiryNumber);
+        }
+        return this.inquiryRepo.save(this.inquiryRepo.create((0, inquiry_workflow_helpers_1.buildInquiryCreateInput)(dto, currentUser.id, inquiryNumber ?? (await this.generateInquiryNumber()))));
     }
     async createJobRecord(inquiry) {
         return this.jobRepo.save(this.jobRepo.create((0, inquiry_workflow_helpers_1.buildJobCreateInput)(inquiry)));
     }
     async syncJobFromInquiry(inquiry) {
-        const job = await this.jobRepo.findOne({ where: { inquiryId: inquiry.id } });
+        const job = await this.jobRepo.findOne({
+            where: { inquiryId: inquiry.id },
+        });
         if (!job) {
             return;
         }
@@ -143,6 +158,14 @@ let InquiriesService = class InquiriesService {
             });
             if (!exists)
                 return inquiryNumber;
+        }
+    }
+    async ensureInquiryNumberAvailable(inquiryNumber, excludeInquiryId) {
+        const existingInquiry = await this.inquiryRepo.findOne({
+            where: { inquiryNumber },
+        });
+        if (existingInquiry && existingInquiry.id !== excludeInquiryId) {
+            throw new common_1.ConflictException(`Inquiry number ${inquiryNumber} is already in use.`);
         }
     }
     async findAccessibleInquiryOrThrow(id, currentUser) {

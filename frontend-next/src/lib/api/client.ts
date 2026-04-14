@@ -31,26 +31,36 @@ function buildQueryString(query: VendorListQuery) {
   if (query.page) params.set("page", String(query.page));
   if (query.pageSize) params.set("pageSize", String(query.pageSize));
   if (query.search) params.set("search", query.search);
-  if (query.isActive !== undefined) params.set("isActive", String(query.isActive));
+  if (query.isActive !== undefined)
+    params.set("isActive", String(query.isActive));
   if (query.countryName) params.set("countryName", query.countryName);
   if (query.cityName) params.set("cityName", query.cityName);
-  if (query.quoteTypeContext) params.set("quoteTypeContext", query.quoteTypeContext);
+  if (query.quoteTypeContext)
+    params.set("quoteTypeContext", query.quoteTypeContext);
   if (query.shipmentMode) params.set("shipmentMode", query.shipmentMode);
   if (query.locationKind) params.set("locationKind", query.locationKind);
   if (query.locationId) params.set("locationId", query.locationId);
-  if (query.locationCountryName) params.set("locationCountryName", query.locationCountryName);
+  if (query.locationCountryName)
+    params.set("locationCountryName", query.locationCountryName);
   if (query.locationRole) params.set("locationRole", query.locationRole);
   if (query.locationScope) params.set("locationScope", query.locationScope);
   if (query.typeCodes && query.typeCodes.length > 0) {
     params.set("typeCodes", query.typeCodes.join(","));
   }
-  if (query.isIataCertified !== undefined) params.set("isIataCertified", String(query.isIataCertified));
-  if (query.doesSeaFreight !== undefined) params.set("doesSeaFreight", String(query.doesSeaFreight));
-  if (query.doesProjectCargo !== undefined) params.set("doesProjectCargo", String(query.doesProjectCargo));
-  if (query.doesOwnConsolidation !== undefined) params.set("doesOwnConsolidation", String(query.doesOwnConsolidation));
-  if (query.doesOwnTransportation !== undefined) params.set("doesOwnTransportation", String(query.doesOwnTransportation));
-  if (query.doesOwnWarehousing !== undefined) params.set("doesOwnWarehousing", String(query.doesOwnWarehousing));
-  if (query.doesOwnCustomClearance !== undefined) params.set("doesOwnCustomClearance", String(query.doesOwnCustomClearance));
+  if (query.isIataCertified !== undefined)
+    params.set("isIataCertified", String(query.isIataCertified));
+  if (query.doesSeaFreight !== undefined)
+    params.set("doesSeaFreight", String(query.doesSeaFreight));
+  if (query.doesProjectCargo !== undefined)
+    params.set("doesProjectCargo", String(query.doesProjectCargo));
+  if (query.doesOwnConsolidation !== undefined)
+    params.set("doesOwnConsolidation", String(query.doesOwnConsolidation));
+  if (query.doesOwnTransportation !== undefined)
+    params.set("doesOwnTransportation", String(query.doesOwnTransportation));
+  if (query.doesOwnWarehousing !== undefined)
+    params.set("doesOwnWarehousing", String(query.doesOwnWarehousing));
+  if (query.doesOwnCustomClearance !== undefined)
+    params.set("doesOwnCustomClearance", String(query.doesOwnCustomClearance));
   const serialized = params.toString();
   return serialized ? `?${serialized}` : "";
 }
@@ -59,7 +69,8 @@ function buildLocationOptionsQueryString(query: VendorLocationOptionsQuery) {
   const params = new URLSearchParams();
   if (query.page) params.set("page", String(query.page));
   if (query.pageSize) params.set("pageSize", String(query.pageSize));
-  if (query.quoteTypeContext) params.set("quoteTypeContext", query.quoteTypeContext);
+  if (query.quoteTypeContext)
+    params.set("quoteTypeContext", query.quoteTypeContext);
   if (query.shipmentMode) params.set("shipmentMode", query.shipmentMode);
   if (query.locationKind) params.set("locationKind", query.locationKind);
   if (query.locationRole) params.set("locationRole", query.locationRole);
@@ -80,23 +91,30 @@ function buildPortMasterQueryString(query: PortMasterListQuery) {
   if (query.search) params.set("search", query.search);
   if (query.countryName) params.set("countryName", query.countryName);
   if (query.portMode) params.set("portMode", query.portMode);
-  if (query.isActive !== undefined) params.set("isActive", String(query.isActive));
+  if (query.isActive !== undefined)
+    params.set("isActive", String(query.isActive));
   const serialized = params.toString();
   return serialized ? `?${serialized}` : "";
 }
 
 export const api = {
   login: (email: string, password: string) =>
-    request<{ access_token: string; token_type: string; user: User }>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    }),
+    request<{ access_token: string; token_type: string; user: User }>(
+      "/auth/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      },
+    ),
 
   consumeSsoToken: (token: string) =>
-    request<{ access_token: string; token_type: string; user: User }>("/auth/sso", {
-      method: "POST",
-      body: JSON.stringify({ token }),
-    }),
+    request<{ access_token: string; token_type: string; user: User }>(
+      "/auth/sso",
+      {
+        method: "POST",
+        body: JSON.stringify({ token }),
+      },
+    ),
 
   logout: () =>
     request<{ success: boolean }>("/auth/logout", {
@@ -141,7 +159,7 @@ export const api = {
       description?: string;
       permissions: RolePermission[];
       scopeRules: ScopeRule[];
-    }
+    },
   ) =>
     request<AppRoleDefinition>(`/roles/${id}`, {
       method: "PUT",
@@ -155,7 +173,9 @@ export const api = {
   getVendorSummary: () => request<VendorSummary>("/vendors/summary"),
   getVendorLookups: () => request<VendorLookups>("/vendors/lookups"),
   getVendorLocationOptions: (query: VendorLocationOptionsQuery = {}) =>
-    request<VendorLocationOptionPage>(`/vendors/location-options${buildLocationOptionsQueryString(query)}`),
+    request<VendorLocationOptionPage>(
+      `/vendors/location-options${buildLocationOptionsQueryString(query)}`,
+    ),
   getVendors: (query: VendorListQuery = {}) =>
     request<VendorCatalogPage>(`/vendors${buildQueryString(query)}`),
   getVendorDetail: (id: string) => request<VendorDetail>(`/vendors/${id}`),
@@ -184,7 +204,9 @@ export const api = {
       body: JSON.stringify(body),
     }),
   getPortMaster: (query: PortMasterListQuery = {}) =>
-    request<PortMasterPage>(`/vendors/port-master${buildPortMasterQueryString(query)}`),
+    request<PortMasterPage>(
+      `/vendors/port-master${buildPortMasterQueryString(query)}`,
+    ),
   getPortMasterDetail: (id: string) =>
     request<PortMasterDetail>(`/vendors/port-master/${id}`),
   createPortMaster: (body: UpsertPortMasterPayload) =>
@@ -210,6 +232,7 @@ export const api = {
 
   getInquiries: () => request<Inquiry[]>("/inquiries"),
   createInquiry: (body: {
+    inquiryNumber?: string;
     customerName: string;
     inquiryType: Inquiry["inquiryType"];
     customerRole?: Inquiry["customerRole"];
@@ -227,6 +250,7 @@ export const api = {
   updateInquiry: (
     id: string,
     body: {
+      inquiryNumber?: string;
       customerName?: string;
       inquiryType?: Inquiry["inquiryType"];
       customerRole?: Inquiry["customerRole"];
@@ -236,7 +260,7 @@ export const api = {
       shipmentMode?: string;
       incoterm?: string;
       cargoSummary?: string;
-    }
+    },
   ) =>
     request<Inquiry>(`/inquiries/${id}`, {
       method: "PUT",
@@ -260,7 +284,9 @@ export const api = {
     }),
 
   getQuotes: (inquiryId?: string) =>
-    request<FreightQuote[]>(`/quotes${inquiryId ? `?inquiryId=${encodeURIComponent(inquiryId)}` : ""}`),
+    request<FreightQuote[]>(
+      `/quotes${inquiryId ? `?inquiryId=${encodeURIComponent(inquiryId)}` : ""}`,
+    ),
   createQuote: (body: {
     inquiryId: string;
     vendorId?: string;
@@ -288,15 +314,48 @@ export const api = {
     formValues: Record<string, unknown>;
     vendorIds: string[];
     officeSelections?: { vendorId: string; officeId: string }[];
-    responseFields: { fieldKey: string; fieldLabel: string; isCustom: boolean }[];
+    responseFields: {
+      fieldKey: string;
+      fieldLabel: string;
+      isCustom: boolean;
+    }[];
     sendNow?: boolean;
     mailSubject?: string;
     mailBodyHtml?: string;
+    attachments?: File[];
   }) =>
-    request<Rfq>("/rfqs", {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
+    (() => {
+      const formData = new FormData();
+      formData.set("inquiryId", body.inquiryId);
+      formData.set("inquiryNumber", body.inquiryNumber);
+      formData.set("departmentId", body.departmentId);
+      formData.set("formValues", JSON.stringify(body.formValues));
+      formData.set("vendorIds", JSON.stringify(body.vendorIds));
+      formData.set(
+        "officeSelections",
+        JSON.stringify(body.officeSelections ?? []),
+      );
+      formData.set("responseFields", JSON.stringify(body.responseFields));
+
+      if (body.sendNow !== undefined) {
+        formData.set("sendNow", String(body.sendNow));
+      }
+      if (body.mailSubject !== undefined) {
+        formData.set("mailSubject", body.mailSubject);
+      }
+      if (body.mailBodyHtml !== undefined) {
+        formData.set("mailBodyHtml", body.mailBodyHtml);
+      }
+
+      for (const attachment of body.attachments ?? []) {
+        formData.append("attachments", attachment);
+      }
+
+      return request<Rfq>("/rfqs", {
+        method: "POST",
+        body: formData,
+      });
+    })(),
 
   getCustomerDrafts: () => request<CustomerDraft[]>("/customer-drafts"),
   generateCustomerDraft: (body: {

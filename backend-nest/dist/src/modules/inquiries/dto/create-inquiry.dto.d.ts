@@ -1,5 +1,6 @@
 import { InquiryCustomerRole, InquiryType, ShipmentMode, TradeLane } from '../entities/inquiry.entity';
 export declare class CreateInquiryDto {
+    inquiryNumber?: string;
     customerName: string;
     customerRole?: InquiryCustomerRole;
     tradeLane?: TradeLane;

@@ -89,7 +89,9 @@ function normalizeValue(value: string | null | undefined) {
 }
 
 function getFreightDepartmentId(shipmentMode: string | null | undefined) {
-  return normalizeValue(shipmentMode) === "AIR" ? "air_freight" : "ocean_freight";
+  return normalizeValue(shipmentMode) === "AIR"
+    ? "air_freight"
+    : "ocean_freight";
 }
 
 function buildRecommendations(
@@ -136,7 +138,8 @@ export function planQuoteTypesForInquiry(
 ): QuotePlannerResult {
   if (!inquiry) {
     return {
-      summary: "Select an inquiry to see the quote types you may need to collect.",
+      summary:
+        "Select an inquiry to see the quote types you may need to collect.",
       recommendations: [],
     };
   }
@@ -147,7 +150,9 @@ export function planQuoteTypesForInquiry(
   const rawCustomerRole = inquiry.customerRole ?? "";
   // Normalize old DB values: "Consignee" → "Consignee/Agent"
   const normalizedCustomerRole =
-    (rawCustomerRole as string) === "Consignee" ? "Consignee/Agent" : rawCustomerRole;
+    (rawCustomerRole as string) === "Consignee"
+      ? "Consignee/Agent"
+      : rawCustomerRole;
 
   if (normalizedTradeLane === "EXPORT") {
     if (["DAP", "DDU", "DDP"].includes(normalizedIncoterm)) {
@@ -160,9 +165,13 @@ export function planQuoteTypesForInquiry(
       };
     }
 
-    if (normalizedIncoterm === "EXW" && normalizedCustomerRole === "Consignee/Agent") {
+    if (
+      normalizedIncoterm === "EXW" &&
+      normalizedCustomerRole === "Consignee/Agent"
+    ) {
       return {
-        summary: "EXW exports for a consignee need transport, CHA, and freight coverage. Origin port charges are clubbed with the freight quote.",
+        summary:
+          "EXW exports for a consignee need transport, CHA, and freight coverage. Origin port charges are clubbed with the freight quote.",
         recommendations: buildRecommendations(
           ["road_freight", "cha_services", freightDepartmentId],
           "EXW with consignee — freight and origin port charges come from the same vendor, no separate destination charges needed.",
@@ -170,9 +179,13 @@ export function planQuoteTypesForInquiry(
       };
     }
 
-    if (normalizedIncoterm === "FOB" && normalizedCustomerRole === "Consignee/Agent") {
+    if (
+      normalizedIncoterm === "FOB" &&
+      normalizedCustomerRole === "Consignee/Agent"
+    ) {
       return {
-        summary: "FOB exports for a consignee usually need the main freight plus origin-side port charges.",
+        summary:
+          "FOB exports for a consignee usually need the main freight plus origin-side port charges.",
         recommendations: buildRecommendations(
           [freightDepartmentId, "local_port_charges"],
           "FOB with consignee involvement usually centers on freight plus origin-side local port costs.",
@@ -182,7 +195,8 @@ export function planQuoteTypesForInquiry(
 
     if (normalizedIncoterm === "FOB" && normalizedCustomerRole === "Shipper") {
       return {
-        summary: "FOB exports for a shipper usually need transport and CHA coverage.",
+        summary:
+          "FOB exports for a shipper usually need transport and CHA coverage.",
         recommendations: buildRecommendations(
           ["road_freight", "cha_services"],
           "FOB with shipper involvement usually needs inland movement and export customs support.",
@@ -192,9 +206,15 @@ export function planQuoteTypesForInquiry(
 
     if (normalizedIncoterm === "CIF" && normalizedCustomerRole === "Shipper") {
       return {
-        summary: "CIF exports for a shipper usually need inland, customs, freight, and origin port charges.",
+        summary:
+          "CIF exports for a shipper usually need inland, customs, freight, and origin port charges.",
         recommendations: buildRecommendations(
-          ["road_freight", "cha_services", freightDepartmentId, "local_port_charges"],
+          [
+            "road_freight",
+            "cha_services",
+            freightDepartmentId,
+            "local_port_charges",
+          ],
           "CIF with shipper involvement usually requires pricing up to freight and origin charge coverage.",
         ),
       };
@@ -202,7 +222,8 @@ export function planQuoteTypesForInquiry(
 
     const fallbackRecommendations = buildFallbackRecommendations(inquiry);
     return {
-      summary: "Set both incoterm and customer role to unlock the export quote checklist. Base suggestions are shown for now.",
+      summary:
+        "Set both incoterm and customer role to unlock the export quote checklist. Base suggestions are shown for now.",
       recommendations: buildRecommendations(
         fallbackRecommendations,
         "Base recommendation from inquiry type and shipment mode.",
@@ -212,7 +233,8 @@ export function planQuoteTypesForInquiry(
   }
 
   return {
-    summary: "Recommendations outside export currently use a simpler fallback based on inquiry type, shipment mode, and incoterm.",
+    summary:
+      "Recommendations outside export currently use a simpler fallback based on inquiry type, shipment mode, and incoterm.",
     recommendations: buildRecommendations(
       buildFallbackRecommendations(inquiry),
       "Base recommendation from inquiry type and shipment mode.",
@@ -226,7 +248,11 @@ export function getRecommendedDepartmentIdForInquiry(
   fallbackDepartmentId?: string,
 ) {
   const plan = planQuoteTypesForInquiry(inquiry);
-  return plan.recommendations[0]?.departmentId ?? fallbackDepartmentId ?? "ocean_freight";
+  return (
+    plan.recommendations[0]?.departmentId ??
+    fallbackDepartmentId ??
+    "ocean_freight"
+  );
 }
 
 export function getSuggestedLocationFilter(
@@ -256,4 +282,22 @@ export function getSuggestedLocationFilter(
   }
 
   return { locationFocus: "Any" as const, locationQuery: "" };
+}
+
+export function shouldUseExwClubbedTemplate(
+  inquiry?: Pick<Inquiry, "tradeLane" | "incoterm" | "customerRole"> | null,
+) {
+  if (!inquiry) {
+    return false;
+  }
+
+  const tradeLane = normalizeValue(inquiry.tradeLane);
+  const incoterm = normalizeValue(inquiry.incoterm);
+  const customerRole = (inquiry.customerRole ?? "").trim().toLowerCase();
+
+  return (
+    tradeLane === "EXPORT" &&
+    incoterm === "EXW" &&
+    customerRole === "consignee/agent"
+  );
 }

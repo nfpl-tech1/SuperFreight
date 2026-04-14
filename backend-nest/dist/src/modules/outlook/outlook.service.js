@@ -69,7 +69,9 @@ let OutlookService = class OutlookService {
             },
             body: new URLSearchParams(params).toString(),
         });
-        const payload = (await response.json().catch(() => null));
+        const payload = (await response
+            .json()
+            .catch(() => null));
         if (!response.ok || !payload?.access_token) {
             throw new common_1.BadRequestException(payload?.error_description ||
                 'Microsoft authentication failed. Please reconnect Outlook.');
@@ -123,7 +125,9 @@ let OutlookService = class OutlookService {
         const connection = await this.connectionRepo.findOne({
             where: { userId },
         });
-        if (connection?.isConnected && !connection.accessToken && !connection.refreshToken) {
+        if (connection?.isConnected &&
+            !connection.accessToken &&
+            !connection.refreshToken) {
             throw new common_1.BadRequestException('Your Outlook mailbox was linked under an older setup. Please reconnect Outlook once from onboarding or profile to enable sending.');
         }
         if (!connection?.isConnected || !connection.accessToken) {
@@ -268,6 +272,12 @@ let OutlookService = class OutlookService {
                         address: recipient.address,
                         name: recipient.name ?? undefined,
                     },
+                })),
+                attachments: (payload.attachments ?? []).map((attachment) => ({
+                    '@odata.type': '#microsoft.graph.fileAttachment',
+                    name: attachment.fileName,
+                    contentType: attachment.contentType,
+                    contentBytes: attachment.contentBytes,
                 })),
             },
             saveToSentItems: true,

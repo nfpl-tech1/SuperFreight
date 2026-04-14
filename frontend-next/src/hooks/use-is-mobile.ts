@@ -1,22 +1,7 @@
-import { useSyncExternalStore } from "react";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
-const MOBILE_BREAKPOINT = 768;
-
-function getSnapshot() {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
-}
-
-function subscribe(onStoreChange: () => void) {
-  if (typeof window === "undefined") return () => {};
-
-  const mediaQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-  const handleChange = () => onStoreChange();
-
-  mediaQuery.addEventListener("change", handleChange);
-  return () => mediaQuery.removeEventListener("change", handleChange);
-}
+const MOBILE_QUERY = "(max-width: 767px)";
 
 export function useIsMobile() {
-  return useSyncExternalStore(subscribe, getSnapshot, () => false);
+  return useMediaQuery(MOBILE_QUERY);
 }
