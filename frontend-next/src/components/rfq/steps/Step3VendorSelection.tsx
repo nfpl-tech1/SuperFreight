@@ -38,6 +38,7 @@ interface Props {
     selectedVendors: FilterableVendor[];
     selectedVendorIds: Set<string>;
     onToggleVendor: (id: string) => void;
+    onSelectAllVendors: () => void;
     onClearSelectedVendors: () => void;
     onPreviousPage: () => void;
     onNextPage: () => void;
@@ -60,6 +61,7 @@ export function Step3VendorSelection({
     onResetScopeToExact,
     selectedVendorIds,
     onToggleVendor,
+    onSelectAllVendors,
     onClearSelectedVendors,
     onPreviousPage,
     onNextPage,
@@ -72,6 +74,8 @@ export function Step3VendorSelection({
     const searchMode = filterCriteria.searchMode || "all";
     const vendorTypeMode = filterCriteria.vendorTypeMode || "relevant";
     const selectedVendorCount = selectedVendorIds.size;
+    const allPageSelected =
+        fetchedVendors.length > 0 && fetchedVendors.every((v) => selectedVendorIds.has(v.id));
 
     const vendorTypeOptions: VendorSearchOption[] = [
         { value: "relevant", label: "All Relevant" },
@@ -238,6 +242,19 @@ export function Step3VendorSelection({
 
                         {/* ACTION BAR */}
                         <div className="flex flex-wrap items-center justify-end gap-2 py-2">
+                            {!showSelectedOnly && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 rounded-sm px-3"
+                                    onClick={onSelectAllVendors}
+                                    disabled={allPageSelected || fetchedVendors.length === 0}
+                                >
+                                    Select Page
+                                </Button>
+                            )}
+
                             <Button
                                 type="button"
                                 variant={showSelectedOnly ? "default" : "outline"}

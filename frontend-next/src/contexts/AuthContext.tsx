@@ -3,6 +3,7 @@
 import React, {
   createContext,
   useContext,
+  useCallback,
   useEffect,
   useState,
   ReactNode,
@@ -34,33 +35,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRequiresOnboarding(session.onboarding_required);
   };
 
-  const refreshSession = async () => {
+  const restoreAccessTokenFromRefreshCookie = useCallback(async () => {
+    const refreshedSession = await api.refreshAuth();
+    storeToken(refreshedSession.access_token);
+  }, []);
+
+  const refreshSession = useCallback(async () => {
     const token = getStoredToken();
-    if (!token) {
-      setUser(null);
-      setRequiresOnboarding(false);
-      setIsLoading(false);
-      return;
-    }
 
     try {
+      if (!token) {
+        await restoreAccessTokenFromRefreshCookie();
+      }
+
       const session = await api.getSession();
       applySession(session);
     } catch {
-      clearStoredToken();
-      setUser(null);
-      setRequiresOnboarding(false);
+      try {
+        await restoreAccessTokenFromRefreshCookie();
+        const session = await api.getSession();
+        applySession(session);
+      } catch {
+        clearStoredToken();
+        setUser(null);
+        setRequiresOnboarding(false);
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [restoreAccessTokenFromRefreshCookie]);
 
   useEffect(() => {
     void refreshSession();
-  }, []);
+  }, [refreshSession]);
 
   const authenticate = async (
-    action: () => Promise<{ access_token: string }>
+    action: () => Promise<{ access_token: string }>,
   ) => {
     const result = await action();
     storeToken(result.access_token);

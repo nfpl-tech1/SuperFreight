@@ -19,6 +19,10 @@ const typeorm_2 = require("typeorm");
 const customer_draft_entity_1 = require("./entities/customer-draft.entity");
 const freight_quote_entity_1 = require("../shipments/entities/freight-quote.entity");
 const inquiry_entity_1 = require("../inquiries/entities/inquiry.entity");
+const DEFAULT_MARGIN_PERCENT = 10;
+const DEFAULT_CURRENCY = 'USD';
+const UNKNOWN_VALUE_LABEL = 'TBC';
+const DEFAULT_SHIPMENT_MODE = 'FREIGHT';
 let CustomerQuotesService = class CustomerQuotesService {
     draftRepo;
     quoteRepo;
@@ -32,26 +36,62 @@ let CustomerQuotesService = class CustomerQuotesService {
         return this.draftRepo.find({ order: { createdAt: 'DESC' } });
     }
     async generate(dto, user) {
-        const quote = await this.quoteRepo.findOne({ where: { id: dto.quoteId } });
-        const inquiry = await this.inquiryRepo.findOne({
-            where: { id: dto.inquiryId },
-        });
-        if (!quote || !inquiry) {
-            throw new common_1.NotFoundException('Inquiry or quote not found');
-        }
-        const margin = dto.marginPercent ?? 10;
-        const baseRate = Number(quote.totalRate ?? 0);
-        const sellRate = Math.round(baseRate * (1 + margin / 100));
-        const draftBody = `Dear Customer,\n\nThank you for your inquiry ${inquiry.inquiryNumber}.\n\nTrade Lane: ${inquiry.origin ?? 'TBC'} -> ${inquiry.destination ?? 'TBC'}\nMode: ${inquiry.shipmentMode ?? 'FREIGHT'}\nCargo: ${inquiry.cargoSummary ?? 'TBC'}\n\nOur offer: ${sellRate} ${quote.currency ?? 'USD'}\nTransit: ${quote.transitDays ?? 'TBC'} days\nValidity: ${quote.validUntil ?? 'TBC'}\n\nBest regards,\nNagarkot Forwarders Pvt. Ltd.`;
+        const { quote, inquiry } = await this.loadDraftContextOrThrow(dto);
+        const marginPercent = this.resolveMarginPercent(dto);
+        const sellRate = this.calculateSellRate(quote, marginPercent);
+        const draftBody = this.buildDraftBody(inquiry, quote, sellRate);
         return this.draftRepo.save(this.draftRepo.create({
             inquiryId: dto.inquiryId,
             quoteId: dto.quoteId,
             generatedByUserId: user.id,
-            marginPercent: margin,
-            subjectLine: `Quotation for ${inquiry.inquiryNumber}`,
+            marginPercent,
+            subjectLine: this.buildSubjectLine(inquiry),
             draftBody,
             isSelected: true,
         }));
+    }
+    async loadDraftContextOrThrow(dto) {
+        const [quote, inquiry] = await Promise.all([
+            this.quoteRepo.findOne({ where: { id: dto.quoteId } }),
+            this.inquiryRepo.findOne({
+                where: { id: dto.inquiryId },
+            }),
+        ]);
+        if (!quote || !inquiry) {
+            throw new common_1.NotFoundException('Inquiry or quote not found');
+        }
+        return { quote, inquiry };
+    }
+    resolveMarginPercent(dto) {
+        return dto.marginPercent ?? DEFAULT_MARGIN_PERCENT;
+    }
+    calculateSellRate(quote, marginPercent) {
+        const baseRate = Number(quote.totalRate ?? 0);
+        return Math.round(baseRate * (1 + marginPercent / 100));
+    }
+    buildSubjectLine(inquiry) {
+        return `Quotation for ${inquiry.inquiryNumber}`;
+    }
+    buildDraftBody(inquiry, quote, sellRate) {
+        return [
+            'Dear Customer,',
+            '',
+            `Thank you for your inquiry ${inquiry.inquiryNumber}.`,
+            '',
+            `Trade Lane: ${this.formatTradeLane(inquiry)}`,
+            `Mode: ${inquiry.shipmentMode ?? DEFAULT_SHIPMENT_MODE}`,
+            `Cargo: ${inquiry.cargoSummary ?? UNKNOWN_VALUE_LABEL}`,
+            '',
+            `Our offer: ${sellRate} ${quote.currency ?? DEFAULT_CURRENCY}`,
+            `Transit: ${quote.transitDays ?? UNKNOWN_VALUE_LABEL} days`,
+            `Validity: ${quote.validUntil ?? UNKNOWN_VALUE_LABEL}`,
+            '',
+            'Best regards,',
+            'Nagarkot Forwarders Pvt. Ltd.',
+        ].join('\n');
+    }
+    formatTradeLane(inquiry) {
+        return `${inquiry.origin ?? UNKNOWN_VALUE_LABEL} -> ${inquiry.destination ?? UNKNOWN_VALUE_LABEL}`;
     }
 };
 exports.CustomerQuotesService = CustomerQuotesService;

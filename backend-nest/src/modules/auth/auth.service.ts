@@ -24,6 +24,15 @@ import {
 } from './os-auth.helpers';
 import { fetchFromOs, postToOs } from './os-auth-http.helpers';
 
+type AuthSessionResult = {
+  session: {
+    access_token: string;
+    token_type: 'bearer';
+    user: ReturnType<UsersService['format']>;
+  };
+  refreshToken: string;
+};
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -106,6 +115,17 @@ export class AuthService {
     return this.issueSession(user);
   }
 
+  async refreshSession(refreshToken: string) {
+    const payload = await this.verifyRefreshToken(refreshToken);
+    const user = await this.usersService.findById(payload.sub);
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('User not found or has been deactivated');
+    }
+
+    return this.issueSession(user);
+  }
+
   buildSessionPayload(user: User) {
     return {
       user: this.usersService.format(user),
@@ -113,17 +133,59 @@ export class AuthService {
     };
   }
 
-  private async issueSession(user: User) {
+  private issueSession(user: User): AuthSessionResult {
     if (!user.isActive) {
       throw new ForbiddenException('Account has been disabled');
     }
 
     const access_token = this.jwtService.sign({ sub: user.id });
     return {
-      access_token,
-      token_type: 'bearer',
-      user: this.usersService.format(user),
+      session: {
+        access_token,
+        token_type: 'bearer',
+        user: this.usersService.format(user),
+      },
+      refreshToken: this.jwtService.sign(
+        { sub: user.id, type: 'refresh' },
+        {
+          secret:
+            this.config.get<string>('jwt.refreshSecret') ??
+            this.config.get<string>('jwt.secret'),
+          expiresIn: (this.config.get<string>('jwt.refreshExpiresIn') ??
+            '30d') as `${number}${'s' | 'm' | 'h' | 'd'}`,
+        },
+      ),
     };
+  }
+
+  getRefreshCookieName() {
+    return (
+      this.config.get<string>('jwt.refreshCookieName') ?? 'sf_refresh_token'
+    );
+  }
+
+  getRefreshCookieMaxAgeSeconds() {
+    const expiresIn = this.config.get<string>('jwt.refreshExpiresIn') ?? '30d';
+    const match = /^(\d+)([smhd])$/.exec(expiresIn);
+
+    if (!match) {
+      return 30 * 24 * 60 * 60;
+    }
+
+    const value = Number(match[1]);
+    const unit = match[2];
+    const multipliers: Record<string, number> = {
+      s: 1,
+      m: 60,
+      h: 60 * 60,
+      d: 24 * 60 * 60,
+    };
+
+    return value * multipliers[unit];
+  }
+
+  shouldUseSecureCookies() {
+    return this.config.get<string>('nodeEnv') === 'production';
   }
 
   private async verifyOsSession(osUserId: string) {
@@ -135,7 +197,7 @@ export class AuthService {
       throw new ForbiddenException('Unable to verify OS session');
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as { is_active: boolean };
     assertOsSessionActive(data.is_active);
   }
 
@@ -163,6 +225,31 @@ export class AuthService {
     return verifyOsSsoSignature(token, await this.getOsPublicKey());
   }
 
+  private async verifyRefreshToken(token: string): Promise<{ sub: string }> {
+    try {
+      const payload = await this.jwtService.verifyAsync<{
+        sub: string;
+        type?: string;
+      }>(token, {
+        secret:
+          this.config.get<string>('jwt.refreshSecret') ??
+          this.config.get<string>('jwt.secret'),
+      });
+
+      if (!payload.sub || payload.type !== 'refresh') {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      return { sub: payload.sub };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      throw new UnauthorizedException('Refresh token is invalid or expired');
+    }
+  }
+
   private async getOsPublicKey(): Promise<string> {
     const configured = this.config.get<string>('os.jwtPublicKey');
     if (configured) return configured;
@@ -171,7 +258,7 @@ export class AuthService {
     if (!res || !res.ok) {
       throw new UnauthorizedException('OS public key is unavailable');
     }
-    const data = await res.json();
+    const data = (await res.json()) as { public_key: string };
     return data.public_key;
   }
 }

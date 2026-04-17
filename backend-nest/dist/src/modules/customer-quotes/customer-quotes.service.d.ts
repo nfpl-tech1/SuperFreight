@@ -11,4 +11,10 @@ export declare class CustomerQuotesService {
     constructor(draftRepo: Repository<CustomerDraft>, quoteRepo: Repository<FreightQuote>, inquiryRepo: Repository<Inquiry>);
     list(): Promise<CustomerDraft[]>;
     generate(dto: GenerateCustomerDraftDto, user: User): Promise<CustomerDraft>;
+    private loadDraftContextOrThrow;
+    private resolveMarginPercent;
+    private calculateSellRate;
+    private buildSubjectLine;
+    private buildDraftBody;
+    private formatTradeLane;
 }

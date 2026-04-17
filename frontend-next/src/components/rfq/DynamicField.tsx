@@ -82,6 +82,8 @@ export function DynamicField({ field, value, values, onChange, error }: Props) {
             field={field}
             value={value as string}
             onChange={handleChange}
+            unitValue={unitKey ? unitValue : undefined}
+            onUnitChange={handleUnitChange}
           />
         );
       case "multiselect":

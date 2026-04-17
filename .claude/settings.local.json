@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"d:/Nagarkot/OS and All/SuperFreight/frontend-next/src\" -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) -exec bash -c 'wc -l \"$1\" | awk \"{print \\\\$1 \\\\\": \\\\\" \\\\\"$1\\\\\"}\"' _ {} \\\\;)",
+      "Bash(xargs wc *)",
+      "Bash(xargs grep *)"
+    ]
+  }
+}

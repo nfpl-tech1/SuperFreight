@@ -1,6 +1,7 @@
 import { request } from "@/lib/api/request";
 import type {
   AppRoleDefinition,
+  AuthTokenResponse,
   CustomerDraft,
   FreightQuote,
   Inquiry,
@@ -99,22 +100,21 @@ function buildPortMasterQueryString(query: PortMasterListQuery) {
 
 export const api = {
   login: (email: string, password: string) =>
-    request<{ access_token: string; token_type: string; user: User }>(
-      "/auth/login",
-      {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      },
-    ),
+    request<AuthTokenResponse>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    }),
 
   consumeSsoToken: (token: string) =>
-    request<{ access_token: string; token_type: string; user: User }>(
-      "/auth/sso",
-      {
-        method: "POST",
-        body: JSON.stringify({ token }),
-      },
-    ),
+    request<AuthTokenResponse>("/auth/sso", {
+      method: "POST",
+      body: JSON.stringify({ token }),
+    }),
+
+  refreshAuth: () =>
+    request<AuthTokenResponse>("/auth/refresh", {
+      method: "POST",
+    }),
 
   logout: () =>
     request<{ success: boolean }>("/auth/logout", {

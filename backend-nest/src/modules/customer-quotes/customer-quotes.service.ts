@@ -7,6 +7,11 @@ import { FreightQuote } from '../shipments/entities/freight-quote.entity';
 import { Inquiry } from '../inquiries/entities/inquiry.entity';
 import { User } from '../users/entities/user.entity';
 
+const DEFAULT_MARGIN_PERCENT = 10;
+const DEFAULT_CURRENCY = 'USD';
+const UNKNOWN_VALUE_LABEL = 'TBC';
+const DEFAULT_SHIPMENT_MODE = 'FREIGHT';
+
 @Injectable()
 export class CustomerQuotesService {
   constructor(
@@ -23,29 +28,76 @@ export class CustomerQuotesService {
   }
 
   async generate(dto: GenerateCustomerDraftDto, user: User) {
-    const quote = await this.quoteRepo.findOne({ where: { id: dto.quoteId } });
-    const inquiry = await this.inquiryRepo.findOne({
-      where: { id: dto.inquiryId },
-    });
-    if (!quote || !inquiry) {
-      throw new NotFoundException('Inquiry or quote not found');
-    }
-
-    const margin = dto.marginPercent ?? 10;
-    const baseRate = Number(quote.totalRate ?? 0);
-    const sellRate = Math.round(baseRate * (1 + margin / 100));
-    const draftBody = `Dear Customer,\n\nThank you for your inquiry ${inquiry.inquiryNumber}.\n\nTrade Lane: ${inquiry.origin ?? 'TBC'} -> ${inquiry.destination ?? 'TBC'}\nMode: ${inquiry.shipmentMode ?? 'FREIGHT'}\nCargo: ${inquiry.cargoSummary ?? 'TBC'}\n\nOur offer: ${sellRate} ${quote.currency ?? 'USD'}\nTransit: ${quote.transitDays ?? 'TBC'} days\nValidity: ${quote.validUntil ?? 'TBC'}\n\nBest regards,\nNagarkot Forwarders Pvt. Ltd.`;
+    const { quote, inquiry } = await this.loadDraftContextOrThrow(dto);
+    const marginPercent = this.resolveMarginPercent(dto);
+    const sellRate = this.calculateSellRate(quote, marginPercent);
+    const draftBody = this.buildDraftBody(inquiry, quote, sellRate);
 
     return this.draftRepo.save(
       this.draftRepo.create({
         inquiryId: dto.inquiryId,
         quoteId: dto.quoteId,
         generatedByUserId: user.id,
-        marginPercent: margin,
-        subjectLine: `Quotation for ${inquiry.inquiryNumber}`,
+        marginPercent,
+        subjectLine: this.buildSubjectLine(inquiry),
         draftBody,
         isSelected: true,
       }),
     );
+  }
+
+  private async loadDraftContextOrThrow(dto: GenerateCustomerDraftDto) {
+    const [quote, inquiry] = await Promise.all([
+      this.quoteRepo.findOne({ where: { id: dto.quoteId } }),
+      this.inquiryRepo.findOne({
+        where: { id: dto.inquiryId },
+      }),
+    ]);
+
+    if (!quote || !inquiry) {
+      throw new NotFoundException('Inquiry or quote not found');
+    }
+
+    return { quote, inquiry };
+  }
+
+  private resolveMarginPercent(dto: GenerateCustomerDraftDto) {
+    return dto.marginPercent ?? DEFAULT_MARGIN_PERCENT;
+  }
+
+  private calculateSellRate(quote: FreightQuote, marginPercent: number) {
+    const baseRate = Number(quote.totalRate ?? 0);
+    return Math.round(baseRate * (1 + marginPercent / 100));
+  }
+
+  private buildSubjectLine(inquiry: Inquiry) {
+    return `Quotation for ${inquiry.inquiryNumber}`;
+  }
+
+  private buildDraftBody(
+    inquiry: Inquiry,
+    quote: FreightQuote,
+    sellRate: number,
+  ) {
+    return [
+      'Dear Customer,',
+      '',
+      `Thank you for your inquiry ${inquiry.inquiryNumber}.`,
+      '',
+      `Trade Lane: ${this.formatTradeLane(inquiry)}`,
+      `Mode: ${inquiry.shipmentMode ?? DEFAULT_SHIPMENT_MODE}`,
+      `Cargo: ${inquiry.cargoSummary ?? UNKNOWN_VALUE_LABEL}`,
+      '',
+      `Our offer: ${sellRate} ${quote.currency ?? DEFAULT_CURRENCY}`,
+      `Transit: ${quote.transitDays ?? UNKNOWN_VALUE_LABEL} days`,
+      `Validity: ${quote.validUntil ?? UNKNOWN_VALUE_LABEL}`,
+      '',
+      'Best regards,',
+      'Nagarkot Forwarders Pvt. Ltd.',
+    ].join('\n');
+  }
+
+  private formatTradeLane(inquiry: Inquiry) {
+    return `${inquiry.origin ?? UNKNOWN_VALUE_LABEL} -> ${inquiry.destination ?? UNKNOWN_VALUE_LABEL}`;
   }
 }

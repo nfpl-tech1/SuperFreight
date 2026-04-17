@@ -1,5 +1,6 @@
 import type { DepartmentDefinition } from "@/types/rfq";
 import {
+  DIMENSION_UNIT_OPTIONS,
   PACKAGE_UNIT_OPTIONS,
   PACKAGE_WEIGHT_UNIT_OPTIONS,
   VOLUME_UNIT_OPTIONS,
@@ -105,6 +106,9 @@ export const roadFreight: DepartmentDefinition = {
       label: "Dimensions per package",
       type: "text",
       required: false,
+      unitOptions: [...DIMENSION_UNIT_OPTIONS],
+      defaultUnit: "CM",
+      ui: { placeholder: "Example: 120 x 80 x 95" },
       rules: { visible_if: { mode: ["AIR", "LCL"] } },
       halfWidth: true,
     },

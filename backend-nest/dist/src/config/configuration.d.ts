@@ -20,6 +20,9 @@ declare const _default: () => {
     jwt: {
         secret: string;
         expiresIn: string;
+        refreshSecret: string;
+        refreshExpiresIn: string;
+        refreshCookieName: string;
     };
     os: {
         appSlug: string;

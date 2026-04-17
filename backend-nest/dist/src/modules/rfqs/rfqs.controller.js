@@ -24,6 +24,10 @@ const create_rfq_dto_1 = require("./dto/create-rfq.dto");
 const rfqs_service_1 = require("./rfqs.service");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const CREATE_RFQ_DTO_VALIDATION_OPTIONS = {
+    whitelist: true,
+    forbidNonWhitelisted: true,
+};
 function parseJsonField(value, fieldName) {
     if (value === undefined || value === null || value === '') {
         return undefined;
@@ -53,6 +57,23 @@ function parseBooleanField(value) {
     }
     return undefined;
 }
+function buildCreateRfqDtoPayload(rawBody) {
+    return {
+        inquiryId: rawBody.inquiryId,
+        inquiryNumber: rawBody.inquiryNumber,
+        departmentId: rawBody.departmentId,
+        formValues: parseJsonField(rawBody.formValues, 'formValues') ?? {},
+        vendorIds: parseJsonField(rawBody.vendorIds, 'vendorIds') ?? [],
+        officeSelections: parseJsonField(rawBody.officeSelections, 'officeSelections') ?? [],
+        responseFields: parseJsonField(rawBody.responseFields, 'responseFields') ?? [],
+        sendNow: parseBooleanField(rawBody.sendNow),
+        mailSubject: rawBody.mailSubject,
+        mailBodyHtml: rawBody.mailBodyHtml,
+    };
+}
+function getFirstValidationMessage(validationErrors) {
+    return Object.values(validationErrors[0]?.constraints ?? {})[0];
+}
 let RfqsController = class RfqsController {
     rfqsService;
     constructor(rfqsService) {
@@ -65,25 +86,10 @@ let RfqsController = class RfqsController {
         return this.rfqsService.create(this.parseCreateRfqDto(rawBody), user, files);
     }
     parseCreateRfqDto(rawBody) {
-        const dto = (0, class_transformer_1.plainToInstance)(create_rfq_dto_1.CreateRfqDto, {
-            inquiryId: rawBody.inquiryId,
-            inquiryNumber: rawBody.inquiryNumber,
-            departmentId: rawBody.departmentId,
-            formValues: parseJsonField(rawBody.formValues, 'formValues') ?? {},
-            vendorIds: parseJsonField(rawBody.vendorIds, 'vendorIds') ?? [],
-            officeSelections: parseJsonField(rawBody.officeSelections, 'officeSelections') ?? [],
-            responseFields: parseJsonField(rawBody.responseFields, 'responseFields') ?? [],
-            sendNow: parseBooleanField(rawBody.sendNow),
-            mailSubject: rawBody.mailSubject,
-            mailBodyHtml: rawBody.mailBodyHtml,
-        });
-        const validationErrors = (0, class_validator_1.validateSync)(dto, {
-            whitelist: true,
-            forbidNonWhitelisted: true,
-        });
+        const dto = (0, class_transformer_1.plainToInstance)(create_rfq_dto_1.CreateRfqDto, buildCreateRfqDtoPayload(rawBody));
+        const validationErrors = (0, class_validator_1.validateSync)(dto, CREATE_RFQ_DTO_VALIDATION_OPTIONS);
         if (validationErrors.length > 0) {
-            const firstConstraint = Object.values(validationErrors[0]?.constraints ?? {})[0];
-            throw new common_1.BadRequestException(firstConstraint || 'Invalid RFQ payload.');
+            throw new common_1.BadRequestException(getFirstValidationMessage(validationErrors) || 'Invalid RFQ payload.');
         }
         return dto;
     }

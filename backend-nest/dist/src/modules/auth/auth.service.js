@@ -83,22 +83,60 @@ let AuthService = AuthService_1 = class AuthService {
         const user = await this.usersService.syncFromOsUser((0, os_auth_helpers_1.mapSsoTokenToOsUserPayload)(payload));
         return this.issueSession(user);
     }
+    async refreshSession(refreshToken) {
+        const payload = await this.verifyRefreshToken(refreshToken);
+        const user = await this.usersService.findById(payload.sub);
+        if (!user || !user.isActive) {
+            throw new common_1.UnauthorizedException('User not found or has been deactivated');
+        }
+        return this.issueSession(user);
+    }
     buildSessionPayload(user) {
         return {
             user: this.usersService.format(user),
             onboarding_required: !user.outlookConnectedAt,
         };
     }
-    async issueSession(user) {
+    issueSession(user) {
         if (!user.isActive) {
             throw new common_1.ForbiddenException('Account has been disabled');
         }
         const access_token = this.jwtService.sign({ sub: user.id });
         return {
-            access_token,
-            token_type: 'bearer',
-            user: this.usersService.format(user),
+            session: {
+                access_token,
+                token_type: 'bearer',
+                user: this.usersService.format(user),
+            },
+            refreshToken: this.jwtService.sign({ sub: user.id, type: 'refresh' }, {
+                secret: this.config.get('jwt.refreshSecret') ??
+                    this.config.get('jwt.secret'),
+                expiresIn: (this.config.get('jwt.refreshExpiresIn') ??
+                    '30d'),
+            }),
         };
+    }
+    getRefreshCookieName() {
+        return (this.config.get('jwt.refreshCookieName') ?? 'sf_refresh_token');
+    }
+    getRefreshCookieMaxAgeSeconds() {
+        const expiresIn = this.config.get('jwt.refreshExpiresIn') ?? '30d';
+        const match = /^(\d+)([smhd])$/.exec(expiresIn);
+        if (!match) {
+            return 30 * 24 * 60 * 60;
+        }
+        const value = Number(match[1]);
+        const unit = match[2];
+        const multipliers = {
+            s: 1,
+            m: 60,
+            h: 60 * 60,
+            d: 24 * 60 * 60,
+        };
+        return value * multipliers[unit];
+    }
+    shouldUseSecureCookies() {
+        return this.config.get('nodeEnv') === 'production';
     }
     async verifyOsSession(osUserId) {
         const res = await (0, os_auth_http_helpers_1.postToOs)(this.config, '/auth/verify-session', {
@@ -107,7 +145,7 @@ let AuthService = AuthService_1 = class AuthService {
         if (!res || !res.ok) {
             throw new common_1.ForbiddenException('Unable to verify OS session');
         }
-        const data = await res.json();
+        const data = (await res.json());
         (0, os_auth_helpers_1.assertOsSessionActive)(data.is_active);
     }
     async consumeOsSsoToken(tokenId) {
@@ -126,6 +164,24 @@ let AuthService = AuthService_1 = class AuthService {
     async verifyOsSsoToken(token) {
         return (0, os_auth_helpers_1.verifyOsSsoSignature)(token, await this.getOsPublicKey());
     }
+    async verifyRefreshToken(token) {
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: this.config.get('jwt.refreshSecret') ??
+                    this.config.get('jwt.secret'),
+            });
+            if (!payload.sub || payload.type !== 'refresh') {
+                throw new common_1.UnauthorizedException('Invalid refresh token');
+            }
+            return { sub: payload.sub };
+        }
+        catch (error) {
+            if (error instanceof common_1.UnauthorizedException) {
+                throw error;
+            }
+            throw new common_1.UnauthorizedException('Refresh token is invalid or expired');
+        }
+    }
     async getOsPublicKey() {
         const configured = this.config.get('os.jwtPublicKey');
         if (configured)
@@ -134,7 +190,7 @@ let AuthService = AuthService_1 = class AuthService {
         if (!res || !res.ok) {
             throw new common_1.UnauthorizedException('OS public key is unavailable');
         }
-        const data = await res.json();
+        const data = (await res.json());
         return data.public_key;
     }
 };

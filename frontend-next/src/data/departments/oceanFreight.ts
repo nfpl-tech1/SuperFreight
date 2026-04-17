@@ -1,6 +1,7 @@
 import type { DepartmentDefinition } from "@/types/rfq";
 import { INCOTERM_OPTIONS } from "@/lib/inquiryQuotePlanning";
 import {
+  DIMENSION_UNIT_OPTIONS,
   PACKAGE_UNIT_OPTIONS,
   VOLUME_UNIT_OPTIONS,
   WEIGHT_UNIT_OPTIONS,
@@ -98,10 +99,12 @@ export const oceanFreight: DepartmentDefinition = {
     },
     {
       key: "dimensions",
-      label: "Dimensions (L x W x H in cm)",
+      label: "Dimensions (L x W x H)",
       type: "multiline",
       required: true,
-      ui: { placeholder: "Example: 120 x 80 x 95 cm, 2 packages" },
+      unitOptions: [...DIMENSION_UNIT_OPTIONS],
+      defaultUnit: "CM",
+      ui: { placeholder: "Example: 120 x 80 x 95, 2 packages" },
       rules: { visible_if: { mode: "LCL" } },
     },
     {

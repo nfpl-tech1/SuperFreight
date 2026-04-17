@@ -47,6 +47,13 @@ export default () => ({
   jwt: {
     secret: process.env.JWT_SECRET || 'changeme-in-production',
     expiresIn: process.env.JWT_EXPIRES_IN || '30m',
+    refreshSecret:
+      process.env.JWT_REFRESH_SECRET ||
+      process.env.JWT_SECRET ||
+      'changeme-refresh-in-production',
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
+    refreshCookieName:
+      process.env.JWT_REFRESH_COOKIE_NAME || 'sf_refresh_token',
   },
   os: {
     appSlug: process.env.OS_APP_SLUG || 'super-freight',

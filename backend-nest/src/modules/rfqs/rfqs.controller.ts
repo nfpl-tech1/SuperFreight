@@ -17,7 +17,23 @@ import { User } from '../users/entities/user.entity';
 import { CreateRfqDto } from './dto/create-rfq.dto';
 import { RfqsService } from './rfqs.service';
 import { plainToInstance } from 'class-transformer';
-import { validateSync } from 'class-validator';
+import { validateSync, ValidationError } from 'class-validator';
+
+type OfficeSelectionInput = {
+  vendorId: string;
+  officeId: string;
+};
+
+type ResponseFieldInput = {
+  fieldKey: string;
+  fieldLabel: string;
+  isCustom: boolean;
+};
+
+const CREATE_RFQ_DTO_VALIDATION_OPTIONS = {
+  whitelist: true,
+  forbidNonWhitelisted: true,
+} as const;
 
 function parseJsonField<TValue>(
   value: unknown,
@@ -56,6 +72,37 @@ function parseBooleanField(value: unknown) {
   return undefined;
 }
 
+function buildCreateRfqDtoPayload(rawBody: Record<string, unknown>) {
+  return {
+    inquiryId: rawBody.inquiryId,
+    inquiryNumber: rawBody.inquiryNumber,
+    departmentId: rawBody.departmentId,
+    formValues:
+      parseJsonField<Record<string, unknown>>(
+        rawBody.formValues,
+        'formValues',
+      ) ?? {},
+    vendorIds: parseJsonField<string[]>(rawBody.vendorIds, 'vendorIds') ?? [],
+    officeSelections:
+      parseJsonField<OfficeSelectionInput[]>(
+        rawBody.officeSelections,
+        'officeSelections',
+      ) ?? [],
+    responseFields:
+      parseJsonField<ResponseFieldInput[]>(
+        rawBody.responseFields,
+        'responseFields',
+      ) ?? [],
+    sendNow: parseBooleanField(rawBody.sendNow),
+    mailSubject: rawBody.mailSubject,
+    mailBodyHtml: rawBody.mailBodyHtml,
+  };
+}
+
+function getFirstValidationMessage(validationErrors: ValidationError[]) {
+  return Object.values(validationErrors[0]?.constraints ?? {})[0];
+}
+
 @Controller('rfqs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class RfqsController {
@@ -82,44 +129,19 @@ export class RfqsController {
   }
 
   private parseCreateRfqDto(rawBody: Record<string, unknown>) {
-    const dto = plainToInstance(CreateRfqDto, {
-      inquiryId: rawBody.inquiryId,
-      inquiryNumber: rawBody.inquiryNumber,
-      departmentId: rawBody.departmentId,
-      formValues:
-        parseJsonField<Record<string, unknown>>(
-          rawBody.formValues,
-          'formValues',
-        ) ?? {},
-      vendorIds: parseJsonField<string[]>(rawBody.vendorIds, 'vendorIds') ?? [],
-      officeSelections:
-        parseJsonField<Array<{ vendorId: string; officeId: string }>>(
-          rawBody.officeSelections,
-          'officeSelections',
-        ) ?? [],
-      responseFields:
-        parseJsonField<
-          Array<{
-            fieldKey: string;
-            fieldLabel: string;
-            isCustom: boolean;
-          }>
-        >(rawBody.responseFields, 'responseFields') ?? [],
-      sendNow: parseBooleanField(rawBody.sendNow),
-      mailSubject: rawBody.mailSubject,
-      mailBodyHtml: rawBody.mailBodyHtml,
-    });
-
-    const validationErrors = validateSync(dto, {
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    });
+    const dto = plainToInstance(
+      CreateRfqDto,
+      buildCreateRfqDtoPayload(rawBody),
+    );
+    const validationErrors = validateSync(
+      dto,
+      CREATE_RFQ_DTO_VALIDATION_OPTIONS,
+    );
 
     if (validationErrors.length > 0) {
-      const firstConstraint = Object.values(
-        validationErrors[0]?.constraints ?? {},
-      )[0];
-      throw new BadRequestException(firstConstraint || 'Invalid RFQ payload.');
+      throw new BadRequestException(
+        getFirstValidationMessage(validationErrors) || 'Invalid RFQ payload.',
+      );
     }
 
     return dto;

@@ -32,6 +32,7 @@ export declare class RfqsService {
     private markInquiryAsRfqSent;
     private resolveVendorRecipients;
     private resolveRecipientsForVendor;
+    private resolveOfficeRecipients;
     private getUniqueVendorIdsOrThrow;
     private buildOfficeSelectionMap;
     private loadVendorRecipientLookups;
@@ -42,5 +43,6 @@ export declare class RfqsService {
     private collectCcEmails;
     private throwIfRecipientsMissing;
     private dedupeRecipients;
+    private createRecipientResolution;
     private groupBy;
 }

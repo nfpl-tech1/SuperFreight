@@ -42,6 +42,16 @@ type VendorRecipientLookups = {
   ccByOfficeId: Map<string, VendorCcRecipient[]>;
 };
 
+type VendorRecipientResolution = {
+  recipients: VendorRecipient[];
+  missingRecipients: string[];
+};
+
+type TargetOfficeResolution = {
+  offices: VendorOffice[];
+  missingRecipients: string[];
+};
+
 type MailAttachment = {
   fileName: string;
   contentType: string;
@@ -213,51 +223,68 @@ export class RfqsService {
     const uniqueVendorIds = this.getUniqueVendorIdsOrThrow(vendorIds);
     const officeSelectionMap = this.buildOfficeSelectionMap(officeSelections);
     const lookups = await this.loadVendorRecipientLookups(uniqueVendorIds);
-
-    const missingRecipients: string[] = [];
-    const recipients: VendorRecipient[] = [];
-
-    for (const vendorId of uniqueVendorIds) {
-      recipients.push(
-        ...this.resolveRecipientsForVendor(
-          vendorId,
-          lookups,
-          officeSelectionMap.get(vendorId) ?? [],
-          missingRecipients,
-        ),
-      );
-    }
+    const resolutions = uniqueVendorIds.map((vendorId) =>
+      this.resolveRecipientsForVendor(
+        vendorId,
+        lookups,
+        officeSelectionMap.get(vendorId) ?? [],
+      ),
+    );
+    const missingRecipients = resolutions.flatMap(
+      (resolution) => resolution.missingRecipients,
+    );
 
     this.throwIfRecipientsMissing(missingRecipients);
-    return this.dedupeRecipients(recipients);
+    return this.dedupeRecipients(
+      resolutions.flatMap((resolution) => resolution.recipients),
+    );
   }
 
   private resolveRecipientsForVendor(
     vendorId: string,
     lookups: VendorRecipientLookups,
     selectedOfficeIds: string[],
-    missingRecipients: string[],
-  ) {
+  ): VendorRecipientResolution {
     const vendor = lookups.vendorsById.get(vendorId);
 
     if (!vendor) {
-      missingRecipients.push(`Unknown vendor (${vendorId})`);
-      return [];
+      return this.createRecipientResolution(
+        [],
+        [`Unknown vendor (${vendorId})`],
+      );
     }
 
-    const targetOffices = this.resolveTargetOfficesForVendor(
+    const targetOfficeResolution = this.resolveTargetOfficesForVendor(
       vendor,
       lookups.officesByVendorId.get(vendorId) ?? [],
       selectedOfficeIds,
-      missingRecipients,
     );
 
-    if (targetOffices.length === 0) {
-      missingRecipients.push(vendor.companyName);
-      return [];
+    if (targetOfficeResolution.offices.length === 0) {
+      return this.createRecipientResolution(
+        [],
+        [...targetOfficeResolution.missingRecipients, vendor.companyName],
+      );
     }
 
-    return targetOffices.flatMap((office) => {
+    return this.resolveOfficeRecipients(
+      vendor,
+      targetOfficeResolution.offices,
+      lookups,
+      targetOfficeResolution.missingRecipients,
+    );
+  }
+
+  private resolveOfficeRecipients(
+    vendor: VendorMaster,
+    offices: VendorOffice[],
+    lookups: VendorRecipientLookups,
+    initialMissingRecipients: string[],
+  ): VendorRecipientResolution {
+    const recipients: VendorRecipient[] = [];
+    const missingRecipients = [...initialMissingRecipients];
+
+    for (const office of offices) {
       const recipient = this.buildVendorRecipient(
         vendor,
         office,
@@ -269,11 +296,13 @@ export class RfqsService {
         missingRecipients.push(
           `${vendor.companyName} (${office.officeName} has no usable contact email)`,
         );
-        return [];
+        continue;
       }
 
-      return [recipient];
-    });
+      recipients.push(recipient);
+    }
+
+    return this.createRecipientResolution(recipients, missingRecipients);
   }
 
   private getUniqueVendorIdsOrThrow(vendorIds: string[]) {
@@ -339,12 +368,12 @@ export class RfqsService {
     vendor: VendorMaster,
     vendorOffices: VendorOffice[],
     selectedOfficeIds: string[],
-    missingRecipients: string[],
-  ) {
+  ): TargetOfficeResolution {
     const normalizedOfficeIds = Array.from(new Set(selectedOfficeIds));
 
     if (normalizedOfficeIds.length > 0) {
-      return normalizedOfficeIds
+      const missingRecipients: string[] = [];
+      const offices = normalizedOfficeIds
         .map((selectedOfficeId) => {
           const office = vendorOffices.find(
             (candidateOffice) => candidateOffice.id === selectedOfficeId,
@@ -360,10 +389,15 @@ export class RfqsService {
           return office;
         })
         .filter((office): office is VendorOffice => Boolean(office));
+
+      return { offices, missingRecipients };
     }
 
     const fallbackOffice = this.pickFallbackOffice(vendor, vendorOffices);
-    return fallbackOffice ? [fallbackOffice] : [];
+    return {
+      offices: fallbackOffice ? [fallbackOffice] : [],
+      missingRecipients: [],
+    };
   }
 
   private pickFallbackOffice(
@@ -454,6 +488,16 @@ export class RfqsService {
         ]),
       ).values(),
     );
+  }
+
+  private createRecipientResolution(
+    recipients: VendorRecipient[],
+    missingRecipients: string[],
+  ): VendorRecipientResolution {
+    return {
+      recipients,
+      missingRecipients,
+    };
   }
 
   private groupBy<TItem>(items: TItem[], getKey: (item: TItem) => string) {

@@ -97,6 +97,7 @@ export default function RFQPage() {
             selectedVendors={wizard.selectedVendors}
             selectedVendorIds={wizard.selectedVendorIds}
             onToggleVendor={wizard.toggleVendor}
+            onSelectAllVendors={wizard.selectAllVendors}
             onClearSelectedVendors={wizard.clearSelectedVendors}
             onPreviousPage={wizard.goToPreviousVendorPage}
             onNextPage={wizard.goToNextVendorPage}

@@ -46,11 +46,22 @@ export interface SessionResponse {
   onboarding_required: boolean;
 }
 
+export interface AuthTokenResponse {
+  access_token: string;
+  token_type: "bearer";
+  user: User;
+}
+
 export interface Inquiry {
   id: string;
   inquiryNumber: string;
   inquiryType: "CHA_ONLY" | "FREIGHT_ONLY" | "CHA_FREIGHT";
-  status: "PENDING" | "RFQ_SENT" | "QUOTES_RECEIVED" | "QUOTED_TO_CUSTOMER" | "CLOSED";
+  status:
+    | "PENDING"
+    | "RFQ_SENT"
+    | "QUOTES_RECEIVED"
+    | "QUOTED_TO_CUSTOMER"
+    | "CLOSED";
   customerName: string;
   customerRole: "Consignee/Agent" | "Shipper" | null;
   tradeLane: string | null;

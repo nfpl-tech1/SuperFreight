@@ -1,5 +1,9 @@
 import type { DepartmentDefinition } from "@/types/rfq";
-import { PACKAGE_UNIT_OPTIONS, WEIGHT_UNIT_OPTIONS } from "./unitOptions";
+import {
+  DIMENSION_UNIT_OPTIONS,
+  PACKAGE_UNIT_OPTIONS,
+  WEIGHT_UNIT_OPTIONS,
+} from "./unitOptions";
 import { INCOTERM_OPTIONS } from "@/lib/inquiryQuotePlanning";
 
 export const localPortCharges: DepartmentDefinition = {
@@ -82,6 +86,9 @@ export const localPortCharges: DepartmentDefinition = {
       label: "Dimensions per Package",
       type: "text",
       required: false,
+      unitOptions: [...DIMENSION_UNIT_OPTIONS],
+      defaultUnit: "CM",
+      ui: { placeholder: "Example: 120 x 80 x 95" },
       rules: { visible_if: { mode: ["AIR", "LCL"] } },
       halfWidth: true,
     },

@@ -18,9 +18,66 @@ type OutlookTokenPayload = {
   error_description?: string;
 };
 
+type OutlookMailboxProfile = {
+  id?: string;
+  mail?: string | null;
+  userPrincipalName?: string | null;
+};
+
+type GraphMailRequestBody = {
+  message: {
+    subject: string;
+    body: {
+      contentType: 'HTML';
+      content: string;
+    };
+    toRecipients: Array<{
+      emailAddress: {
+        address: string;
+        name?: string;
+      };
+    }>;
+    ccRecipients: Array<{
+      emailAddress: {
+        address: string;
+        name?: string;
+      };
+    }>;
+    attachments: Array<{
+      '@odata.type': '#microsoft.graph.fileAttachment';
+      name: string;
+      contentType: string;
+      contentBytes: string;
+    }>;
+  };
+  saveToSentItems: true;
+};
+
+type SendMailPayload = {
+  subject: string;
+  htmlBody: string;
+  to: Array<{ address: string; name?: string | null }>;
+  cc?: Array<{ address: string; name?: string | null }>;
+  attachments?: Array<{
+    fileName: string;
+    contentType: string;
+    contentBytes: string;
+  }>;
+};
+
+type MicrosoftConfig = {
+  tenantId: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  scope: string;
+};
+
 @Injectable()
 export class OutlookService {
   private static readonly GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0';
+  private static readonly ACCESS_TOKEN_REFRESH_BUFFER_MS = 60_000;
+  private static readonly SUBSCRIPTION_DURATION_MS = 1000 * 60 * 60 * 24 * 2;
 
   constructor(
     private readonly config: ConfigService,
@@ -43,7 +100,7 @@ export class OutlookService {
     ];
   }
 
-  private getMicrosoftConfig() {
+  private getMicrosoftConfig(): MicrosoftConfig {
     const tenantId = this.config.get<string>('microsoft.tenantId');
     const clientId = this.config.get<string>('microsoft.clientId');
     const clientSecret = this.config.get<string>('microsoft.clientSecret');
@@ -103,11 +160,9 @@ export class OutlookService {
       },
     );
 
-    const payload = (await response.json().catch(() => null)) as {
-      id?: string;
-      mail?: string | null;
-      userPrincipalName?: string | null;
-    } | null;
+    const payload = (await response
+      .json()
+      .catch(() => null)) as OutlookMailboxProfile | null;
 
     if (!response.ok || !payload?.id) {
       throw new BadRequestException(
@@ -116,6 +171,94 @@ export class OutlookService {
     }
 
     return payload;
+  }
+
+  private async findConnectionByUserId(userId: string) {
+    return this.connectionRepo.findOne({
+      where: { userId },
+    });
+  }
+
+  private async findSubscriptionByUserId(userId: string) {
+    return this.subscriptionRepo.findOne({
+      where: { userId },
+    });
+  }
+
+  private hasMailboxTokens(connection: OutlookConnection | null | undefined) {
+    return Boolean(connection?.accessToken || connection?.refreshToken);
+  }
+
+  private ensureConnectionHasSupportedTokens(connection: OutlookConnection) {
+    if (
+      connection.isConnected &&
+      !connection.accessToken &&
+      !connection.refreshToken
+    ) {
+      throw new BadRequestException(
+        'Your Outlook mailbox was linked under an older setup. Please reconnect Outlook once from onboarding or profile to enable sending.',
+      );
+    }
+  }
+
+  private requireConnectedMailbox(connection: OutlookConnection | null) {
+    if (!connection?.isConnected || !connection.accessToken) {
+      throw new BadRequestException(
+        'Outlook mailbox is not connected. Please connect Outlook first.',
+      );
+    }
+
+    return connection;
+  }
+
+  private shouldRefreshAccessToken(connection: OutlookConnection) {
+    const expiresAt = connection.accessTokenExpiresAt?.getTime() ?? 0;
+    const refreshThreshold =
+      Date.now() + OutlookService.ACCESS_TOKEN_REFRESH_BUFFER_MS;
+
+    return !expiresAt || expiresAt <= refreshThreshold;
+  }
+
+  private buildAccessTokenExpiry(expiresInSeconds?: number) {
+    return expiresInSeconds
+      ? new Date(Date.now() + expiresInSeconds * 1000)
+      : null;
+  }
+
+  private applyTokenPayload(
+    connection: OutlookConnection,
+    payload: OutlookTokenPayload,
+  ) {
+    connection.accessToken = payload.access_token ?? null;
+    connection.refreshToken = payload.refresh_token ?? connection.refreshToken;
+    connection.accessTokenExpiresAt = this.buildAccessTokenExpiry(
+      payload.expires_in,
+    );
+    connection.isConnected = true;
+  }
+
+  private applyMailboxProfile(
+    connection: OutlookConnection,
+    mailboxProfile: OutlookMailboxProfile,
+    fallbackEmail?: string | null,
+  ) {
+    connection.microsoftUserId =
+      mailboxProfile.id ?? connection.microsoftUserId;
+    connection.email =
+      mailboxProfile.mail ??
+      mailboxProfile.userPrincipalName ??
+      fallbackEmail ??
+      connection.email;
+  }
+
+  private mergeConnectionMetadata(
+    connection: OutlookConnection,
+    metadata: Record<string, unknown>,
+  ) {
+    connection.metadata = {
+      ...(connection.metadata ?? {}),
+      ...metadata,
+    };
   }
 
   private async refreshConnectionAccessToken(connection: OutlookConnection) {
@@ -140,61 +283,37 @@ export class OutlookService {
       tenantId,
     );
 
-    connection.accessToken = payload.access_token ?? null;
-    connection.refreshToken = payload.refresh_token ?? connection.refreshToken;
-    connection.accessTokenExpiresAt = payload.expires_in
-      ? new Date(Date.now() + payload.expires_in * 1000)
-      : null;
-    connection.isConnected = true;
-
+    this.applyTokenPayload(connection, payload);
     const profile = await this.fetchMailboxProfile(connection.accessToken!);
-    connection.microsoftUserId = profile.id ?? connection.microsoftUserId;
-    connection.email =
-      profile.mail ?? profile.userPrincipalName ?? connection.email;
+    this.applyMailboxProfile(connection, profile);
     connection.tenantId = connection.tenantId ?? tenantId;
     connection.connectedAt = connection.connectedAt ?? new Date();
-    connection.metadata = {
-      ...(connection.metadata ?? {}),
+    this.mergeConnectionMetadata(connection, {
       lastRefreshAt: new Date().toISOString(),
-    };
+    });
 
     return this.connectionRepo.save(connection);
   }
 
   private async getValidConnectionForUser(userId: string) {
-    const connection = await this.connectionRepo.findOne({
-      where: { userId },
-    });
+    const connection = await this.findConnectionByUserId(userId);
 
-    if (
-      connection?.isConnected &&
-      !connection.accessToken &&
-      !connection.refreshToken
-    ) {
-      throw new BadRequestException(
-        'Your Outlook mailbox was linked under an older setup. Please reconnect Outlook once from onboarding or profile to enable sending.',
-      );
+    if (connection) {
+      this.ensureConnectionHasSupportedTokens(connection);
     }
 
-    if (!connection?.isConnected || !connection.accessToken) {
-      throw new BadRequestException(
-        'Outlook mailbox is not connected. Please connect Outlook first.',
-      );
+    const connectedMailbox = this.requireConnectedMailbox(connection);
+
+    if (this.shouldRefreshAccessToken(connectedMailbox)) {
+      return this.refreshConnectionAccessToken(connectedMailbox);
     }
 
-    const expiresAt = connection.accessTokenExpiresAt?.getTime() ?? 0;
-    const refreshThreshold = Date.now() + 60_000;
-
-    if (!expiresAt || expiresAt <= refreshThreshold) {
-      return this.refreshConnectionAccessToken(connection);
-    }
-
-    return connection;
+    return connectedMailbox;
   }
 
   private async sendGraphMailRequest(
     accessToken: string,
-    body: Record<string, unknown>,
+    body: GraphMailRequestBody,
   ) {
     const response = await fetch(
       `${OutlookService.GRAPH_BASE_URL}/me/sendMail`,
@@ -224,16 +343,69 @@ export class OutlookService {
     );
   }
 
-  async getStatus(user: User) {
-    const connection = await this.connectionRepo.findOne({
-      where: { userId: user.id },
-    });
-    const subscription = await this.subscriptionRepo.findOne({
-      where: { userId: user.id },
-    });
-    const hasMailboxTokens = Boolean(
-      connection?.accessToken || connection?.refreshToken,
-    );
+  private mapGraphRecipients(
+    recipients: Array<{ address: string; name?: string | null }>,
+  ) {
+    return recipients.map((recipient) => ({
+      emailAddress: {
+        address: recipient.address,
+        name: recipient.name ?? undefined,
+      },
+    }));
+  }
+
+  private mapGraphAttachments(
+    attachments: SendMailPayload['attachments'] = [],
+  ) {
+    return attachments.map((attachment) => ({
+      '@odata.type': '#microsoft.graph.fileAttachment' as const,
+      name: attachment.fileName,
+      contentType: attachment.contentType,
+      contentBytes: attachment.contentBytes,
+    }));
+  }
+
+  private buildSendMailRequestBody(
+    payload: SendMailPayload,
+  ): GraphMailRequestBody {
+    return {
+      message: {
+        subject: payload.subject,
+        body: {
+          contentType: 'HTML',
+          content: payload.htmlBody,
+        },
+        toRecipients: this.mapGraphRecipients(payload.to),
+        ccRecipients: this.mapGraphRecipients(payload.cc ?? []),
+        attachments: this.mapGraphAttachments(payload.attachments),
+      },
+      saveToSentItems: true,
+    };
+  }
+
+  private async sendMailWithRetry(
+    connection: OutlookConnection,
+    requestBody: GraphMailRequestBody,
+  ) {
+    try {
+      await this.sendGraphMailRequest(connection.accessToken!, requestBody);
+    } catch {
+      const refreshedConnection =
+        await this.refreshConnectionAccessToken(connection);
+      await this.sendGraphMailRequest(
+        refreshedConnection.accessToken!,
+        requestBody,
+      );
+    }
+  }
+
+  private buildStatus(
+    user: User,
+    connection: OutlookConnection | null,
+    subscription: OutlookSubscription | null,
+  ) {
+    const hasMailboxTokens = this.hasMailboxTokens(connection);
+
     return {
       isConnected: !!connection?.isConnected && hasMailboxTokens,
       connectedAt: connection?.connectedAt ?? null,
@@ -242,6 +414,81 @@ export class OutlookService {
       reconnectRequired:
         !!connection && (!connection.isConnected || !hasMailboxTokens),
     };
+  }
+
+  private async findOrCreateConnection(userId: string) {
+    const existingConnection = await this.findConnectionByUserId(userId);
+    if (existingConnection) {
+      return existingConnection;
+    }
+
+    return this.connectionRepo.create({ userId });
+  }
+
+  private applyConnectedMailboxState(
+    connection: OutlookConnection,
+    user: User,
+    tenantId: string,
+    scope: string,
+    tokenPayload: OutlookTokenPayload,
+    mailboxProfile: OutlookMailboxProfile,
+    now: Date,
+  ) {
+    connection.isConnected = true;
+    connection.connectedAt = now;
+    connection.tenantId = tenantId;
+    this.applyMailboxProfile(connection, mailboxProfile, user.email);
+    this.applyTokenPayload(connection, tokenPayload);
+    this.mergeConnectionMetadata(connection, {
+      lastCodeExchange: now.toISOString(),
+      scope,
+    });
+  }
+
+  private async findOrCreateSubscription(userId: string) {
+    const existingSubscription = await this.findSubscriptionByUserId(userId);
+    if (existingSubscription) {
+      return existingSubscription;
+    }
+
+    return this.subscriptionRepo.create({ userId });
+  }
+
+  private applyActiveSubscriptionState(
+    subscription: OutlookSubscription,
+    userId: string,
+    now: Date,
+  ) {
+    subscription.subscriptionId =
+      subscription.subscriptionId ?? `${userId}-mail`;
+    subscription.resource = '/me/messages';
+    subscription.isActive = true;
+    subscription.expiresAt = new Date(
+      now.getTime() + OutlookService.SUBSCRIPTION_DURATION_MS,
+    );
+  }
+
+  private async upsertActiveSubscription(userId: string, now: Date) {
+    const subscription = await this.findOrCreateSubscription(userId);
+    this.applyActiveSubscriptionState(subscription, userId, now);
+    return this.subscriptionRepo.save(subscription);
+  }
+
+  private async reactivateExistingSubscription(userId: string, now: Date) {
+    const subscription = await this.findSubscriptionByUserId(userId);
+    if (!subscription) {
+      return null;
+    }
+
+    this.applyActiveSubscriptionState(subscription, userId, now);
+    return this.subscriptionRepo.save(subscription);
+  }
+
+  async getStatus(user: User) {
+    const connection = await this.findConnectionByUserId(user.id);
+    const subscription = await this.findSubscriptionByUserId(user.id);
+
+    return this.buildStatus(user, connection, subscription);
   }
 
   getConnectUrl(user: User) {
@@ -278,44 +525,18 @@ export class OutlookService {
     );
 
     const now = new Date();
-    let connection = await this.connectionRepo.findOne({
-      where: { userId: user.id },
-    });
-    if (!connection) {
-      connection = this.connectionRepo.create({ userId: user.id });
-    }
-
-    connection.isConnected = true;
-    connection.connectedAt = now;
-    connection.tenantId = tenantId;
-    connection.microsoftUserId = mailboxProfile.id ?? null;
-    connection.email =
-      mailboxProfile.mail ?? mailboxProfile.userPrincipalName ?? user.email;
-    connection.accessToken = tokenPayload.access_token ?? null;
-    connection.refreshToken = tokenPayload.refresh_token ?? null;
-    connection.accessTokenExpiresAt = tokenPayload.expires_in
-      ? new Date(Date.now() + tokenPayload.expires_in * 1000)
-      : null;
-    connection.metadata = {
-      ...(connection.metadata ?? {}),
-      lastCodeExchange: now.toISOString(),
+    const connection = await this.findOrCreateConnection(user.id);
+    this.applyConnectedMailboxState(
+      connection,
+      user,
+      tenantId,
       scope,
-    };
+      tokenPayload,
+      mailboxProfile,
+      now,
+    );
     await this.connectionRepo.save(connection);
-
-    let subscription = await this.subscriptionRepo.findOne({
-      where: { userId: user.id },
-    });
-    if (!subscription) {
-      subscription = this.subscriptionRepo.create({ userId: user.id });
-    }
-    subscription.subscriptionId =
-      subscription.subscriptionId ?? `${user.id}-mail`;
-    subscription.resource = '/me/messages';
-    subscription.isActive = true;
-    subscription.expiresAt = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 2);
-    await this.subscriptionRepo.save(subscription);
-
+    await this.upsertActiveSubscription(user.id, now);
     await this.usersService.markOutlookConnected(user.id, now);
 
     return this.getStatus({
@@ -325,78 +546,20 @@ export class OutlookService {
   }
 
   async reconnect(user: User) {
-    const connection = await this.connectionRepo.findOne({
-      where: { userId: user.id },
-    });
+    const connection = await this.findConnectionByUserId(user.id);
 
     if (connection?.refreshToken) {
       await this.refreshConnectionAccessToken(connection);
     }
 
-    const subscription = await this.subscriptionRepo.findOne({
-      where: { userId: user.id },
-    });
-    if (subscription) {
-      subscription.isActive = true;
-      subscription.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2);
-      await this.subscriptionRepo.save(subscription);
-    }
+    await this.reactivateExistingSubscription(user.id, new Date());
     return this.getStatus(user);
   }
 
-  async sendMail(
-    user: User,
-    payload: {
-      subject: string;
-      htmlBody: string;
-      to: Array<{ address: string; name?: string | null }>;
-      cc?: Array<{ address: string; name?: string | null }>;
-      attachments?: Array<{
-        fileName: string;
-        contentType: string;
-        contentBytes: string;
-      }>;
-    },
-  ) {
+  async sendMail(user: User, payload: SendMailPayload) {
     const connection = await this.getValidConnectionForUser(user.id);
-    const requestBody = {
-      message: {
-        subject: payload.subject,
-        body: {
-          contentType: 'HTML',
-          content: payload.htmlBody,
-        },
-        toRecipients: payload.to.map((recipient) => ({
-          emailAddress: {
-            address: recipient.address,
-            name: recipient.name ?? undefined,
-          },
-        })),
-        ccRecipients: (payload.cc ?? []).map((recipient) => ({
-          emailAddress: {
-            address: recipient.address,
-            name: recipient.name ?? undefined,
-          },
-        })),
-        attachments: (payload.attachments ?? []).map((attachment) => ({
-          '@odata.type': '#microsoft.graph.fileAttachment',
-          name: attachment.fileName,
-          contentType: attachment.contentType,
-          contentBytes: attachment.contentBytes,
-        })),
-      },
-      saveToSentItems: true,
-    };
+    const requestBody = this.buildSendMailRequestBody(payload);
 
-    try {
-      await this.sendGraphMailRequest(connection.accessToken!, requestBody);
-    } catch {
-      const refreshedConnection =
-        await this.refreshConnectionAccessToken(connection);
-      await this.sendGraphMailRequest(
-        refreshedConnection.accessToken!,
-        requestBody,
-      );
-    }
+    await this.sendMailWithRetry(connection, requestBody);
   }
 }

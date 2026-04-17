@@ -4,20 +4,60 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { OutlookConnection } from './entities/outlook-connection.entity';
 import { OutlookSubscription } from './entities/outlook-subscription.entity';
+type SendMailPayload = {
+    subject: string;
+    htmlBody: string;
+    to: Array<{
+        address: string;
+        name?: string | null;
+    }>;
+    cc?: Array<{
+        address: string;
+        name?: string | null;
+    }>;
+    attachments?: Array<{
+        fileName: string;
+        contentType: string;
+        contentBytes: string;
+    }>;
+};
 export declare class OutlookService {
     private readonly config;
     private readonly usersService;
     private readonly connectionRepo;
     private readonly subscriptionRepo;
     private static readonly GRAPH_BASE_URL;
+    private static readonly ACCESS_TOKEN_REFRESH_BUFFER_MS;
+    private static readonly SUBSCRIPTION_DURATION_MS;
     constructor(config: ConfigService, usersService: UsersService, connectionRepo: Repository<OutlookConnection>, subscriptionRepo: Repository<OutlookSubscription>);
     private getScopes;
     private getMicrosoftConfig;
     private exchangeToken;
     private fetchMailboxProfile;
+    private findConnectionByUserId;
+    private findSubscriptionByUserId;
+    private hasMailboxTokens;
+    private ensureConnectionHasSupportedTokens;
+    private requireConnectedMailbox;
+    private shouldRefreshAccessToken;
+    private buildAccessTokenExpiry;
+    private applyTokenPayload;
+    private applyMailboxProfile;
+    private mergeConnectionMetadata;
     private refreshConnectionAccessToken;
     private getValidConnectionForUser;
     private sendGraphMailRequest;
+    private mapGraphRecipients;
+    private mapGraphAttachments;
+    private buildSendMailRequestBody;
+    private sendMailWithRetry;
+    private buildStatus;
+    private findOrCreateConnection;
+    private applyConnectedMailboxState;
+    private findOrCreateSubscription;
+    private applyActiveSubscriptionState;
+    private upsertActiveSubscription;
+    private reactivateExistingSubscription;
     getStatus(user: User): Promise<{
         isConnected: boolean;
         connectedAt: Date | null;
@@ -42,21 +82,6 @@ export declare class OutlookService {
         subscription: OutlookSubscription | null;
         reconnectRequired: boolean;
     }>;
-    sendMail(user: User, payload: {
-        subject: string;
-        htmlBody: string;
-        to: Array<{
-            address: string;
-            name?: string | null;
-        }>;
-        cc?: Array<{
-            address: string;
-            name?: string | null;
-        }>;
-        attachments?: Array<{
-            fileName: string;
-            contentType: string;
-            contentBytes: string;
-        }>;
-    }): Promise<void>;
+    sendMail(user: User, payload: SendMailPayload): Promise<void>;
 }
+export {};
