@@ -1238,19 +1238,21 @@ export function buildTemplateEmailHtml(
     .filter((r) => r.value !== "" || r.label !== "");
 
   const columnWidth = Math.max(
-    ...rows.map((r) => Math.max(r.label.length, r.value.length) * 8 + 24),
-    120,
+    ...rows.map((r) => r.label.length * 8 + 24),
+    150,
   );
+  const constrainedColumnWidth = Math.min(columnWidth, 260);
+  const tableWidth = constrainedColumnWidth * 2;
 
   const fieldTableHtml =
     rows.length > 0
       ? `
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;">
+<table border="1" cellpadding="0" cellspacing="0" width="${tableWidth}" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;table-layout:fixed;max-width:100%;">
   <tbody>
     ${rows
       .map(
         (r) =>
-          `<tr><td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 12px;border:1px solid #ccc;word-break:break-word;">${r.label}</td><td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 12px;border:1px solid #ccc;word-break:break-word;">${r.value}</td></tr>`,
+          `<tr><td width="${constrainedColumnWidth}" style="width:${constrainedColumnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;">${r.label}</td><td width="${constrainedColumnWidth}" style="width:${constrainedColumnWidth}px;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;white-space:normal;">${r.value}</td></tr>`,
       )
       .join("\n    ")}
   </tbody>
@@ -1273,7 +1275,6 @@ export function buildTemplateEmailHtml(
 <br/>
 ${rateTableHtml ? `<div id="rfq-rate-table-container">${rateTableHtml}</div><br/>` : ""}
 ${template.postamble ? `<p style="margin:0;">${template.postamble}</p><br/>` : ""}
-<p style="margin:0;">Thank you!</p>
 </div>`;
 
   // Build subject from form values

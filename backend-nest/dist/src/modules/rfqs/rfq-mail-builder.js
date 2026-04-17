@@ -43,18 +43,26 @@ function buildFormRows(formValues) {
     }))
         .filter((row) => row.value);
 }
+function getFormTableColumnWidth(rows) {
+    const maxLabelLength = rows.reduce((max, row) => {
+        return Math.max(max, row.label.length);
+    }, 0);
+    return Math.min(Math.max(maxLabelLength * 8 + 24, 150), 260);
+}
 function buildFormTableHtml(formValues) {
     const rows = buildFormRows(formValues);
     if (rows.length === 0) {
         return '<p style="margin:0;color:#64748b;">Shipment details will be shared separately.</p>';
     }
+    const columnWidth = getFormTableColumnWidth(rows);
+    const tableWidth = columnWidth * 2;
     return `
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;">
+<table border="1" cellpadding="0" cellspacing="0" width="${tableWidth}" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;table-layout:fixed;max-width:100%;">
   <tbody>
     ${rows
         .map((row) => `<tr>
-      <td style="font-weight:bold;background:#f8fafc;padding:6px 12px;border:1px solid #cbd5e1;vertical-align:top;">${escapeHtml(row.label)}</td>
-      <td style="padding:6px 12px;border:1px solid #cbd5e1;vertical-align:top;">${escapeHtml(row.value)}</td>
+      <td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f8fafc;padding:6px 10px;border:1px solid #cbd5e1;vertical-align:top;word-break:break-word;">${escapeHtml(row.label)}</td>
+      <td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 10px;border:1px solid #cbd5e1;vertical-align:top;word-break:break-word;white-space:normal;">${escapeHtml(row.value)}</td>
     </tr>`)
         .join('\n')}
   </tbody>
@@ -100,8 +108,7 @@ function buildFallbackTemplate(dto, inquiry, senderName) {
   ${tradeLaneSummary}
   <div id="rfq-dynamic-table-container">${buildFormTableHtml(dto.formValues)}</div>
   ${buildResponseFieldListHtml(dto)}
-  <p style="margin:16px 0 0 0;">Thank you!</p>
-  <p style="margin:8px 0 0 0;">Regards,<br/>${escapeHtml(senderName || '[User name]')}</p>
+  <p style="margin:12px 0 0 0;">Regards,<br/>${escapeHtml(senderName || '[User name]')}</p>
 </div>`.trim();
 }
 function buildContactDisplayName({ companyName, contactName, salutation, }) {
@@ -120,6 +127,46 @@ function buildContactDisplayName({ companyName, contactName, salutation, }) {
     }
     return companyName ? `${companyName} Team` : 'Team';
 }
+function normalizeSignatureHtml(signature) {
+    return signature
+        .replace(/^(?:\s|<p[^>]*>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>|<div[^>]*>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/div>|<br\s*\/?\s*>)+/gi, '')
+        .replace(/(?:\s|<p[^>]*>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>|<div[^>]*>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/div>|<br\s*\/?\s*>)+$/gi, '')
+        .replace(/(<br\s*\/?\s*>\s*){3,}/gi, '<br/><br/>');
+}
+function tightenSignatureBlockSpacing(signatureHtml) {
+    const compactParagraphStyle = 'margin:0 0 6px 0;line-height:1.35;';
+    const compactBlockStyle = 'margin:0;line-height:1.35;';
+    return signatureHtml
+        .replace(/<(p)([^>]*)>/gi, (_match, tag, attrs) => {
+        if (/\sstyle\s*=\s*/i.test(attrs)) {
+            return `<${tag}${attrs.replace(/\sstyle\s*=\s*(["'])(.*?)\1/i, (_s, quote, styleValue) => {
+                const cleaned = styleValue
+                    .replace(/(^|;)\s*margin(?:-[a-z]+)?\s*:[^;]*/gi, '')
+                    .replace(/(^|;)\s*line-height\s*:[^;]*/gi, '')
+                    .replace(/;{2,}/g, ';')
+                    .trim();
+                const normalized = `${compactParagraphStyle}${cleaned ? ` ${cleaned.replace(/^;+/, '')}` : ''}`.trim();
+                return ` style=${quote}${normalized}${quote}`;
+            })}>`;
+        }
+        return `<${tag}${attrs} style="${compactParagraphStyle}">`;
+    })
+        .replace(/<(div)([^>]*)>/gi, (_match, tag, attrs) => {
+        if (/\sstyle\s*=\s*/i.test(attrs)) {
+            return `<${tag}${attrs.replace(/\sstyle\s*=\s*(["'])(.*?)\1/i, (_s, quote, styleValue) => {
+                const cleaned = styleValue
+                    .replace(/(^|;)\s*margin(?:-[a-z]+)?\s*:[^;]*/gi, '')
+                    .replace(/(^|;)\s*line-height\s*:[^;]*/gi, '')
+                    .replace(/;{2,}/g, ';')
+                    .trim();
+                const normalized = `${compactBlockStyle}${cleaned ? ` ${cleaned.replace(/^;+/, '')}` : ''}`.trim();
+                return ` style=${quote}${normalized}${quote}`;
+            })}>`;
+        }
+        return `<${tag}${attrs} style="${compactBlockStyle}">`;
+    })
+        .replace(/(<br\s*\/?\s*>\s*){3,}/gi, '<br/><br/>');
+}
 function resolveMailDraft(dto, inquiry, senderName) {
     return {
         subjectLine: dto.mailSubject?.trim() ||
@@ -137,7 +184,7 @@ function personalizeMailBodyHtml(templateHtml, personalization) {
         .replaceAll('[Vendor Company]', escapeHtml(personalization.companyName));
     const signature = personalization.emailSignature?.trim();
     if (signature) {
-        html += `\n<div style="margin-top:24px;border-top:1px solid #e2e8f0;padding-top:16px;">${signature}</div>`;
+        html += `\n<div style="margin-top:6px;padding-top:0;">${tightenSignatureBlockSpacing(normalizeSignatureHtml(signature))}</div>`;
     }
     return html;
 }

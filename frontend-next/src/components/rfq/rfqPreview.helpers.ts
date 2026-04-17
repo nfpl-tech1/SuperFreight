@@ -34,11 +34,11 @@ function resolvePreviewValue(values: FormValues, key: string) {
 }
 
 function getColumnWidth(rows: PreviewRow[]) {
-  const maxLength = rows.reduce((max, row) => {
-    return Math.max(max, row.label.length, row.value.length);
+  const maxLabelLength = rows.reduce((max, row) => {
+    return Math.max(max, row.label.length);
   }, 0);
 
-  return Math.max(maxLength * 8 + 24, 120);
+  return Math.min(Math.max(maxLabelLength * 8 + 24, 150), 260);
 }
 
 export function buildPreviewRows(
@@ -65,14 +65,15 @@ export function buildPreviewTableHtml(
   }
 
   const columnWidth = getColumnWidth(rows);
+  const tableWidth = columnWidth * 2;
 
   return `
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;">
+<table border="1" cellpadding="0" cellspacing="0" width="${tableWidth}" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;table-layout:fixed;max-width:100%;">
   <tbody>
     ${rows
       .map((row) => {
         const displayValue = resolveValue ? resolveValue(row) : row.value;
-        return `<tr><td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 12px;border:1px solid #ccc;word-break:break-word;">${row.label}</td><td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 12px;border:1px solid #ccc;word-break:break-word;" data-value-label="${escapeAttribute(row.label)}">${displayValue}</td></tr>`;
+        return `<tr><td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;">${row.label}</td><td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;white-space:normal;" data-value-label="${escapeAttribute(row.label)}">${displayValue}</td></tr>`;
       })
       .join("\n    ")}
   </tbody>
@@ -100,14 +101,15 @@ function buildTemplateTableHtml(
   }));
 
   const columnWidth = getColumnWidth(rows);
+  const tableWidth = columnWidth * 2;
 
   const tableHtml = `
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;">
+<table border="1" cellpadding="0" cellspacing="0" width="${tableWidth}" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;margin:12px 0;table-layout:fixed;max-width:100%;">
   <tbody>
     ${rows
       .map((row) => {
         const displayValue = resolveValue ? resolveValue(row) : row.value;
-        return `<tr><td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 12px;border:1px solid #ccc;word-break:break-word;">${row.label}</td><td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 12px;border:1px solid #ccc;word-break:break-word;" data-value-label="${escapeAttribute(row.label)}">${displayValue}</td></tr>`;
+        return `<tr><td width="${columnWidth}" style="width:${columnWidth}px;font-weight:bold;background:#f0f4f8;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;">${row.label}</td><td width="${columnWidth}" style="width:${columnWidth}px;padding:6px 10px;border:1px solid #ccc;vertical-align:top;word-break:break-word;white-space:normal;" data-value-label="${escapeAttribute(row.label)}">${displayValue}</td></tr>`;
       })
       .join("\n    ")}
   </tbody>
@@ -138,7 +140,6 @@ export function buildTemplatePreviewEmailHtml(
 <br/>
 ${rateTableHtml ? `<div id="rfq-rate-table-container">${rateTableHtml}</div><br/>` : ""}
 ${template.postamble ? `<p style="margin:0;">${template.postamble}</p><br/>` : ""}
-<p style="margin:0;">Thank you!</p>
 </div>`;
 }
 
