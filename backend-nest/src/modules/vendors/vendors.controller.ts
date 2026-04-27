@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Audit } from '../../common/decorators/audit.decorator';
+import { ModuleAccess } from '../../common/decorators/module-access.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -46,13 +47,13 @@ export class VendorsController {
   }
 
   @Get('port-master')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-ports', 'view')
   listPortMaster(@Query() query: ListPortMasterDto) {
     return this.vendorsService.listPortMaster(query);
   }
 
   @Get('port-master/:id')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-ports', 'view')
   getPortMasterDetail(@Param('id') id: string) {
     return this.vendorsService.getPortMasterDetail(id);
   }
@@ -75,7 +76,7 @@ export class VendorsController {
   }
 
   @Post('port-master')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-ports', 'edit')
   @Audit('PORT_MASTER_CREATED', 'port_master')
   createPortMaster(@Body() dto: CreatePortMasterDto) {
     return this.vendorsService.createPortMaster(dto);
@@ -89,7 +90,7 @@ export class VendorsController {
   }
 
   @Put('port-master/:id')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-ports', 'edit')
   @Audit('PORT_MASTER_UPDATED', 'port_master')
   updatePortMaster(@Param('id') id: string, @Body() dto: UpdatePortMasterDto) {
     return this.vendorsService.updatePortMaster(id, dto);

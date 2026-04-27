@@ -19,7 +19,8 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { api, Inquiry } from "@/lib/api";
+import { api, getErrorMessage, Inquiry } from "@/lib/api";
+import { formatRoute } from "@/lib/formatting/display";
 import { InquiryFormDialog } from "@/app/(protected)/inquiries/InquiryFormDialog";
 import {
   buildInquiryPayload,
@@ -38,7 +39,7 @@ function InquiryCard({
   onEdit: () => void;
   onDelete: () => void;
 }) {
-  const routeSummary = `${inquiry.origin ?? "TBC"} -> ${inquiry.destination ?? "TBC"}`;
+  const routeSummary = formatRoute(inquiry.origin, inquiry.destination);
 
   return (
     <div className="rounded-xl border border-border/70 bg-[hsl(214_38%_98%)] p-4 shadow-sm">
@@ -205,11 +206,12 @@ export default function InquiriesPage() {
       );
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : dialogMode === "edit"
+        getErrorMessage(
+          error,
+          dialogMode === "edit"
             ? "Failed to update inquiry"
             : "Failed to create inquiry",
+        ),
       );
     } finally {
       setSaving(false);
@@ -228,9 +230,7 @@ export default function InquiriesPage() {
       handleDeleteDialogOpenChange(false);
       toast.success("Inquiry deleted");
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to delete inquiry",
-      );
+      toast.error(getErrorMessage(error, "Failed to delete inquiry"));
     } finally {
       setDeleting(false);
     }
@@ -321,10 +321,7 @@ export default function InquiriesPage() {
                     <TableCell>{inquiry.customerName}</TableCell>
                     <TableCell>{inquiry.customerRole ?? "TBC"}</TableCell>
                     <TableCell>{inquiry.tradeLane ?? "TBC"}</TableCell>
-                    <TableCell>
-                      {inquiry.origin ?? "TBC"} {"->"}{" "}
-                      {inquiry.destination ?? "TBC"}
-                    </TableCell>
+                    <TableCell>{formatRoute(inquiry.origin, inquiry.destination)}</TableCell>
                     <TableCell>{inquiry.shipmentMode ?? inquiry.inquiryType}</TableCell>
                     <TableCell>{inquiry.incoterm ?? "TBC"}</TableCell>
                     <TableCell>{inquiry.status.replaceAll("_", " ")}</TableCell>

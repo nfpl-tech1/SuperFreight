@@ -56,7 +56,7 @@ export default () => ({
       process.env.JWT_REFRESH_COOKIE_NAME || 'sf_refresh_token',
   },
   os: {
-    appSlug: process.env.OS_APP_SLUG || 'super-freight',
+    appSlug: process.env.OS_APP_SLUG || 'superfreight',
     backendUrl: process.env.OS_BACKEND_URL || 'http://localhost:3001',
     internalApiKey: process.env.INTERNAL_API_KEY || '',
     jwtPublicKey: process.env.OS_JWT_PUBLIC_KEY?.replace(/\\n/g, '\n') || '',
@@ -71,7 +71,24 @@ export default () => ({
   },
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || '',
-    model: process.env.GEMINI_MODEL || 'gemini-1.5-pro',
+    model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+  },
+  quoteIntake: {
+    enabled: process.env.QUOTE_INTAKE_ENABLED
+      ? process.env.QUOTE_INTAKE_ENABLED === 'true'
+      : true,
+    pollIntervalMs:
+      parseInt(process.env.QUOTE_INTAKE_POLL_INTERVAL_MS ?? '60000', 10) ||
+      60000,
+    overlapSeconds:
+      parseInt(process.env.QUOTE_INTAKE_OVERLAP_SECONDS ?? '120', 10) || 120,
+    initialLookbackHours:
+      parseInt(
+        process.env.QUOTE_INTAKE_INITIAL_LOOKBACK_HOURS ?? '24',
+        10,
+      ) || 24,
+    batchSize:
+      parseInt(process.env.QUOTE_INTAKE_BATCH_SIZE ?? '50', 10) || 50,
   },
   initialSuperadminEmail: process.env.INITIAL_SUPERADMIN_EMAIL,
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',

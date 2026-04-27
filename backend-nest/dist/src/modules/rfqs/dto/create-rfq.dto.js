@@ -49,6 +49,7 @@ class CreateRfqDto {
     vendorIds;
     officeSelections;
     responseFields;
+    customCcEmail;
     sendNow;
     mailSubject;
     mailBodyHtml;
@@ -87,6 +88,11 @@ __decorate([
     (0, class_transformer_1.Type)(() => ResponseFieldDto),
     __metadata("design:type", Array)
 ], CreateRfqDto.prototype, "responseFields", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], CreateRfqDto.prototype, "customCcEmail", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),

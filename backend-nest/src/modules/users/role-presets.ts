@@ -9,9 +9,12 @@ export const SYSTEM_MODULES = [
   'rfq',
   'comparison',
   'customer-quote',
+  'vendors',
   'rate-sheets',
+  'profile',
   'admin-users',
   'admin-roles',
+  'admin-ports',
 ] as const;
 
 export const OPERATOR_MODULES = [
@@ -20,5 +23,7 @@ export const OPERATOR_MODULES = [
   'rfq',
   'comparison',
   'customer-quote',
+  'vendors',
   'rate-sheets',
+  'profile',
 ] as const;

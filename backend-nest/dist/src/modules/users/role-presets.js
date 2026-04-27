@@ -11,9 +11,12 @@ exports.SYSTEM_MODULES = [
     'rfq',
     'comparison',
     'customer-quote',
+    'vendors',
     'rate-sheets',
+    'profile',
     'admin-users',
     'admin-roles',
+    'admin-ports',
 ];
 exports.OPERATOR_MODULES = [
     'dashboard',
@@ -21,6 +24,8 @@ exports.OPERATOR_MODULES = [
     'rfq',
     'comparison',
     'customer-quote',
+    'vendors',
     'rate-sheets',
+    'profile',
 ];
 //# sourceMappingURL=role-presets.js.map

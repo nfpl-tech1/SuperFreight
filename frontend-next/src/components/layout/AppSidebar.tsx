@@ -17,16 +17,17 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { BrandLogo } from "@/components/brand/BrandLogo";
+import { canViewModule } from "@/lib/module-access";
 
 const baseNav = [
-  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { title: "Inquiry Capture", href: "/inquiries", icon: BriefcaseBusiness },
-  { title: "RFQ Drafting", href: "/rfq", icon: FileText },
-  { title: "Quote Comparison", href: "/comparison", icon: GitCompare },
-  { title: "Customer Quote", href: "/customer-quote", icon: Mail },
-  { title: "Vendor Master", href: "/vendors", icon: Building2 },
-  { title: "Rate Sheets", href: "/rate-sheets", icon: ShipWheel },
-  { title: "Profile", href: "/profile", icon: User },
+  { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard, moduleKey: "dashboard" },
+  { title: "Inquiry Capture", href: "/inquiries", icon: BriefcaseBusiness, moduleKey: "inquiries" },
+  { title: "RFQ Drafting", href: "/rfq", icon: FileText, moduleKey: "rfq" },
+  { title: "Quote Comparison", href: "/comparison", icon: GitCompare, moduleKey: "comparison" },
+  { title: "Customer Quote", href: "/customer-quote", icon: Mail, moduleKey: "customer-quote" },
+  { title: "Vendor Master", href: "/vendors", icon: Building2, moduleKey: "vendors" },
+  { title: "Rate Sheets", href: "/rate-sheets", icon: ShipWheel, moduleKey: "rate-sheets" },
+  { title: "Profile", href: "/profile", icon: User, moduleKey: "profile" },
 ];
 
 interface AppSidebarProps {
@@ -39,14 +40,10 @@ export function AppSidebar({ collapsed }: AppSidebarProps) {
 
   const navItems = [
     ...baseNav,
-    ...(user?.role === "ADMIN"
-      ? [
-          { title: "User Management", href: "/admin/users", icon: Settings },
-          { title: "Role Builder", href: "/admin/roles", icon: Settings },
-          { title: "Port Master", href: "/admin/ports", icon: MapPinned },
-        ]
-      : []),
-  ];
+    { title: "User Management", href: "/admin/users", icon: Settings, moduleKey: "admin-users" },
+    { title: "Role Builder", href: "/admin/roles", icon: Settings, moduleKey: "admin-roles" },
+    { title: "Port Master", href: "/admin/ports", icon: MapPinned, moduleKey: "admin-ports" },
+  ].filter((item) => canViewModule(user, item.moduleKey));
 
   if (collapsed) {
     return (

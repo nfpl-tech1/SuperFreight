@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -72,6 +73,15 @@ function parseBooleanField(value: unknown) {
   return undefined;
 }
 
+function parseOptionalStringField(value: unknown) {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
 function buildCreateRfqDtoPayload(rawBody: Record<string, unknown>) {
   return {
     inquiryId: rawBody.inquiryId,
@@ -93,6 +103,7 @@ function buildCreateRfqDtoPayload(rawBody: Record<string, unknown>) {
         rawBody.responseFields,
         'responseFields',
       ) ?? [],
+    customCcEmail: parseOptionalStringField(rawBody.customCcEmail),
     sendNow: parseBooleanField(rawBody.sendNow),
     mailSubject: rawBody.mailSubject,
     mailBodyHtml: rawBody.mailBodyHtml,
@@ -109,8 +120,8 @@ export class RfqsController {
   constructor(private readonly rfqsService: RfqsService) {}
 
   @Get()
-  list() {
-    return this.rfqsService.list();
+  list(@Query('inquiryId') inquiryId?: string) {
+    return this.rfqsService.list(inquiryId);
   }
 
   @Post()

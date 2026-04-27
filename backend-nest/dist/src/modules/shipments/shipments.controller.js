@@ -15,11 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ShipmentsController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
+const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
 const create_freight_quote_dto_1 = require("./dto/create-freight-quote.dto");
+const link_quote_inbox_message_dto_1 = require("./dto/link-quote-inbox-message.dto");
+const list_quote_inbox_dto_1 = require("./dto/list-quote-inbox.dto");
+const list_quotes_dto_1 = require("./dto/list-quotes.dto");
+const update_freight_quote_dto_1 = require("./dto/update-freight-quote.dto");
 const upsert_rate_sheet_dto_1 = require("./dto/upsert-rate-sheet.dto");
 const shipments_service_1 = require("./shipments.service");
 let ShipmentsController = class ShipmentsController {
@@ -33,11 +38,29 @@ let ShipmentsController = class ShipmentsController {
     createRateSheet(dto) {
         return this.shipmentsService.createRateSheet(dto);
     }
-    listQuotes(inquiryId) {
-        return this.shipmentsService.listQuotes(inquiryId);
+    listQuotes(query) {
+        return this.shipmentsService.listQuotes(query);
+    }
+    listQuoteInbox(query) {
+        return this.shipmentsService.listQuoteInbox(query);
+    }
+    triggerQuoteInboxScan() {
+        return this.shipmentsService.triggerQuoteInboxScan();
+    }
+    reprocessQuoteInboxMessage(id) {
+        return this.shipmentsService.reprocessQuoteInboxMessage(id);
+    }
+    ignoreQuoteInboxMessage(id) {
+        return this.shipmentsService.ignoreQuoteInboxMessage(id);
+    }
+    linkQuoteInboxMessage(id, dto) {
+        return this.shipmentsService.linkQuoteInboxMessage(id, dto);
     }
     createQuote(dto) {
         return this.shipmentsService.createQuote(dto);
+    }
+    updateQuote(id, dto, user) {
+        return this.shipmentsService.updateQuote(id, dto, user);
     }
 };
 exports.ShipmentsController = ShipmentsController;
@@ -58,11 +81,50 @@ __decorate([
 ], ShipmentsController.prototype, "createRateSheet", null);
 __decorate([
     (0, common_1.Get)('quotes'),
-    __param(0, (0, common_1.Query)('inquiryId')),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [list_quotes_dto_1.ListQuotesDto]),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "listQuotes", null);
+__decorate([
+    (0, common_1.Get)('quote-inbox'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [list_quote_inbox_dto_1.ListQuoteInboxDto]),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "listQuoteInbox", null);
+__decorate([
+    (0, common_1.Post)('quote-inbox/scan'),
+    (0, audit_decorator_1.Audit)('QUOTE_INBOX_SCAN_TRIGGERED', 'quote_inbox'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "triggerQuoteInboxScan", null);
+__decorate([
+    (0, common_1.Post)('quote-inbox/:id/reprocess'),
+    (0, audit_decorator_1.Audit)('QUOTE_INBOX_REPROCESSED', 'quote_inbox'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], ShipmentsController.prototype, "listQuotes", null);
+], ShipmentsController.prototype, "reprocessQuoteInboxMessage", null);
+__decorate([
+    (0, common_1.Post)('quote-inbox/:id/ignore'),
+    (0, audit_decorator_1.Audit)('QUOTE_INBOX_IGNORED', 'quote_inbox'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "ignoreQuoteInboxMessage", null);
+__decorate([
+    (0, common_1.Post)('quote-inbox/:id/link'),
+    (0, audit_decorator_1.Audit)('QUOTE_INBOX_LINKED', 'quote_inbox'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, link_quote_inbox_message_dto_1.LinkQuoteInboxMessageDto]),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "linkQuoteInboxMessage", null);
 __decorate([
     (0, common_1.Post)('quotes'),
     (0, audit_decorator_1.Audit)('QUOTE_CREATED', 'quote'),
@@ -71,6 +133,17 @@ __decorate([
     __metadata("design:paramtypes", [create_freight_quote_dto_1.CreateFreightQuoteDto]),
     __metadata("design:returntype", void 0)
 ], ShipmentsController.prototype, "createQuote", null);
+__decorate([
+    (0, common_1.Patch)('quotes/:id'),
+    (0, audit_decorator_1.Audit)('QUOTE_UPDATED', 'quote'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_freight_quote_dto_1.UpdateFreightQuoteDto,
+        user_entity_1.User]),
+    __metadata("design:returntype", void 0)
+], ShipmentsController.prototype, "updateQuote", null);
 exports.ShipmentsController = ShipmentsController = __decorate([
     (0, common_1.Controller)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),

@@ -12,7 +12,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const users_module_1 = require("../users/users.module");
 const outlook_connection_entity_1 = require("./entities/outlook-connection.entity");
 const outlook_subscription_entity_1 = require("./entities/outlook-subscription.entity");
+const outlook_auth_service_1 = require("./outlook-auth.service");
 const outlook_controller_1 = require("./outlook.controller");
+const outlook_mail_service_1 = require("./outlook-mail.service");
 const outlook_service_1 = require("./outlook.service");
 let OutlookModule = class OutlookModule {
 };
@@ -24,7 +26,7 @@ exports.OutlookModule = OutlookModule = __decorate([
             users_module_1.UsersModule,
         ],
         controllers: [outlook_controller_1.OutlookController],
-        providers: [outlook_service_1.OutlookService],
+        providers: [outlook_service_1.OutlookService, outlook_auth_service_1.OutlookAuthService, outlook_mail_service_1.OutlookMailService],
         exports: [outlook_service_1.OutlookService],
     })
 ], OutlookModule);

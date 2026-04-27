@@ -25,8 +25,17 @@ let FreightQuote = class FreightQuote {
     transitDays;
     validUntil;
     sourceThreadRefId;
+    inboundMessageId;
+    receivedAt;
     extractedFields;
+    comparisonFields;
     quotePromptSnapshot;
+    reviewStatus;
+    versionNumber;
+    isLatestVersion;
+    extractionConfidence;
+    reviewedByUserId;
+    reviewedAt;
     remarks;
     isSelected;
     createdAt;
@@ -86,13 +95,49 @@ __decorate([
     __metadata("design:type", Object)
 ], FreightQuote.prototype, "sourceThreadRefId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "inboundMessageId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "receivedAt", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
     __metadata("design:type", Object)
 ], FreightQuote.prototype, "extractedFields", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
     __metadata("design:type", Object)
+], FreightQuote.prototype, "comparisonFields", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
+    __metadata("design:type", Object)
 ], FreightQuote.prototype, "quotePromptSnapshot", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "reviewStatus", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 1 }),
+    __metadata("design:type", Number)
+], FreightQuote.prototype, "versionNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], FreightQuote.prototype, "isLatestVersion", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "extractionConfidence", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "reviewedByUserId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], FreightQuote.prototype, "reviewedAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", Object)
@@ -114,6 +159,12 @@ exports.FreightQuote = FreightQuote = __decorate([
     (0, typeorm_1.Index)('IDX_freight_quotes_inquiryId_createdAt', ['inquiryId', 'createdAt']),
     (0, typeorm_1.Index)('IDX_freight_quotes_rfqId', ['rfqId']),
     (0, typeorm_1.Index)('IDX_freight_quotes_vendorId', ['vendorId']),
+    (0, typeorm_1.Index)('IDX_freight_quotes_inboundMessageId', ['inboundMessageId']),
+    (0, typeorm_1.Index)('IDX_freight_quotes_rfqId_vendorId_isLatestVersion', [
+        'rfqId',
+        'vendorId',
+        'isLatestVersion',
+    ]),
     (0, typeorm_1.Entity)('freight_quotes')
 ], FreightQuote);
 //# sourceMappingURL=freight-quote.entity.js.map

@@ -13,6 +13,9 @@ const outlook_connection_entity_1 = require("../modules/outlook/entities/outlook
 const outlook_subscription_entity_1 = require("../modules/outlook/entities/outlook-subscription.entity");
 const rate_sheet_entity_1 = require("../modules/shipments/entities/rate-sheet.entity");
 const freight_quote_entity_1 = require("../modules/shipments/entities/freight-quote.entity");
+const quote_ignore_rule_entity_1 = require("../modules/shipments/entities/quote-ignore-rule.entity");
+const quote_inbound_message_entity_1 = require("../modules/shipments/entities/quote-inbound-message.entity");
+const quote_mailbox_scan_state_entity_1 = require("../modules/shipments/entities/quote-mailbox-scan-state.entity");
 const rfq_entity_1 = require("../modules/rfqs/entities/rfq.entity");
 const rfq_field_spec_entity_1 = require("../modules/rfqs/entities/rfq-field-spec.entity");
 const app_role_entity_1 = require("../modules/users/entities/app-role.entity");
@@ -43,6 +46,9 @@ exports.APP_DB_ENTITIES = [
     freight_quote_entity_1.FreightQuote,
     outlook_connection_entity_1.OutlookConnection,
     outlook_subscription_entity_1.OutlookSubscription,
+    quote_ignore_rule_entity_1.QuoteIgnoreRule,
+    quote_inbound_message_entity_1.QuoteInboundMessage,
+    quote_mailbox_scan_state_entity_1.QuoteMailboxScanState,
     rfq_entity_1.Rfq,
     rfq_field_spec_entity_1.RfqFieldSpec,
     app_role_entity_1.AppRole,

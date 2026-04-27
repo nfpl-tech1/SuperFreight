@@ -4,6 +4,7 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { FileText, Paperclip, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
@@ -42,6 +43,8 @@ interface Props {
   isExwClubbed?: boolean;
   isSending?: boolean;
   outlookStatus?: OutlookStatus | null;
+  customCcEmail: string;
+  onCustomCcEmailChange: (value: string) => void;
   onOfficeChange: (
     vendorId: string,
     officeId: string,
@@ -78,6 +81,15 @@ function formatFileSize(size: number) {
   }
 
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function isValidOptionalEmail(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return true;
+  }
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 }
 
 function AttachmentPanel({
@@ -172,6 +184,8 @@ export function Step4ReviewSend({
   isExwClubbed,
   isSending = false,
   outlookStatus = null,
+  customCcEmail,
+  onCustomCcEmailChange,
   onOfficeChange,
   onSend,
 }: Props) {
@@ -210,6 +224,7 @@ export function Step4ReviewSend({
     : outlookStatus?.reconnectRequired
       ? "Reconnect Outlook once from your Profile page to enable sending."
       : "Connect Outlook from your Profile page to send RFQs.";
+  const hasValidCustomCcEmail = isValidOptionalEmail(customCcEmail);
 
   const handleAttachmentSelection = (event: ChangeEvent<HTMLInputElement>) => {
     const nextFiles = Array.from(event.target.files ?? []);
@@ -234,6 +249,11 @@ export function Step4ReviewSend({
   };
 
   const handleSend = async () => {
+    if (!hasValidCustomCcEmail) {
+      toast.error("Enter a valid internal CC email before sending.");
+      return;
+    }
+
     await onSend(draftGetterRef.current?.() ?? null, attachments);
     setAttachments([]);
     if (fileInputRef.current) {
@@ -294,11 +314,40 @@ export function Step4ReviewSend({
               disabled={
                 selectedVendors.length === 0 ||
                 !canSendViaOutlook ||
-                !dispatchTargetsReady
+                !dispatchTargetsReady ||
+                !hasValidCustomCcEmail
               }
               loading={isSending}
               onClick={() => void handleSend()}
             />
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-border bg-card shadow-sm">
+          <div className="border-b border-border px-4 py-3">
+            <p className="text-sm font-semibold text-card-foreground">
+              Internal CC
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Optional. Add one internal senior staff email to be CCed on every
+              vendor RFQ mail.
+            </p>
+          </div>
+          <div className="px-4 py-4">
+            <Input
+              type="email"
+              inputMode="email"
+              placeholder="senior.staff@company.com"
+              value={customCcEmail}
+              onChange={(event) => onCustomCcEmailChange(event.target.value)}
+              aria-invalid={!hasValidCustomCcEmail}
+              disabled={isSending}
+            />
+            {!hasValidCustomCcEmail ? (
+              <p className="mt-2 text-xs text-red-600">
+                Enter a valid email address or leave this blank.
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -433,6 +482,34 @@ export function Step4ReviewSend({
         </div>
 
         <div className="shrink-0 rounded-xl border border-border bg-card shadow-sm">
+          <div className="border-b border-border px-4 py-2">
+            <span className="text-sm font-semibold leading-none text-card-foreground">
+              Internal CC
+            </span>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Optional. Add one internal senior staff email to be CCed on every
+              vendor RFQ mail.
+            </p>
+          </div>
+          <div className="px-4 py-3">
+            <Input
+              type="email"
+              inputMode="email"
+              placeholder="senior.staff@company.com"
+              value={customCcEmail}
+              onChange={(event) => onCustomCcEmailChange(event.target.value)}
+              aria-invalid={!hasValidCustomCcEmail}
+              disabled={isSending}
+            />
+            {!hasValidCustomCcEmail ? (
+              <p className="mt-2 text-xs text-red-600">
+                Enter a valid email address or leave this blank.
+              </p>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="shrink-0 rounded-xl border border-border bg-card shadow-sm">
           <div className="px-4 py-2 border-b border-border">
             <span className="text-sm font-semibold leading-none text-card-foreground">
               Selected Vendors ({selectedVendors.length})
@@ -471,7 +548,8 @@ export function Step4ReviewSend({
             disabled={
               selectedVendors.length === 0 ||
               !canSendViaOutlook ||
-              !dispatchTargetsReady
+              !dispatchTargetsReady ||
+              !hasValidCustomCcEmail
             }
             loading={isSending}
             onClick={() => void handleSend()}

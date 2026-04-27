@@ -4,7 +4,7 @@ import { Search, ShieldCheck } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { RolePermission } from "@/lib/api";
-import { MODULES } from "../role-builder.constants";
+import { ROLE_BUILDER_MODULES } from "../role-builder.constants";
 import { RoleModuleGroup } from "../role-builder.types";
 
 type ModuleAccessSectionProps = {
@@ -71,31 +71,32 @@ export function ModuleAccessSection({
               </div>
               <div className="grid gap-0 divide-y divide-slate-200">
                 {group.modules.map((moduleKey) => {
-                  const module = MODULES.find((item) => item.key === moduleKey)!;
-                  const permission = permissions.find((item) => item.moduleKey === module.key)!;
+                  const moduleDef = ROLE_BUILDER_MODULES.find((item) => item.key === moduleKey)!;
+                  const permission = permissions.find((item) => item.moduleKey === moduleDef.key)!;
 
                   return (
                     <div
-                      key={module.key}
+                      key={moduleDef.key}
                       className="grid gap-4 px-5 py-4 lg:grid-cols-[minmax(0,1fr)_220px]"
                     >
                       <div>
-                        <div className="font-medium text-slate-900">{module.label}</div>
-                        <div className="mt-1 text-sm text-muted-foreground">{module.description}</div>
+                        <div className="font-medium text-slate-900">{moduleDef.label}</div>
+                        <div className="mt-1 text-sm text-muted-foreground">{moduleDef.description}</div>
                       </div>
 
                       <div className="flex items-center justify-start gap-6 lg:justify-end">
                         <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                           <Checkbox
                             checked={permission.canView}
-                            onCheckedChange={(value) => onUpdatePermission(module.key, "canView", !!value)}
+                            onCheckedChange={(value) => onUpdatePermission(moduleDef.key, "canView", !!value)}
                           />
                           Can view
                         </label>
                         <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                           <Checkbox
                             checked={permission.canEdit}
-                            onCheckedChange={(value) => onUpdatePermission(module.key, "canEdit", !!value)}
+                            disabled={!permission.canView}
+                            onCheckedChange={(value) => onUpdatePermission(moduleDef.key, "canEdit", !!value)}
                           />
                           Can edit
                         </label>

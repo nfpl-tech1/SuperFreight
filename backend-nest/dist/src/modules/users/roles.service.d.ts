@@ -19,4 +19,5 @@ export declare class RolesService implements OnModuleInit {
         success: boolean;
     }>;
     assignUserRoles(userId: string, roleIds: string[]): Promise<UserRoleAssignment[]>;
+    private ensureSystemRole;
 }

@@ -10,6 +10,9 @@ import { OutlookConnection } from '../modules/outlook/entities/outlook-connectio
 import { OutlookSubscription } from '../modules/outlook/entities/outlook-subscription.entity';
 import { RateSheet } from '../modules/shipments/entities/rate-sheet.entity';
 import { FreightQuote } from '../modules/shipments/entities/freight-quote.entity';
+import { QuoteIgnoreRule } from '../modules/shipments/entities/quote-ignore-rule.entity';
+import { QuoteInboundMessage } from '../modules/shipments/entities/quote-inbound-message.entity';
+import { QuoteMailboxScanState } from '../modules/shipments/entities/quote-mailbox-scan-state.entity';
 import { Rfq } from '../modules/rfqs/entities/rfq.entity';
 import { RfqFieldSpec } from '../modules/rfqs/entities/rfq-field-spec.entity';
 import { AppRole } from '../modules/users/entities/app-role.entity';
@@ -41,6 +44,9 @@ export const APP_DB_ENTITIES = [
   FreightQuote,
   OutlookConnection,
   OutlookSubscription,
+  QuoteIgnoreRule,
+  QuoteInboundMessage,
+  QuoteMailboxScanState,
   Rfq,
   RfqFieldSpec,
   AppRole,

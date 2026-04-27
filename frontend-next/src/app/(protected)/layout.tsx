@@ -8,6 +8,7 @@ import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useIsCompactDesktop } from "@/hooks/use-is-compact-desktop";
+import { canViewPathname, getFirstAccessiblePath } from "@/lib/module-access";
 import { Bell, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 export default function ProtectedLayout({
@@ -22,7 +23,22 @@ export default function ProtectedLayout({
   const isCompactDesktop = useIsCompactDesktop();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const isVendorsRoute = pathname === "/vendors";
+  const fallbackPath = getFirstAccessiblePath(user);
+  const hasPathAccess = canViewPathname(user, pathname);
   const effectiveSidebarCollapsed = isCompactDesktop || sidebarCollapsed;
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    if (isMobile) {
+      root.style.setProperty("--sidebar-w", "0px");
+    } else {
+      root.style.setProperty("--sidebar-w", effectiveSidebarCollapsed ? "4rem" : "15rem");
+    }
+    return () => {
+      root.style.removeProperty("--sidebar-w");
+    };
+  }, [effectiveSidebarCollapsed, isMobile]);
   const desktopShellClass = isVendorsRoute
     ? "h-svh overflow-hidden"
     : "min-h-svh";
@@ -42,8 +58,29 @@ export default function ProtectedLayout({
     }
     if (!isLoading && isAuthenticated && requiresOnboarding) {
       router.replace("/onboarding");
+      return;
     }
-  }, [isLoading, isAuthenticated, requiresOnboarding, router]);
+    if (
+      !isLoading &&
+      isAuthenticated &&
+      !requiresOnboarding &&
+      user &&
+      !hasPathAccess &&
+      fallbackPath &&
+      fallbackPath !== pathname
+    ) {
+      router.replace(fallbackPath);
+    }
+  }, [
+    fallbackPath,
+    hasPathAccess,
+    isAuthenticated,
+    isLoading,
+    pathname,
+    requiresOnboarding,
+    router,
+    user,
+  ]);
 
   if (isLoading) {
     return (
@@ -54,6 +91,24 @@ export default function ProtectedLayout({
   }
 
   if (!isAuthenticated || requiresOnboarding) return null;
+
+  if (!hasPathAccess) {
+    if (fallbackPath && fallbackPath !== pathname) {
+      return null;
+    }
+
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <div className="max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <h1 className="text-2xl font-semibold text-slate-900">Access needed</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            This page is not available in your assigned role set. Ask an administrator to grant the
+            matching module if you should be working here.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (isMobile) {
     return (

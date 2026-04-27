@@ -1,6 +1,5 @@
 "use client";
 
-import { ApiError } from "@/lib/api/request";
 import type {
   UpsertVendorCcRecipientPayload,
   UpsertVendorContactPayload,
@@ -12,6 +11,7 @@ import type {
   VendorOfficeDetail,
   VendorTypeDefinition,
 } from "@/lib/api";
+import { trimToUndefined } from "@/lib/payload/payload-helpers";
 
 export type VendorFilters = {
   search: string;
@@ -192,7 +192,7 @@ export function toVendorPayload(draft: VendorDraft) {
   return {
     companyName: draft.companyName.trim(),
     isActive: draft.isActive,
-    notes: emptyToUndefined(draft.notes),
+    notes: trimToUndefined(draft.notes),
   };
 }
 
@@ -224,17 +224,17 @@ export function toOfficePayload(draft: OfficeDraft): UpsertVendorOfficePayload {
     .filter((contact) => hasAnyContactValue(contact))
     .map<UpsertVendorContactPayload>((contact) => ({
       contactName: contact.contactName.trim(),
-      salutation: emptyToUndefined(contact.salutation),
-      designation: emptyToUndefined(contact.designation),
-      emailPrimary: emptyToUndefined(contact.emailPrimary),
-      emailSecondary: emptyToUndefined(contact.emailSecondary),
-      mobile1: emptyToUndefined(contact.mobile1),
-      mobile2: emptyToUndefined(contact.mobile2),
-      landline: emptyToUndefined(contact.landline),
-      whatsappNumber: emptyToUndefined(contact.whatsappNumber),
+      salutation: trimToUndefined(contact.salutation),
+      designation: trimToUndefined(contact.designation),
+      emailPrimary: trimToUndefined(contact.emailPrimary),
+      emailSecondary: trimToUndefined(contact.emailSecondary),
+      mobile1: trimToUndefined(contact.mobile1),
+      mobile2: trimToUndefined(contact.mobile2),
+      landline: trimToUndefined(contact.landline),
+      whatsappNumber: trimToUndefined(contact.whatsappNumber),
       isPrimary: contact.isPrimary,
       isActive: contact.isActive,
-      notes: emptyToUndefined(contact.notes),
+      notes: trimToUndefined(contact.notes),
     }));
 
   const ccRecipients = draft.ccRecipients
@@ -246,12 +246,12 @@ export function toOfficePayload(draft: OfficeDraft): UpsertVendorOfficePayload {
 
   return {
     officeName: buildOfficeNameCandidate(draft),
-    cityName: emptyToUndefined(draft.cityName),
-    stateName: emptyToUndefined(draft.stateName),
-    countryName: emptyToUndefined(draft.countryName),
-    addressRaw: emptyToUndefined(draft.addressRaw),
-    externalCode: emptyToUndefined(draft.externalCode),
-    specializationRaw: emptyToUndefined(draft.specializationRaw),
+    cityName: trimToUndefined(draft.cityName),
+    stateName: trimToUndefined(draft.stateName),
+    countryName: trimToUndefined(draft.countryName),
+    addressRaw: trimToUndefined(draft.addressRaw),
+    externalCode: trimToUndefined(draft.externalCode),
+    specializationRaw: trimToUndefined(draft.specializationRaw),
     isActive: draft.isActive,
     isPrimary: draft.isPrimary,
     isIataCertified: draft.capabilities.isIataCertified,
@@ -268,11 +268,6 @@ export function toOfficePayload(draft: OfficeDraft): UpsertVendorOfficePayload {
   };
 }
 
-export function emptyToUndefined(value: string) {
-  const trimmed = value.trim();
-  return trimmed ? trimmed : undefined;
-}
-
 export function hasAnyContactValue(contact: ContactDraft) {
   return [
     contact.contactName,
@@ -285,13 +280,6 @@ export function hasAnyContactValue(contact: ContactDraft) {
     contact.designation,
     contact.notes,
   ].some((value) => value.trim().length > 0);
-}
-
-export function getErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof ApiError || error instanceof Error) {
-    return error.message;
-  }
-  return fallback;
 }
 
 export function getVendorCountsLabel(vendor: VendorCatalogItem) {

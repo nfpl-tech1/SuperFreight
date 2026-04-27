@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
-import { api, OutlookStatus } from "@/lib/api";
+import { api, getErrorMessage, OutlookStatus } from "@/lib/api";
 
 export function useOutlookOnboarding() {
-  const { isAuthenticated, isLoading, refreshSession, requiresOnboarding } = useAuth();
+  const { isAuthenticated, isLoading, refreshSession, requiresOnboarding, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<OutlookStatus | null>(null);
   const [busy, setBusy] = useState(false);
+  const [signatureStepDismissed, setSignatureStepDismissed] = useState(false);
+  const handledCodeRef = useRef<string | null>(null);
+
+  const isMailboxConnected = Boolean(status?.isConnected || user?.outlookConnected);
+  const needsSignatureSetup =
+    isMailboxConnected && !user?.emailSignature && !signatureStepDismissed;
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -19,10 +25,10 @@ export function useOutlookOnboarding() {
       return;
     }
 
-    if (!requiresOnboarding && !isLoading) {
+    if (!requiresOnboarding && !needsSignatureSetup && !isLoading) {
       router.replace("/dashboard");
     }
-  }, [isAuthenticated, isLoading, requiresOnboarding, router]);
+  }, [isAuthenticated, isLoading, needsSignatureSetup, requiresOnboarding, router]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -51,9 +57,10 @@ export function useOutlookOnboarding() {
 
   useEffect(() => {
     const codeParam = searchParams.get("code");
-    if (!codeParam) {
+    if (!codeParam || handledCodeRef.current === codeParam) {
       return;
     }
+    handledCodeRef.current = codeParam;
     const code = codeParam;
 
     let active = true;
@@ -68,10 +75,11 @@ export function useOutlookOnboarding() {
 
         setStatus(result);
         await refreshSession();
-        toast.success("Outlook mailbox connected successfully.");
-        router.replace("/dashboard");
+        toast.success("Outlook mailbox connected. Set up your signature to finish.");
+        router.replace("/onboarding");
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Failed to complete Outlook connection.");
+        handledCodeRef.current = null;
+        toast.error(getErrorMessage(error, "Failed to complete Outlook connection."));
       } finally {
         if (active) {
           setBusy(false);
@@ -92,7 +100,7 @@ export function useOutlookOnboarding() {
       const result = await api.getOutlookConnectUrl();
       window.location.assign(result.url);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to start Outlook connection.");
+      toast.error(getErrorMessage(error, "Failed to start Outlook connection."));
       setBusy(false);
     }
   };
@@ -104,18 +112,24 @@ export function useOutlookOnboarding() {
       setStatus(result);
       await refreshSession();
       toast.success("Outlook subscription refreshed.");
-      router.replace("/dashboard");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Reconnect failed.");
+      toast.error(getErrorMessage(error, "Reconnect failed."));
     } finally {
       setBusy(false);
     }
   };
 
+  const skipSignatureSetup = () => {
+    setSignatureStepDismissed(true);
+    router.replace("/dashboard");
+  };
+
   return {
     busy,
+    needsSignatureSetup,
     status,
     handleConnect,
     handleReconnect,
+    skipSignatureSetup,
   };
 }

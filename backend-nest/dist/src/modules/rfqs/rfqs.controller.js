@@ -57,6 +57,13 @@ function parseBooleanField(value) {
     }
     return undefined;
 }
+function parseOptionalStringField(value) {
+    if (typeof value !== 'string') {
+        return undefined;
+    }
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
+}
 function buildCreateRfqDtoPayload(rawBody) {
     return {
         inquiryId: rawBody.inquiryId,
@@ -66,6 +73,7 @@ function buildCreateRfqDtoPayload(rawBody) {
         vendorIds: parseJsonField(rawBody.vendorIds, 'vendorIds') ?? [],
         officeSelections: parseJsonField(rawBody.officeSelections, 'officeSelections') ?? [],
         responseFields: parseJsonField(rawBody.responseFields, 'responseFields') ?? [],
+        customCcEmail: parseOptionalStringField(rawBody.customCcEmail),
         sendNow: parseBooleanField(rawBody.sendNow),
         mailSubject: rawBody.mailSubject,
         mailBodyHtml: rawBody.mailBodyHtml,
@@ -79,8 +87,8 @@ let RfqsController = class RfqsController {
     constructor(rfqsService) {
         this.rfqsService = rfqsService;
     }
-    list() {
-        return this.rfqsService.list();
+    list(inquiryId) {
+        return this.rfqsService.list(inquiryId);
     }
     create(rawBody, files, user) {
         return this.rfqsService.create(this.parseCreateRfqDto(rawBody), user, files);
@@ -97,8 +105,9 @@ let RfqsController = class RfqsController {
 exports.RfqsController = RfqsController;
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('inquiryId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], RfqsController.prototype, "list", null);
 __decorate([

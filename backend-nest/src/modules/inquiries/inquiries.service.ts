@@ -1,11 +1,11 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { findOneOrThrow } from '../../common/persistence/find-or-throw.helpers';
 import { CustomerDraft } from '../customer-quotes/entities/customer-draft.entity';
 import { Rfq } from '../rfqs/entities/rfq.entity';
 import { FreightQuote } from '../shipments/entities/freight-quote.entity';
@@ -251,11 +251,6 @@ export class InquiriesService {
             { id, mailboxOwnerUserId: currentUser.id },
           ];
 
-    const inquiry = await this.inquiryRepo.findOne({ where });
-    if (!inquiry) {
-      throw new NotFoundException('Inquiry not found');
-    }
-
-    return inquiry;
+    return findOneOrThrow(this.inquiryRepo, where, 'Inquiry');
   }
 }

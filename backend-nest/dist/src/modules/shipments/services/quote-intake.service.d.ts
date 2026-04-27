@@ -1,0 +1,71 @@
+import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { DataSource, Repository } from 'typeorm';
+import { Inquiry } from '../../inquiries/entities/inquiry.entity';
+import { OutlookConnection } from '../../outlook/entities/outlook-connection.entity';
+import { OutlookService } from '../../outlook/outlook.service';
+import { Rfq } from '../../rfqs/entities/rfq.entity';
+import { VendorMaster } from '../../vendors/entities/vendor-master.entity';
+import { QuoteInboundMessage } from '../entities/quote-inbound-message.entity';
+import { QuoteIgnoreRule } from '../entities/quote-ignore-rule.entity';
+import { QuoteMailboxScanState } from '../entities/quote-mailbox-scan-state.entity';
+import { QuoteExtractionService } from './quote-extraction.service';
+import { QuoteIgnoreService } from './quote-ignore.service';
+import { QuoteMatchingService } from './quote-matching.service';
+type ListQuoteInboxFilters = {
+    inquiryId?: string;
+    rfqId?: string;
+    status?: string;
+};
+export declare class QuoteIntakeService implements OnModuleInit, OnModuleDestroy {
+    private readonly config;
+    private readonly outlookService;
+    private readonly quoteExtractionService;
+    private readonly quoteIgnoreService;
+    private readonly quoteMatchingService;
+    private readonly appDataSource;
+    private readonly connectionRepo;
+    private readonly inboundMessageRepo;
+    private readonly ignoreRuleRepo;
+    private readonly scanStateRepo;
+    private readonly rfqRepo;
+    private readonly inquiryRepo;
+    private readonly vendorRepo;
+    private readonly logger;
+    private readonly pollIntervalMs;
+    private readonly overlapSeconds;
+    private readonly initialLookbackHours;
+    private readonly batchSize;
+    private readonly enabled;
+    private timer;
+    private isRunning;
+    private schemaReady;
+    private schemaWarningLogged;
+    constructor(config: ConfigService, outlookService: OutlookService, quoteExtractionService: QuoteExtractionService, quoteIgnoreService: QuoteIgnoreService, quoteMatchingService: QuoteMatchingService, appDataSource: DataSource, connectionRepo: Repository<OutlookConnection>, inboundMessageRepo: Repository<QuoteInboundMessage>, ignoreRuleRepo: Repository<QuoteIgnoreRule>, scanStateRepo: Repository<QuoteMailboxScanState>, rfqRepo: Repository<Rfq>, inquiryRepo: Repository<Inquiry>, vendorRepo: Repository<VendorMaster>);
+    onModuleInit(): Promise<void>;
+    onModuleDestroy(): void;
+    listInboundMessages(filters?: ListQuoteInboxFilters): Promise<QuoteInboundMessage[]>;
+    scanNow(): Promise<{
+        started: boolean;
+        reason: string;
+    } | {
+        started: boolean;
+        reason?: undefined;
+    }>;
+    reprocessInboundMessage(inboundMessageId: string): Promise<import("../entities/freight-quote.entity").FreightQuote | null>;
+    ignoreInboundMessage(inboundMessageId: string, reason?: string): Promise<QuoteInboundMessage>;
+    linkInboundMessage(inboundMessageId: string, input: {
+        rfqId: string;
+        vendorId: string;
+    }): Promise<import("../entities/freight-quote.entity").FreightQuote | null>;
+    private scanConnectedMailboxes;
+    private scanMailbox;
+    private recordMessagesForMailbox;
+    private getScanStartTime;
+    private findOrCreateScanState;
+    private processForExtraction;
+    private ensureSchemaReady;
+    private assertSchemaReady;
+    private logSchemaNotReadyWarning;
+}
+export {};

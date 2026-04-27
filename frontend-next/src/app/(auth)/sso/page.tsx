@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 
 function SsoInner() {
@@ -30,7 +31,7 @@ function SsoInner() {
         router.replace("/");
       })
       .catch((error) => {
-        toast.error(error instanceof Error ? error.message : "SSO login failed.");
+        toast.error(getErrorMessage(error, "SSO login failed."));
         router.replace("/login");
       });
   }, [router, searchParams, ssoLogin]);

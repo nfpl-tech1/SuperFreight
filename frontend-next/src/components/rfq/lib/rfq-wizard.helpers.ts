@@ -20,6 +20,7 @@ type SerializedQuoteDraft = {
   formValues?: FormValues;
   responseFields?: ResponseField[];
   filterCriteria?: VendorFilterCriteria;
+  customCcEmail?: string;
   selectedVendorIds?: string[];
   selectedVendorOfficeIds?: Record<string, string | string[]>;
   completedSteps?: WizardStep[];
@@ -41,6 +42,7 @@ export type QuoteDraftState = {
   formValues: FormValues;
   responseFields: ResponseField[];
   filterCriteria: VendorFilterCriteria;
+  customCcEmail: string;
   selectedVendorIds: Set<string>;
   selectedVendorOfficeIds: Record<string, string[]>;
   completedSteps: Set<WizardStep>;
@@ -84,6 +86,7 @@ export function createQuoteDraftState(
     formValues: applyInquiryDefaults(department, inquiry, {}, true),
     responseFields: getDefaultResponseFields(department.id),
     filterCriteria: defaultFilterCriteria(),
+    customCcEmail: "",
     selectedVendorIds: new Set<string>(),
     selectedVendorOfficeIds: {},
     completedSteps: new Set<WizardStep>(),
@@ -144,6 +147,16 @@ export function replaceQuoteDraftFilterCriteria(
   return {
     ...draft,
     filterCriteria,
+  };
+}
+
+export function updateQuoteDraftCustomCcEmail(
+  draft: QuoteDraftState,
+  customCcEmail: string,
+): QuoteDraftState {
+  return {
+    ...draft,
+    customCcEmail,
   };
 }
 
@@ -280,6 +293,7 @@ function serializeQuoteDraft(
     formValues: quoteDraft.formValues,
     responseFields: quoteDraft.responseFields,
     filterCriteria: quoteDraft.filterCriteria,
+    customCcEmail: quoteDraft.customCcEmail,
     selectedVendorIds: Array.from(quoteDraft.selectedVendorIds),
     selectedVendorOfficeIds: quoteDraft.selectedVendorOfficeIds,
     completedSteps: Array.from(quoteDraft.completedSteps),
@@ -321,6 +335,7 @@ function deserializeQuoteDraft(
       ...fallback.filterCriteria,
       ...(quoteDraft.filterCriteria ?? {}),
     }),
+    customCcEmail: quoteDraft.customCcEmail ?? fallback.customCcEmail,
     selectedVendorIds: new Set<string>(quoteDraft.selectedVendorIds ?? []),
     selectedVendorOfficeIds,
     completedSteps: new Set<WizardStep>(quoteDraft.completedSteps ?? []),

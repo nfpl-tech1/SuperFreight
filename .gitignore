@@ -1,0 +1,4 @@
+*.log
+*.err.log
+frontend-next/tmp-signature-assets/
+frontend-next/tmp-signature-assets-all/

@@ -137,3 +137,11 @@
   display: inline;
   max-width: 100%;
 }
+
+.signature-builder-preview {
+  min-width: min(100%, 42rem);
+}
+
+.signature-builder-preview > * {
+  min-width: 38rem;
+}

@@ -88,8 +88,70 @@ export interface FreightQuote {
   documentation: number | null;
   transitDays: number | null;
   validUntil: string | null;
+  inboundMessageId: string | null;
+  receivedAt: string | null;
+  comparisonFields: Record<string, unknown> | null;
+  reviewStatus: string | null;
+  versionNumber: number;
+  isLatestVersion: boolean;
+  extractionConfidence: number | null;
+  reviewedByUserId: string | null;
+  reviewedAt: string | null;
   remarks: string | null;
   extractedFields: Record<string, unknown> | null;
+}
+
+export interface QuoteInboxMessageMetadata {
+  inquiryNumber?: string;
+  quoteId?: string;
+  matchConfidence?: "none" | "low" | "medium" | "high";
+  matchReason?: string;
+  matchedBy?: string[];
+  suggestedVendorIds?: string[];
+  suggestedRfqIds?: string[];
+  manuallyLinked?: boolean;
+  manualLinkRfqId?: string;
+  manualLinkVendorId?: string;
+  manualLinkVendorName?: string;
+  [key: string]: unknown;
+}
+
+export interface QuoteInboxMessage {
+  id: string;
+  mailboxOwnerUserId: string;
+  outlookMessageId: string;
+  internetMessageId: string | null;
+  conversationId: string | null;
+  receivedAt: string;
+  fromEmail: string | null;
+  fromName: string | null;
+  subject: string | null;
+  bodyPreview: string | null;
+  webLink: string | null;
+  hasAttachments: boolean;
+  matchedInquiryId: string | null;
+  matchedRfqId: string | null;
+  matchedVendorId: string | null;
+  status:
+    | "ignored"
+    | "unmatched"
+    | "extraction_pending"
+    | "needs_review"
+    | "finalized"
+    | "failed";
+  ignoreReason: string | null;
+  failureReason: string | null;
+  rawMetadata: QuoteInboxMessageMetadata | null;
+  attachmentMetadata: Array<Record<string, unknown>> | null;
+  processedAt: string | null;
+}
+
+export interface RfqFieldSpec {
+  id: number;
+  rfqId: string;
+  fieldKey: string;
+  fieldLabel: string;
+  isCustom: boolean;
 }
 
 export interface RateSheet {
@@ -112,6 +174,7 @@ export interface Rfq {
   sent: boolean;
   subjectLine: string | null;
   promptTemplateMeta: { selectedFields?: string[] } | null;
+  fieldSpecs: RfqFieldSpec[];
 }
 
 export interface CustomerDraft {

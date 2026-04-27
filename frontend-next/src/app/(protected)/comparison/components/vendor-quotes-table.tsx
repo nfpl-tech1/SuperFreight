@@ -11,22 +11,43 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FreightQuote } from "@/lib/api";
+import type { FreightQuote, RfqFieldSpec } from "@/lib/api";
+import {
+  formatComparisonValue,
+  getComparisonColumns,
+} from "../comparison.helpers";
 
 type VendorQuotesTableProps = {
-  quotes: FreightQuote[];
-  lowestRate: number;
+  fieldSpecs: RfqFieldSpec[];
+  lowestRate: number | null;
+  onReviewQuote: (quoteId: string) => void;
   onSelectQuote: (quoteId: string) => void;
+  quotes: FreightQuote[];
 };
 
 export function VendorQuotesTable({
-  quotes,
+  fieldSpecs,
   lowestRate,
+  onReviewQuote,
   onSelectQuote,
+  quotes,
 }: VendorQuotesTableProps) {
   if (quotes.length === 0) {
-    return null;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Vendor Quotes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            No quote drafts are available for this RFQ yet.
+          </p>
+        </CardContent>
+      </Card>
+    );
   }
+
+  const comparisonColumns = getComparisonColumns(fieldSpecs, quotes);
 
   return (
     <Card>
@@ -38,45 +59,57 @@ export function VendorQuotesTable({
           <TableHeader>
             <TableRow>
               <TableHead>Vendor</TableHead>
-              <TableHead className="text-right">Freight</TableHead>
-              <TableHead className="text-right">Local Charges</TableHead>
-              <TableHead className="text-right">Documentation</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Version</TableHead>
+              <TableHead>Received</TableHead>
               <TableHead className="text-right">Total Rate</TableHead>
-              <TableHead className="text-center">Transit</TableHead>
-              <TableHead>Valid Until</TableHead>
+              {comparisonColumns.map((column) => (
+                <TableHead key={column.key}>{column.label}</TableHead>
+              ))}
               <TableHead>Remarks</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>
             {quotes.map((quote) => {
-              const isLowest = Number(quote.totalRate ?? 0) === lowestRate;
+              const isLowest =
+                lowestRate !== null && Number(quote.totalRate ?? 0) === lowestRate;
 
               return (
-                <TableRow key={quote.id} className={isLowest ? "bg-green-50" : ""}>
+                <TableRow key={quote.id} className={isLowest ? "bg-emerald-50" : ""}>
                   <TableCell className="font-medium">
                     {quote.vendorName}
-                    {isLowest && <Badge className="ml-2 bg-green-600 text-white">Lowest</Badge>}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {quote.freightRate ?? 0} {quote.currency ?? "USD"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {quote.localCharges ?? 0} {quote.currency ?? "USD"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {quote.documentation ?? 0} {quote.currency ?? "USD"}
-                  </TableCell>
-                  <TableCell className="text-right font-bold">
-                    {quote.totalRate ?? 0} {quote.currency ?? "USD"}
-                  </TableCell>
-                  <TableCell className="text-center">{quote.transitDays ?? "-"} days</TableCell>
-                  <TableCell className="text-sm">{quote.validUntil ?? "-"}</TableCell>
-                  <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
-                    {quote.remarks ?? "-"}
+                    {isLowest ? (
+                      <Badge className="ml-2 bg-emerald-600 text-white">Lowest</Badge>
+                    ) : null}
                   </TableCell>
                   <TableCell>
-                    <Button size="sm" variant="outline" onClick={() => onSelectQuote(quote.id)}>
+                    <Badge variant="outline">
+                      {quote.reviewStatus || "draft"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>v{quote.versionNumber}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {quote.receivedAt
+                      ? new Date(quote.receivedAt).toLocaleString()
+                      : "-"}
+                  </TableCell>
+                  <TableCell className="text-right font-semibold">
+                    {quote.totalRate ?? "-"} {quote.currency ?? "USD"}
+                  </TableCell>
+                  {comparisonColumns.map((column) => (
+                    <TableCell key={column.key}>
+                      {formatComparisonValue(quote.comparisonFields?.[column.key])}
+                    </TableCell>
+                  ))}
+                  <TableCell className="max-w-[220px] truncate text-sm text-muted-foreground">
+                    {quote.remarks || "-"}
+                  </TableCell>
+                  <TableCell className="space-x-2">
+                    <Button size="sm" variant="outline" onClick={() => onReviewQuote(quote.id)}>
+                      Review
+                    </Button>
+                    <Button size="sm" onClick={() => onSelectQuote(quote.id)}>
                       Select
                     </Button>
                   </TableCell>

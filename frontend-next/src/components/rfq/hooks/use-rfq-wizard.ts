@@ -52,6 +52,7 @@ import {
   setQuoteDraftVendorOfficeSelection,
   toggleQuoteDraftResponseField,
   toggleQuoteDraftVendorSelection,
+  updateQuoteDraftCustomCcEmail,
   updateQuoteDraftFormValue,
 } from "@/components/rfq/lib/rfq-wizard.helpers";
 import {
@@ -306,6 +307,7 @@ export function useRFQWizard() {
   const formValues = currentQuoteDraft.formValues;
   const responseFields = currentQuoteDraft.responseFields;
   const filterCriteria = currentQuoteDraft.filterCriteria;
+  const customCcEmail = currentQuoteDraft.customCcEmail;
   const deferredLocationQuery = useDeferredValue(filterCriteria.locationQuery);
   const selectedVendorIds = currentQuoteDraft.selectedVendorIds;
   const selectedVendorOfficeIds = currentQuoteDraft.selectedVendorOfficeIds;
@@ -860,6 +862,15 @@ export function useRFQWizard() {
     updateQuoteDraft(departmentId, clearQuoteDraftVendors);
   }, [departmentId, updateQuoteDraft]);
 
+  const handleCustomCcEmailChange = useCallback(
+    (value: string) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        updateQuoteDraftCustomCcEmail(draft, value),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
   const setSelectedVendorOffice = useCallback(
     (vendorId: string, officeId: string, checked: boolean) => {
       updateQuoteDraft(departmentId, (draft) =>
@@ -1007,6 +1018,7 @@ export function useRFQWizard() {
             fieldLabel: field.label,
             isCustom: field.isCustom,
           })),
+          customCcEmail: customCcEmail.trim() || undefined,
           mailSubject: mailDraft?.subjectLine,
           mailBodyHtml: mailDraft?.html,
           attachments,
@@ -1021,6 +1033,7 @@ export function useRFQWizard() {
       selectedResponseFields,
       selectedVendorDispatchTargets,
       selectedVendorIds,
+      customCcEmail,
       validateStep,
     ],
   );
@@ -1103,6 +1116,7 @@ export function useRFQWizard() {
     responseFields,
     selectedResponseFields,
     filterCriteria,
+    customCcEmail,
     fetchedVendors,
     selectedVendors,
     selectedVendorDispatchTargets,
@@ -1127,6 +1141,7 @@ export function useRFQWizard() {
     addCustomField,
     removeCustomField,
     setFilterCriteria: handleFilterCriteriaChange,
+    setCustomCcEmail: handleCustomCcEmailChange,
     widenVendorScopeToCountry,
     resetVendorScopeToExact,
     toggleVendor,

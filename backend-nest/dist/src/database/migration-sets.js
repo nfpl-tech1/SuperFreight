@@ -4,6 +4,7 @@ exports.BUSINESS_DB_MIGRATIONS = exports.APP_DB_MIGRATIONS = void 0;
 const _2026032100000_AppInitialSchema_1 = require("./migrations/app/2026032100000-AppInitialSchema");
 const _2026032100100_AppSchemaHardening_1 = require("./migrations/app/2026032100100-AppSchemaHardening");
 const _2026040901400_AppUserEmailSignature_1 = require("./migrations/app/2026040901400-AppUserEmailSignature");
+const _2026041810000_AppQuoteInboxFoundation_1 = require("./migrations/app/2026041810000-AppQuoteInboxFoundation");
 const _2026032100200_BusinessInitialSchema_1 = require("./migrations/business/2026032100200-BusinessInitialSchema");
 const _2026032100300_BusinessSchemaHardening_1 = require("./migrations/business/2026032100300-BusinessSchemaHardening");
 const _2026032400400_BusinessVendorMasterPhase1_1 = require("./migrations/business/2026032400400-BusinessVendorMasterPhase1");
@@ -21,6 +22,7 @@ exports.APP_DB_MIGRATIONS = [
     _2026032100000_AppInitialSchema_1.AppInitialSchema2026032100000,
     _2026032100100_AppSchemaHardening_1.AppSchemaHardening2026032100100,
     _2026040901400_AppUserEmailSignature_1.AppUserEmailSignature2026040901400,
+    _2026041810000_AppQuoteInboxFoundation_1.AppQuoteInboxFoundation2026041810000,
 ];
 exports.BUSINESS_DB_MIGRATIONS = [
     _2026032100200_BusinessInitialSchema_1.BusinessInitialSchema2026032100200,

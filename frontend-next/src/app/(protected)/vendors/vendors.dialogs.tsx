@@ -264,7 +264,7 @@ export function OfficeDialog({
 
         <ScrollArea className="max-h-[calc(90svh-11rem)] pr-4">
           <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               <Field
                 label="External Code"
                 value={draft.externalCode}
@@ -422,7 +422,7 @@ export function OfficeDialog({
                   data.
                 </p>
               </div>
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {capabilityConfig.map((capability) => (
                   <label
                     key={capability.key}
@@ -515,7 +515,7 @@ export function OfficeDialog({
                       </div>
                     </div>
 
-                    <div className="grid gap-3 md:grid-cols-2">
+                    <div className="grid gap-3 sm:grid-cols-2">
                       <Field
                         label="Name"
                         value={contact.contactName}

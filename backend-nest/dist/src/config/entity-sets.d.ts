@@ -10,6 +10,9 @@ import { OutlookConnection } from '../modules/outlook/entities/outlook-connectio
 import { OutlookSubscription } from '../modules/outlook/entities/outlook-subscription.entity';
 import { RateSheet } from '../modules/shipments/entities/rate-sheet.entity';
 import { FreightQuote } from '../modules/shipments/entities/freight-quote.entity';
+import { QuoteIgnoreRule } from '../modules/shipments/entities/quote-ignore-rule.entity';
+import { QuoteInboundMessage } from '../modules/shipments/entities/quote-inbound-message.entity';
+import { QuoteMailboxScanState } from '../modules/shipments/entities/quote-mailbox-scan-state.entity';
 import { Rfq } from '../modules/rfqs/entities/rfq.entity';
 import { RfqFieldSpec } from '../modules/rfqs/entities/rfq-field-spec.entity';
 import { AppRole } from '../modules/users/entities/app-role.entity';
@@ -33,5 +36,5 @@ import { VendorOfficeServiceLocation } from '../modules/vendors/entities/vendor-
 import { VendorOfficeTypeMap } from '../modules/vendors/entities/vendor-office-type-map.entity';
 import { VendorOffice } from '../modules/vendors/entities/vendor-office.entity';
 import { VendorTypeMaster } from '../modules/vendors/entities/vendor-type-master.entity';
-export declare const APP_DB_ENTITIES: (typeof AuditLog | typeof ConsumedSsoToken | typeof CustomerDraft | typeof OutlookConnection | typeof OutlookSubscription | typeof FreightQuote | typeof Rfq | typeof RfqFieldSpec | typeof RolePermission | typeof AppRole | typeof RoleScopeRule | typeof UserDepartment | typeof User | typeof UserRoleAssignment)[];
+export declare const APP_DB_ENTITIES: (typeof AuditLog | typeof ConsumedSsoToken | typeof CustomerDraft | typeof OutlookConnection | typeof OutlookSubscription | typeof FreightQuote | typeof QuoteIgnoreRule | typeof QuoteInboundMessage | typeof QuoteMailboxScanState | typeof Rfq | typeof RfqFieldSpec | typeof RolePermission | typeof AppRole | typeof RoleScopeRule | typeof UserDepartment | typeof User | typeof UserRoleAssignment)[];
 export declare const BUSINESS_DB_ENTITIES: (typeof ExternalThreadRef | typeof Inquiry | typeof Job | typeof JobServicePart | typeof OwnershipAssignment | typeof RateSheet | typeof CountryRegionMap | typeof ImportSourceAudit | typeof PortMaster | typeof PortAlias | typeof RegionMaster | typeof ServiceLocationMaster | typeof ServiceLocationAlias | typeof VendorCcRecipient | typeof VendorContact | typeof VendorMaster | typeof VendorOfficePort | typeof VendorOfficeServiceLocation | typeof VendorOfficeTypeMap | typeof VendorOffice | typeof VendorTypeMaster)[];

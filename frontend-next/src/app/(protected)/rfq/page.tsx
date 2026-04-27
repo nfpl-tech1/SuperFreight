@@ -125,6 +125,8 @@ export default function RFQPage() {
             isExwClubbed={isExwClubbed}
             isSending={wizard.isSubmitting}
             outlookStatus={wizard.outlookStatus}
+            customCcEmail={wizard.customCcEmail}
+            onCustomCcEmailChange={wizard.setCustomCcEmail}
             onOfficeChange={wizard.setSelectedVendorOffice}
             onSend={wizard.saveRfq}
           />

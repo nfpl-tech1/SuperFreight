@@ -6,113 +6,140 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { QuoteFormState, SelectableVendor } from "../comparison.types";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import type { QuoteInboxMessage, RfqFieldSpec } from "@/lib/api";
+import type { QuoteReviewFormState } from "../comparison.types";
 
-const QUOTE_INPUT_FIELDS: Array<{
+const CORE_FIELDS: Array<{
   key: keyof Pick<
-    QuoteFormState,
-    "freightRate" | "localCharges" | "documentation" | "totalRate" | "transitDays"
+    QuoteReviewFormState,
+    | "vendorName"
+    | "currency"
+    | "totalRate"
+    | "freightRate"
+    | "localCharges"
+    | "documentation"
+    | "transitDays"
+    | "validUntil"
   >;
   label: string;
+  type?: string;
 }> = [
-  { key: "freightRate", label: "Freight Rate" },
-  { key: "localCharges", label: "Local Charges" },
-  { key: "documentation", label: "Documentation" },
-  { key: "totalRate", label: "Total Rate" },
-  { key: "transitDays", label: "Transit Days" },
+  { key: "vendorName", label: "Vendor Name" },
+  { key: "currency", label: "Currency" },
+  { key: "totalRate", label: "Total Rate", type: "number" },
+  { key: "freightRate", label: "Freight Rate", type: "number" },
+  { key: "localCharges", label: "Local Charges", type: "number" },
+  { key: "documentation", label: "Documentation", type: "number" },
+  { key: "transitDays", label: "Transit Days", type: "number" },
+  { key: "validUntil", label: "Valid Until", type: "date" },
 ];
 
 type QuoteCaptureDialogProps = {
+  fieldSpecs: RfqFieldSpec[];
+  form: QuoteReviewFormState;
+  inboxMessage?: QuoteInboxMessage | null;
   isOpen: boolean;
-  canOpen: boolean;
-  vendors: SelectableVendor[];
-  form: QuoteFormState;
+  isSaving: boolean;
+  onComparisonFieldChange: (fieldKey: string, value: string) => void;
+  onCoreFieldChange: (field: keyof QuoteReviewFormState, value: string) => void;
   onOpenChange: (value: boolean) => void;
-  onVendorChange: (vendorId: string) => void;
-  onFormValueChange: (field: keyof QuoteFormState, value: string) => void;
   onSave: () => void;
 };
 
 export function QuoteCaptureDialog({
-  isOpen,
-  canOpen,
-  vendors,
+  fieldSpecs,
   form,
+  inboxMessage,
+  isOpen,
+  isSaving,
+  onComparisonFieldChange,
+  onCoreFieldChange,
   onOpenChange,
-  onVendorChange,
-  onFormValueChange,
   onSave,
 }: QuoteCaptureDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button disabled={!canOpen}>Add Quote</Button>
-      </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Capture Vendor Quote</DialogTitle>
+          <DialogTitle>Review Extracted Quote</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Vendor</Label>
-            <Select value={form.vendorId} onValueChange={onVendorChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select vendor..." />
-              </SelectTrigger>
-              <SelectContent>
-                {vendors.map((vendor) => (
-                  <SelectItem key={vendor.id} value={vendor.id}>
-                    {vendor.name} {vendor.locationMaster ? `(${vendor.locationMaster})` : ""}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {QUOTE_INPUT_FIELDS.map((field) => (
-              <div key={field.key} className="space-y-2">
-                <Label>{field.label}</Label>
-                <Input
-                  value={form[field.key]}
-                  onChange={(event) => onFormValueChange(field.key, event.target.value)}
-                />
+        <ScrollArea className="max-h-[72vh] pr-4">
+          <div className="space-y-6">
+            {inboxMessage ? (
+              <div className="rounded-xl border border-border bg-muted/40 p-4">
+                <p className="text-sm font-medium">
+                  {inboxMessage.fromName || inboxMessage.fromEmail || "Unknown sender"}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {inboxMessage.subject || "No subject"}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Received: {new Date(inboxMessage.receivedAt).toLocaleString()}
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {inboxMessage.bodyPreview || "No preview available."}
+                </p>
               </div>
-            ))}
+            ) : null}
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {CORE_FIELDS.map((field) => (
+                <div key={field.key} className="space-y-2">
+                  <Label>{field.label}</Label>
+                  <Input
+                    type={field.type}
+                    value={form[field.key]}
+                    onChange={(event) => onCoreFieldChange(field.key, event.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-semibold">RFQ Comparison Fields</h3>
+                <p className="text-xs text-muted-foreground">
+                  Edit the extracted values that will appear in the comparison grid.
+                </p>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {fieldSpecs.map((field) => (
+                  <div key={field.id} className="space-y-2">
+                    <Label>{field.fieldLabel}</Label>
+                    <Input
+                      value={form.comparisonFields[field.fieldKey] ?? ""}
+                      onChange={(event) =>
+                        onComparisonFieldChange(field.fieldKey, event.target.value)
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="space-y-2">
-              <Label>Valid Until</Label>
-              <Input
-                type="date"
-                value={form.validUntil}
-                onChange={(event) => onFormValueChange("validUntil", event.target.value)}
+              <Label>Remarks</Label>
+              <Textarea
+                value={form.remarks}
+                onChange={(event) => onCoreFieldChange("remarks", event.target.value)}
+                rows={5}
               />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label>Remarks</Label>
-            <Input
-              value={form.remarks}
-              onChange={(event) => onFormValueChange("remarks", event.target.value)}
-            />
+            <div className="flex justify-end">
+              <Button onClick={onSave} disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save Review"}
+              </Button>
+            </div>
           </div>
-
-          <Button onClick={onSave} className="w-full" disabled={!form.vendorName}>
-            Save Quote
-          </Button>
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

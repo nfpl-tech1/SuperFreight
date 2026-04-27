@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,7 +43,7 @@ function CustomerQuoteInner() {
       setDraft(result);
       toast.success("Customer draft generated");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to generate draft");
+      toast.error(getErrorMessage(error, "Failed to generate draft"));
     }
   };
 

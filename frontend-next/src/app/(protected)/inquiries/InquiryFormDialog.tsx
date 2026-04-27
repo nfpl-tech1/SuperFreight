@@ -211,36 +211,6 @@ export function InquiryFormDialog({
 
         <div className="grid gap-4 xl:grid-cols-2">
           <div className="space-y-2">
-            <VendorLocationPicker
-              label="Origin"
-              placeholder={getLocationPlaceholder(form.shipmentMode, "origin")}
-              value={form.origin}
-              options={originOptions}
-              loading={loadingOriginOptions}
-              onQueryChange={(value) => updateField("origin", value)}
-              onSelect={(option) => updateField("origin", option.label)}
-              onClear={() => updateField("origin", "")}
-            />
-          </div>
-          <div className="space-y-2">
-            <VendorLocationPicker
-              label="Destination"
-              placeholder={getLocationPlaceholder(
-                form.shipmentMode,
-                "destination",
-              )}
-              value={form.destination}
-              options={destinationOptions}
-              loading={loadingDestinationOptions}
-              onQueryChange={(value) => updateField("destination", value)}
-              onSelect={(option) => updateField("destination", option.label)}
-              onClear={() => updateField("destination", "")}
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-4 xl:grid-cols-2">
-          <div className="space-y-2">
             <Label>Mode</Label>
             <Select
               value={form.shipmentMode}
@@ -275,6 +245,36 @@ export function InquiryFormDialog({
                 ))}
               </SelectContent>
             </Select>
+          </div>
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-2">
+          <div className="space-y-2">
+            <VendorLocationPicker
+              label="Origin"
+              placeholder={getLocationPlaceholder(form.shipmentMode, "origin")}
+              value={form.origin}
+              options={originOptions}
+              loading={loadingOriginOptions}
+              onQueryChange={(value) => updateField("origin", value)}
+              onSelect={(option) => updateField("origin", option.label)}
+              onClear={() => updateField("origin", "")}
+            />
+          </div>
+          <div className="space-y-2">
+            <VendorLocationPicker
+              label="Destination"
+              placeholder={getLocationPlaceholder(
+                form.shipmentMode,
+                "destination",
+              )}
+              value={form.destination}
+              options={destinationOptions}
+              loading={loadingDestinationOptions}
+              onQueryChange={(value) => updateField("destination", value)}
+              onSelect={(option) => updateField("destination", option.label)}
+              onClear={() => updateField("destination", "")}
+            />
           </div>
         </div>
 

@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import {
   api,
+  getErrorMessage,
   type VendorCatalogPage,
   type VendorDetail,
   type VendorLocationOption,
@@ -21,7 +22,6 @@ import {
   ALL_FILTER,
   buildOfficeNameCandidate,
   emptyOfficeDraft,
-  getErrorMessage,
   getVisibleVendorTypes,
   officeDraftFromDetail,
   PAGE_SIZE,
@@ -40,10 +40,12 @@ import {
 } from "@/app/(protected)/vendors/vendors.dialogs";
 import { VendorDetailDialog } from "@/app/(protected)/vendors/vendor-detail-dialog";
 import { VendorCatalogSection } from "@/app/(protected)/vendors/vendors.catalog";
+import { canEditModule } from "@/lib/module-access";
 
 export default function VendorsPage() {
   const { user } = useAuth();
-  const canManage = user?.role === "ADMIN";
+  const isBaseAdmin = user?.role === "ADMIN" || user?.isAppAdmin === true;
+  const canManage = isBaseAdmin || canEditModule(user, "vendors");
   const [lookups, setLookups] = useState<VendorLookups>({
     vendorTypes: [],
     countries: [],

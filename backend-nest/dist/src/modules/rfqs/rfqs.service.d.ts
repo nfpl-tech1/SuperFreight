@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { ExternalThreadRef } from '../inquiries/entities/external-thread-ref.entity';
 import { Inquiry } from '../inquiries/entities/inquiry.entity';
 import { OutlookService } from '../outlook/outlook.service';
 import { User } from '../users/entities/user.entity';
@@ -13,13 +14,30 @@ export declare class RfqsService {
     private readonly rfqRepo;
     private readonly fieldSpecRepo;
     private readonly inquiryRepo;
+    private readonly externalThreadRefRepo;
     private readonly vendorRepo;
     private readonly officeRepo;
     private readonly contactRepo;
     private readonly ccRepo;
     private readonly outlookService;
-    constructor(rfqRepo: Repository<Rfq>, fieldSpecRepo: Repository<RfqFieldSpec>, inquiryRepo: Repository<Inquiry>, vendorRepo: Repository<VendorMaster>, officeRepo: Repository<VendorOffice>, contactRepo: Repository<VendorContact>, ccRepo: Repository<VendorCcRecipient>, outlookService: OutlookService);
-    list(): Promise<Rfq[]>;
+    constructor(rfqRepo: Repository<Rfq>, fieldSpecRepo: Repository<RfqFieldSpec>, inquiryRepo: Repository<Inquiry>, externalThreadRefRepo: Repository<ExternalThreadRef>, vendorRepo: Repository<VendorMaster>, officeRepo: Repository<VendorOffice>, contactRepo: Repository<VendorContact>, ccRepo: Repository<VendorCcRecipient>, outlookService: OutlookService);
+    list(inquiryId?: string): Promise<{
+        fieldSpecs: RfqFieldSpec[];
+        id: string;
+        inquiryId: string;
+        inquiryNumber: string;
+        departmentId: string;
+        createdByUserId: string | null;
+        formValues: Record<string, unknown>;
+        vendorIds: string[];
+        sent: boolean;
+        subjectLine: string | null;
+        promptTemplateMeta: Record<string, unknown> | null;
+        sentAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }[]>;
+    private listRfqsWithFieldSpecs;
     create(dto: CreateRfqDto, user: User, files?: Express.Multer.File[]): Promise<Rfq | null>;
     private createDraftRfq;
     private saveFieldSpecs;
@@ -41,8 +59,8 @@ export declare class RfqsService {
     private buildVendorRecipient;
     private pickContactWithUsableEmail;
     private collectCcEmails;
+    private mergeCcEmails;
     private throwIfRecipientsMissing;
     private dedupeRecipients;
     private createRecipientResolution;
-    private groupBy;
 }

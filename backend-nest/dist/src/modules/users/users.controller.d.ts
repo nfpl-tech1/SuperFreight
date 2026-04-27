@@ -30,6 +30,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -57,6 +59,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -82,6 +86,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -107,6 +113,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -132,6 +140,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -157,6 +167,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];
@@ -182,6 +194,8 @@ export declare class UsersController {
         customRoles: {
             id: string;
             name: string;
+            description: string | null;
+            isSystem: boolean;
             permissions: import("./entities/role-permission.entity").RolePermission[];
             scopeRules: import("./entities/role-scope-rule.entity").RoleScopeRule[];
         }[];

@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VendorsService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const pagination_helpers_1 = require("../../common/pagination/pagination.helpers");
+const find_or_throw_helpers_1 = require("../../common/persistence/find-or-throw.helpers");
+const collection_helpers_1 = require("../../common/utils/collection.helpers");
 const typeorm_2 = require("typeorm");
 const vendor_selection_context_1 = require("./domain/vendor-selection-context");
 const vendor_normalization_1 = require("./domain/vendor-normalization");
@@ -92,8 +95,7 @@ let VendorsService = class VendorsService {
         };
     }
     async getLocationOptions(query) {
-        const page = Math.max(query.page ?? 1, 1);
-        const pageSize = Math.min(Math.max(query.pageSize ?? 20, 1), 100);
+        const { page, pageSize } = (0, pagination_helpers_1.parsePaginationParams)(query.page, query.pageSize, { pageSize: 20 });
         const context = (0, vendor_selection_context_1.resolveVendorSelectionContext)({
             quoteTypeContext: query.quoteTypeContext,
             shipmentMode: query.shipmentMode,
@@ -128,8 +130,7 @@ let VendorsService = class VendorsService {
         });
     }
     async listPortMaster(query) {
-        const page = Math.max(query.page ?? 1, 1);
-        const pageSize = Math.min(Math.max(query.pageSize ?? 25, 1), 100);
+        const { page, pageSize } = (0, pagination_helpers_1.parsePaginationParams)(query.page, query.pageSize, { pageSize: 25 });
         const baseQuery = this.buildPortMasterListQuery(query);
         const totalResult = await baseQuery
             .clone()
@@ -169,16 +170,13 @@ let VendorsService = class VendorsService {
             this.loadLinkedOfficeCounts(portIds),
         ]);
         const portsById = new Map(ports.map((port) => [port.id, port]));
-        const aliasesByPortId = groupBy(aliases, (alias) => alias.portId);
+        const aliasesByPortId = (0, collection_helpers_1.groupBy)(aliases, (alias) => alias.portId);
         return {
             items: portIds
                 .map((portId) => portsById.get(portId))
                 .filter((port) => Boolean(port))
                 .map((port) => this.formatPortMasterAdminItem(port, aliasesByPortId.get(port.id) ?? [], linkedOfficeCounts.get(port.id) ?? 0)),
-            page,
-            pageSize,
-            total,
-            totalPages: total === 0 ? 0 : Math.ceil(total / pageSize),
+            ...(0, pagination_helpers_1.buildPaginationMeta)(total, page, pageSize),
         };
     }
     async getPortMasterDetail(id) {
@@ -270,8 +268,7 @@ let VendorsService = class VendorsService {
         return this.getPortMasterDetail(port.id);
     }
     async listVendors(query) {
-        const page = Math.max(query.page ?? 1, 1);
-        const pageSize = Math.min(Math.max(query.pageSize ?? 25, 1), 100);
+        const { page, pageSize } = (0, pagination_helpers_1.parsePaginationParams)(query.page, query.pageSize, { pageSize: 25 });
         const baseQuery = this.buildVendorListQuery(query);
         const totalResult = await baseQuery
             .clone()
@@ -295,17 +292,11 @@ let VendorsService = class VendorsService {
             .map((vendor) => this.formatVendorListItem(vendor, graph));
         return {
             items,
-            page,
-            pageSize,
-            total,
-            totalPages: total === 0 ? 0 : Math.ceil(total / pageSize),
+            ...(0, pagination_helpers_1.buildPaginationMeta)(total, page, pageSize),
         };
     }
     async getVendorDetail(id) {
-        const vendor = await this.vendorRepo.findOne({ where: { id } });
-        if (!vendor) {
-            throw new common_1.NotFoundException('Vendor not found');
-        }
+        const vendor = await this.findVendorOrThrow(id);
         const graph = await this.loadVendorGraph([vendor.id]);
         return this.formatVendorDetail(vendor, graph);
     }
@@ -811,16 +802,13 @@ let VendorsService = class VendorsService {
                 kind: vendor_selection_context_1.VendorLocationKind.PORT,
                 label: port.name,
                 subLabel: [port.cityName, port.countryName]
-                    .filter(isNonEmpty)
+                    .filter(collection_helpers_1.isNonEmpty)
                     .join(', '),
                 countryName: port.countryName,
                 portMode: port.portMode,
                 recommended: recommendedPortIds.has(port.id),
             })),
-            page: input.page,
-            pageSize: input.pageSize,
-            total,
-            totalPages: total === 0 ? 0 : Math.ceil(total / input.pageSize),
+            ...(0, pagination_helpers_1.buildPaginationMeta)(total, input.page, input.pageSize),
         };
     }
     async listServiceLocationOptions(input) {
@@ -858,16 +846,13 @@ let VendorsService = class VendorsService {
                     kind: vendor_selection_context_1.VendorLocationKind.SERVICE_LOCATION,
                     label: serviceLocation.name,
                     subLabel: [serviceLocation.cityName, serviceLocation.countryName]
-                        .filter(isNonEmpty)
+                        .filter(collection_helpers_1.isNonEmpty)
                         .join(', '),
                     countryName: serviceLocation.countryName,
                     portMode: null,
                     recommended: recommendedServiceLocationIds.has(serviceLocation.id),
                 })),
-                page: input.page,
-                pageSize: input.pageSize,
-                total: canonicalTotal,
-                totalPages: Math.ceil(canonicalTotal / input.pageSize),
+                ...(0, pagination_helpers_1.buildPaginationMeta)(canonicalTotal, input.page, input.pageSize),
             };
         }
         return this.listLegacyServiceLocationOptions(input);
@@ -919,16 +904,13 @@ let VendorsService = class VendorsService {
                 kind: vendor_selection_context_1.VendorLocationKind.SERVICE_LOCATION,
                 label: row.label,
                 subLabel: [row.stateName, row.countryName]
-                    .filter(isNonEmpty)
+                    .filter(collection_helpers_1.isNonEmpty)
                     .join(', '),
                 countryName: row.countryName,
                 portMode: null,
                 recommended: false,
             })),
-            page: input.page,
-            pageSize: input.pageSize,
-            total,
-            totalPages: total === 0 ? 0 : Math.ceil(total / input.pageSize),
+            ...(0, pagination_helpers_1.buildPaginationMeta)(total, input.page, input.pageSize),
         };
     }
     async getRecommendedPortIds(portIds, typeCodes) {
@@ -1031,12 +1013,12 @@ let VendorsService = class VendorsService {
         const serviceLocationsById = new Map(serviceLocations.map((row) => [row.id, row]));
         return {
             vendorsById: new Map(vendors.map((vendor) => [vendor.id, vendor])),
-            officesByVendorId: groupBy(offices, (office) => office.vendorId),
-            contactsByOfficeId: groupBy(contacts, (contact) => contact.officeId),
-            ccRecipientsByOfficeId: groupBy(ccRecipients, (recipient) => recipient.officeId),
-            portsByOfficeId: groupMappedBy(officePorts, (officePort) => officePort.officeId, (officePort) => portsById.get(officePort.portId)),
-            serviceLocationsByOfficeId: groupMappedBy(officeServiceLocations, (officeServiceLocation) => officeServiceLocation.officeId, (officeServiceLocation) => serviceLocationsById.get(officeServiceLocation.serviceLocationId)),
-            typesByOfficeId: groupMappedBy(officeTypeMaps, (officeType) => officeType.officeId, (officeType) => vendorTypesById.get(officeType.vendorTypeId)),
+            officesByVendorId: (0, collection_helpers_1.groupBy)(offices, (office) => office.vendorId),
+            contactsByOfficeId: (0, collection_helpers_1.groupBy)(contacts, (contact) => contact.officeId),
+            ccRecipientsByOfficeId: (0, collection_helpers_1.groupBy)(ccRecipients, (recipient) => recipient.officeId),
+            portsByOfficeId: (0, collection_helpers_1.groupMappedBy)(officePorts, (officePort) => officePort.officeId, (officePort) => portsById.get(officePort.portId)),
+            serviceLocationsByOfficeId: (0, collection_helpers_1.groupMappedBy)(officeServiceLocations, (officeServiceLocation) => officeServiceLocation.officeId, (officeServiceLocation) => serviceLocationsById.get(officeServiceLocation.serviceLocationId)),
+            typesByOfficeId: (0, collection_helpers_1.groupMappedBy)(officeTypeMaps, (officeType) => officeType.officeId, (officeType) => vendorTypesById.get(officeType.vendorTypeId)),
         };
     }
     formatVendorType(vendorType) {
@@ -1055,7 +1037,7 @@ let VendorsService = class VendorsService {
         const primaryContact = this.pickPrimaryContact(primaryOffice, offices, graph);
         const vendorTypes = this.collectVendorTypes(offices, graph);
         const capabilities = this.aggregateVendorCapabilities(offices);
-        const countries = Array.from(new Set(offices.map((office) => office.countryName).filter(isNonEmpty))).sort((left, right) => left.localeCompare(right));
+        const countries = Array.from(new Set(offices.map((office) => office.countryName).filter(collection_helpers_1.isNonEmpty))).sort((left, right) => left.localeCompare(right));
         const contactCount = offices.reduce((sum, office) => sum + (graph.contactsByOfficeId.get(office.id)?.length ?? 0), 0);
         return {
             id: vendor.id,
@@ -1101,7 +1083,7 @@ let VendorsService = class VendorsService {
     formatVendorDetail(vendor, graph) {
         const offices = graph.officesByVendorId.get(vendor.id) ?? [];
         const vendorTypes = this.collectVendorTypes(offices, graph);
-        const countries = Array.from(new Set(offices.map((office) => office.countryName).filter(isNonEmpty))).sort((left, right) => left.localeCompare(right));
+        const countries = Array.from(new Set(offices.map((office) => office.countryName).filter(collection_helpers_1.isNonEmpty))).sort((left, right) => left.localeCompare(right));
         const officeDetails = offices.map((office) => this.formatOfficeDetail(office, vendor.primaryOfficeId, graph));
         return {
             id: vendor.id,
@@ -1359,22 +1341,14 @@ let VendorsService = class VendorsService {
         }
     }
     async findVendorOrThrow(id) {
-        const vendor = await this.vendorRepo.findOne({ where: { id } });
-        if (!vendor) {
-            throw new common_1.NotFoundException('Vendor not found');
-        }
-        return vendor;
+        return (0, find_or_throw_helpers_1.findByIdOrThrow)(this.vendorRepo, id, 'Vendor');
     }
     async findOfficeOrThrow(id) {
-        const office = await this.officeRepo.findOne({ where: { id } });
-        if (!office) {
-            throw new common_1.NotFoundException('Vendor office not found');
-        }
-        return office;
+        return (0, find_or_throw_helpers_1.findByIdOrThrow)(this.officeRepo, id, 'Vendor office not found');
     }
     async ensureOfficeBelongsToVendor(officeId, vendorId) {
-        const office = await this.officeRepo.findOne({ where: { id: officeId } });
-        if (!office || office.vendorId !== vendorId) {
+        const office = await (0, find_or_throw_helpers_1.findByIdOrThrow)(this.officeRepo, officeId, 'Primary office was not found for this vendor');
+        if (office.vendorId !== vendorId) {
             throw new common_1.NotFoundException('Primary office was not found for this vendor');
         }
     }
@@ -1392,11 +1366,7 @@ let VendorsService = class VendorsService {
         }
     }
     async findPortOrThrow(id) {
-        const port = await this.portRepo.findOne({ where: { id } });
-        if (!port) {
-            throw new common_1.NotFoundException('Port not found');
-        }
-        return port;
+        return (0, find_or_throw_helpers_1.findByIdOrThrow)(this.portRepo, id, 'Port');
     }
     async ensurePortCodeUnique(portMode, code, currentPortId) {
         const existing = await this.portRepo.findOne({
@@ -1528,39 +1498,6 @@ exports.VendorsService = VendorsService = __decorate([
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], VendorsService);
-function groupBy(items, keySelector) {
-    const groups = new Map();
-    for (const item of items) {
-        const key = keySelector(item);
-        const existing = groups.get(key);
-        if (existing) {
-            existing.push(item);
-            continue;
-        }
-        groups.set(key, [item]);
-    }
-    return groups;
-}
-function groupMappedBy(items, keySelector, valueSelector) {
-    const groups = new Map();
-    for (const item of items) {
-        const value = valueSelector(item);
-        if (!value) {
-            continue;
-        }
-        const key = keySelector(item);
-        const existing = groups.get(key);
-        if (existing) {
-            existing.push(value);
-            continue;
-        }
-        groups.set(key, [value]);
-    }
-    return groups;
-}
-function isNonEmpty(value) {
-    return Boolean(value && value.trim());
-}
 function normalizePortValue(value) {
     if (!value) {
         return null;

@@ -10,6 +10,7 @@ exports.RfqsModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const audit_module_1 = require("../audit/audit.module");
+const external_thread_ref_entity_1 = require("../inquiries/entities/external-thread-ref.entity");
 const inquiry_entity_1 = require("../inquiries/entities/inquiry.entity");
 const outlook_module_1 = require("../outlook/outlook.module");
 const vendor_cc_recipient_entity_1 = require("../vendors/entities/vendor-cc-recipient.entity");
@@ -27,7 +28,14 @@ exports.RfqsModule = RfqsModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([rfq_entity_1.Rfq, rfq_field_spec_entity_1.RfqFieldSpec]),
-            typeorm_1.TypeOrmModule.forFeature([inquiry_entity_1.Inquiry, vendor_master_entity_1.VendorMaster, vendor_office_entity_1.VendorOffice, vendor_contact_entity_1.VendorContact, vendor_cc_recipient_entity_1.VendorCcRecipient], 'business'),
+            typeorm_1.TypeOrmModule.forFeature([
+                external_thread_ref_entity_1.ExternalThreadRef,
+                inquiry_entity_1.Inquiry,
+                vendor_master_entity_1.VendorMaster,
+                vendor_office_entity_1.VendorOffice,
+                vendor_contact_entity_1.VendorContact,
+                vendor_cc_recipient_entity_1.VendorCcRecipient,
+            ], 'business'),
             audit_module_1.AuditModule,
             outlook_module_1.OutlookModule,
         ],

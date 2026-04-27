@@ -5,6 +5,8 @@ jest.mock('../users/users.service', () => ({
 import { BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
+import { OutlookAuthService } from './outlook-auth.service';
+import { OutlookMailService } from './outlook-mail.service';
 import { OutlookService } from './outlook.service';
 import { OutlookConnection } from './entities/outlook-connection.entity';
 import { OutlookSubscription } from './entities/outlook-subscription.entity';
@@ -18,6 +20,7 @@ type MockRepository<T> = Partial<
 
 describe('OutlookService', () => {
   let service: OutlookService;
+  let authService: OutlookAuthService;
   let configService: { get: jest.Mock };
   let usersService: { markOutlookConnected: jest.Mock };
   let connectionRepo: MockRepository<OutlookConnection>;
@@ -104,11 +107,15 @@ describe('OutlookService', () => {
       ),
     };
 
-    service = new OutlookService(
+    authService = new OutlookAuthService(
       configService as unknown as ConfigService,
       usersService as unknown as UsersService,
       connectionRepo as Repository<OutlookConnection>,
       subscriptionRepo as Repository<OutlookSubscription>,
+    );
+    service = new OutlookService(
+      authService,
+      new OutlookMailService(authService),
     );
   });
 

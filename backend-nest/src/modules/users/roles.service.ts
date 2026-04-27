@@ -28,39 +28,24 @@ export class RolesService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const count = await this.roleRepo.count();
-    if (count > 0) return;
-
-    const adminRole = this.roleRepo.create({
-      id: uuidv4(),
+    await this.ensureSystemRole({
       name: ROLE_NAMES.ADMIN,
       description: 'Full access across SuperFreight',
-      isSystem: true,
-      permissions: SYSTEM_MODULES.map((moduleKey) =>
-        this.permissionRepo.create({ moduleKey, canView: true, canEdit: true }),
-      ),
-      scopeRules: [
-        this.scopeRepo.create({ scopeType: 'visibility', scopeValue: 'ALL' }),
-      ],
+      modules: SYSTEM_MODULES,
+      defaultScopeRules: [{ scopeType: 'visibility', scopeValue: 'ALL' }],
     });
 
-    const operatorRole = this.roleRepo.create({
-      id: uuidv4(),
+    await this.ensureSystemRole({
       name: ROLE_NAMES.OPERATOR,
       description: 'Default operator role for freight users',
-      isSystem: true,
-      permissions: OPERATOR_MODULES.map((moduleKey) =>
-        this.permissionRepo.create({ moduleKey, canView: true, canEdit: true }),
-      ),
-      scopeRules: [
-        this.scopeRepo.create({
+      modules: OPERATOR_MODULES,
+      defaultScopeRules: [
+        {
           scopeType: 'visibility',
           scopeValue: 'OWNED_ONLY',
-        }),
+        },
       ],
     });
-
-    await this.roleRepo.save([adminRole, operatorRole]);
   }
 
   async list() {
@@ -133,5 +118,79 @@ export class RolesService implements OnModuleInit {
     );
     await this.assignmentRepo.save(assignments);
     return this.assignmentRepo.find({ where: { userId } });
+  }
+
+  private async ensureSystemRole(input: {
+    name: string;
+    description: string;
+    modules: readonly string[];
+    defaultScopeRules: Array<{ scopeType: string; scopeValue: string }>;
+  }) {
+    const existing = await this.roleRepo.findOne({ where: { name: input.name } });
+
+    if (!existing) {
+      const role = this.roleRepo.create({
+        id: uuidv4(),
+        name: input.name,
+        description: input.description,
+        isSystem: true,
+        permissions: input.modules.map((moduleKey) =>
+          this.permissionRepo.create({ moduleKey, canView: true, canEdit: true }),
+        ),
+        scopeRules: input.defaultScopeRules.map((scope) =>
+          this.scopeRepo.create(scope),
+        ),
+      });
+
+      await this.roleRepo.save(role);
+      return;
+    }
+
+    let metadataChanged = false;
+
+    if (!existing.isSystem) {
+      existing.isSystem = true;
+      metadataChanged = true;
+    }
+
+    if (!existing.description) {
+      existing.description = input.description;
+      metadataChanged = true;
+    }
+
+    const existingModules = new Set(
+      (existing.permissions ?? []).map((permission) => permission.moduleKey),
+    );
+    const missingPermissions = input.modules
+      .filter((moduleKey) => !existingModules.has(moduleKey))
+      .map((moduleKey) =>
+        this.permissionRepo.create({
+          roleId: existing.id,
+          moduleKey,
+          canView: true,
+          canEdit: true,
+        }),
+      );
+
+    if (missingPermissions.length > 0) {
+      await this.permissionRepo.save(missingPermissions);
+    }
+
+    if ((existing.scopeRules?.length ?? 0) === 0) {
+      const scopeRules = input.defaultScopeRules.map((scope) =>
+        this.scopeRepo.create({ ...scope, roleId: existing.id }),
+      );
+      await this.scopeRepo.save(scopeRules);
+    }
+
+    if (metadataChanged) {
+      await this.roleRepo.update(
+        { id: existing.id },
+        {
+          isSystem: existing.isSystem,
+          description: existing.description,
+        },
+      );
+    }
   }
 }

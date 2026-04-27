@@ -32,8 +32,32 @@ The current strategy is:
   Added service tests for draft creation, send path, missing inquiry, and missing recipient behavior.
 - [x] `backend-nest/src/modules/outlook/outlook.service.ts`
   Extracted connection validation, token refresh, Graph payload building, status shaping, and subscription upsert helpers to make the service read as a clear orchestration flow.
+- [x] `backend-nest/src/modules/outlook/outlook-auth.service.ts`
+  Promoted Outlook auth, token exchange, connection refresh, status, and reconnect orchestration into a dedicated auth-focused service.
+- [x] `backend-nest/src/modules/outlook/outlook-mail.service.ts`
+  Promoted Graph mail payload building and retrying send flow into a dedicated mail-focused service while leaving `OutlookService` as a thin facade.
 - [x] `backend-nest/src/modules/outlook/outlook.service.spec.ts`
-  Added focused coverage for legacy reconnect detection, complete connection, send-mail refresh retry, and reconnect behavior.
+  Kept focused coverage for legacy reconnect detection, complete connection, send-mail refresh retry, and reconnect behavior after the service split.
+- [x] `backend-nest/src/common/utils/collection.helpers.ts`
+  Extracted shared `groupBy`, `groupMappedBy`, and `isNonEmpty` helpers and rewired current backend callers away from file-local duplicates.
+- [x] `backend-nest/src/common/pagination/pagination.helpers.ts`
+  Extracted shared pagination parsing and meta builders and rewired the current vendors pagination flows to use them.
+- [x] `backend-nest/src/common/persistence/find-or-throw.helpers.ts`
+  Extracted shared repository lookup-or-throw helpers and applied them in vendors, RFQs, inquiries, and users without changing current error contracts.
+- [x] `backend-nest/src/common/utils/collection.helpers.spec.ts`
+  Added focused coverage for collection grouping and non-empty string guards.
+- [x] `backend-nest/src/common/pagination/pagination.helpers.spec.ts`
+  Added focused coverage for pagination normalization and metadata shaping.
+- [x] `backend-nest/src/common/persistence/find-or-throw.helpers.spec.ts`
+  Added focused coverage for entity-name and custom-message not-found behavior.
+- [x] `frontend-next/src/lib/api/error-handler.ts`
+  Extracted shared API-aware error handling helpers and rewired repeated toast fallback handling in non-blocked frontend pages and hooks.
+- [x] `frontend-next/src/lib/api/query-builder.ts`
+  Extracted a shared query-string builder and removed duplicate vendor/location/port query serialization logic from the API client.
+- [x] `frontend-next/src/lib/formatting/display.ts`
+  Started a shared display-formatting layer for route and inquiry labels in non-blocked frontend consumers.
+- [x] `frontend-next/src/lib/payload/payload-helpers.ts`
+  Extracted shared trim-to-undefined payload cleanup and reused it in vendor and port payload builders.
 
 ## Quality Review
 
@@ -262,7 +286,9 @@ feature/
 These are shared abstractions that should exist before the largest backend splits continue.
 
 ### B1. Collection Utilities
-Create:
+Status: `Completed`
+
+Created:
 - `backend-nest/src/common/utils/collection.helpers.ts`
 
 Extract:
@@ -275,7 +301,9 @@ Current sources:
 - `rfqs.service.ts`
 
 ### B2. Pagination Helpers
-Create:
+Status: `Completed`
+
+Created:
 - `backend-nest/src/common/pagination/pagination.helpers.ts`
 
 Extract:
@@ -287,7 +315,9 @@ Current sources:
 - repeated in `vendors.service.ts`
 
 ### B3. Find-or-Throw Helpers
-Create:
+Status: `Completed`
+
+Created:
 - `backend-nest/src/common/persistence/find-or-throw.helpers.ts`
 
 Extract:
@@ -382,16 +412,18 @@ Files:
 - `backend-nest/src/modules/rfqs/rfqs.service.spec.ts`
 
 ### 3. Outlook Connection and Mail Sending Flow
-Status: `Helper extraction and tests completed; service split pending`
+Status: `Completed`
 
 Files:
+- `backend-nest/src/modules/outlook/outlook-auth.service.ts`
+- `backend-nest/src/modules/outlook/outlook-mail.service.ts`
 - `backend-nest/src/modules/outlook/outlook.service.ts`
 - `backend-nest/src/modules/outlook/outlook.service.spec.ts`
 
 Refactor goals:
 - [x] Step 1: extract guard/helper methods for connection state checks in-place.
 - [x] Step 2: add focused unit coverage.
-- [ ] Step 3: promote to `outlook-auth.service.ts` and `outlook-mail.service.ts`.
+- [x] Step 3: promote to `outlook-auth.service.ts` and `outlook-mail.service.ts`.
 
 ### 4. Roles and Inquiry Workflow Services
 Status: `Ready after Outlook`
@@ -489,7 +521,9 @@ Refactor goals:
 These are suitable for reuse-oriented extraction even before the blocked RFQ frontend files are revisited.
 
 ### F1. Error Handling Utility
-Create:
+Status: `Completed`
+
+Created:
 - `frontend-next/src/lib/api/error-handler.ts`
 
 Extract:
@@ -532,7 +566,9 @@ Current repeated pattern:
 - duplicated filter state defaults
 
 ### F5. API Query Builder
-Create:
+Status: `Completed`
+
+Created:
 - `frontend-next/src/lib/api/query-builder.ts`
 
 Current repeated pattern:
@@ -542,7 +578,9 @@ Current repeated pattern:
 inside `lib/api/client.ts`
 
 ### F6. Display Formatting Helpers
-Create:
+Status: `Started`
+
+Created:
 - `frontend-next/src/lib/formatting/display.ts`
 
 Extract:
@@ -551,7 +589,9 @@ Extract:
 - `formatInquiryLabel(...)`
 
 ### F7. Draft Factory Helpers
-Create:
+Status: `Started`
+
+Created:
 - `frontend-next/src/lib/factories/`
 - `frontend-next/src/lib/payload/payload-helpers.ts`
 
@@ -674,8 +714,8 @@ Treat these as automatic extraction signals:
 - [x] RFQ controller payload parsing
 - [x] RFQ service recipient resolution
 - [x] Outlook service in-place helper extraction and unit coverage
-- [ ] Extract reusable backend collection, pagination, and find-or-throw helpers from current hotspots
-- [ ] Outlook service: promote the current helper extraction into auth/mail service split
+- [x] Outlook service: promote the current helper extraction into auth/mail service split
+- [x] Extract reusable backend collection, pagination, and find-or-throw helpers from current hotspots
 - [ ] Frontend shared utility pass: error handler, query builder, factories, formatting, dialog-state hook
 - [ ] Roles service
 - [ ] Inquiries service
@@ -686,10 +726,10 @@ Treat these as automatic extraction signals:
 - [ ] Frontend RFQ queue after current local edits are stabilized
 
 ## Current Active Refactor
-- [ ] `backend-nest/src/modules/outlook/`
-  Step 1: promote auth/token management into `outlook-auth.service.ts`.
-  Step 2: promote mail request building/sending into `outlook-mail.service.ts`.
-  Step 3: leave `outlook.service.ts` as a thin facade and keep the controller API stable.
+- [ ] `frontend-next/src/lib/`
+  Step 1: [x] extract `api/error-handler.ts` from repeated frontend error-message handling.
+  Step 2: [x] extract `api/query-builder.ts` from the current API client query-string helpers.
+  Step 3: [ ] continue shared formatting and factory helper promotion from non-blocked page-local utility clusters.
 
 ## Next Planning Candidates After Outlook
 - [ ] `frontend-next/src/lib/api/client.ts`

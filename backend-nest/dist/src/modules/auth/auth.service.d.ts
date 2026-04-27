@@ -44,6 +44,8 @@ export declare class AuthService {
             customRoles: {
                 id: string;
                 name: string;
+                description: string | null;
+                isSystem: boolean;
                 permissions: import("../users/entities/role-permission.entity").RolePermission[];
                 scopeRules: import("../users/entities/role-scope-rule.entity").RoleScopeRule[];
             }[];

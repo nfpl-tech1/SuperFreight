@@ -13,7 +13,7 @@ function getOsBackendUrl(config) {
     return config.get('os.backendUrl') ?? '';
 }
 function getOsAppSlug(config) {
-    return config.get('os.appSlug') ?? 'super-freight';
+    return config.get('os.appSlug') ?? 'superfreight';
 }
 function getOsInternalHeaders(config) {
     return {

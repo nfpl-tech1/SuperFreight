@@ -11,14 +11,16 @@ import {
 } from "react";
 import { Plus, RefreshCcw, SquarePen, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { canEditModule, canViewModule } from "@/lib/module-access";
 import {
-  ApiError,
   api,
+  getErrorMessage,
   type PortMasterDetail,
   type PortMasterListItem,
   type PortMode,
   type UpsertPortMasterPayload,
 } from "@/lib/api";
+import { trimToUndefined } from "@/lib/payload/payload-helpers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -115,18 +117,6 @@ function emptyPortDraft(): PortDraft {
   };
 }
 
-function getErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof ApiError || error instanceof Error) {
-    return error.message;
-  }
-  return fallback;
-}
-
-function emptyToUndefined(value: string) {
-  const trimmed = value.trim();
-  return trimmed ? trimmed : undefined;
-}
-
 function draftFromDetail(port: PortMasterDetail): PortDraft {
   return {
     code: port.code,
@@ -158,28 +148,29 @@ function toPayload(draft: PortDraft): UpsertPortMasterPayload {
   return {
     code: draft.code.trim(),
     name: draft.name.trim(),
-    cityName: emptyToUndefined(draft.cityName),
-    stateName: emptyToUndefined(draft.stateName),
+    cityName: trimToUndefined(draft.cityName),
+    stateName: trimToUndefined(draft.stateName),
     countryName: draft.countryName.trim(),
     portMode: draft.portMode,
-    unlocode: emptyToUndefined(draft.unlocode),
-    sourceConfidence: emptyToUndefined(draft.sourceConfidence),
+    unlocode: trimToUndefined(draft.unlocode),
+    sourceConfidence: trimToUndefined(draft.sourceConfidence),
     isActive: draft.isActive,
-    notes: emptyToUndefined(draft.notes),
+    notes: trimToUndefined(draft.notes),
     aliases: draft.aliases
       .filter((alias) => alias.alias.trim())
       .map((alias, index) => ({
         alias: alias.alias.trim(),
-        countryName: emptyToUndefined(alias.countryName),
+        countryName: trimToUndefined(alias.countryName),
         isPrimary: alias.isPrimary || (!hasPrimaryAlias && index === 0),
-        sourceWorkbook: emptyToUndefined(alias.sourceWorkbook),
-        sourceSheet: emptyToUndefined(alias.sourceSheet),
+        sourceWorkbook: trimToUndefined(alias.sourceWorkbook),
+        sourceSheet: trimToUndefined(alias.sourceSheet),
       })),
   };
 }
 
 export default function AdminPortsPage() {
   const { user } = useAuth();
+  const isBaseAdmin = user?.role === "ADMIN" || user?.isAppAdmin === true;
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     portMode: ALL_FILTER,
@@ -323,12 +314,15 @@ export default function AdminPortsPage() {
     }));
   };
 
-  if (user?.role !== "ADMIN") {
+  const canViewPorts = isBaseAdmin || canViewModule(user, "admin-ports");
+  const canEditPorts = isBaseAdmin || canEditModule(user, "admin-ports");
+
+  if (!canViewPorts) {
     return null;
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 p-4 md:space-y-6 md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Port Master</h1>
@@ -343,14 +337,16 @@ export default function AdminPortsPage() {
             <RefreshCcw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
-          <Button onClick={openCreateDialog}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Port
-          </Button>
+          {canEditPorts && (
+            <Button onClick={openCreateDialog}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Port
+            </Button>
+          )}
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatCard label="Visible Ports" value={String(stats.visible)} />
         <StatCard label="Active In View" value={String(stats.active)} />
         <StatCard label="Seaports In View" value={String(stats.seaports)} />
@@ -364,7 +360,7 @@ export default function AdminPortsPage() {
             Search by code, name, city, country, UN/LOCODE, or alias.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-[minmax(0,2fr)_minmax(180px,1fr)_minmax(180px,1fr)_auto]">
+        <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_minmax(180px,1fr)_minmax(180px,1fr)_auto]">
           <Field label="Search">
             <Input
               value={filters.search}
@@ -518,14 +514,16 @@ export default function AdminPortsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => void openEditDialog(port.id)}
-                        >
-                          <SquarePen className="mr-2 h-4 w-4" />
-                          Edit
-                        </Button>
+                        {canEditPorts && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => void openEditDialog(port.id)}
+                          >
+                            <SquarePen className="mr-2 h-4 w-4" />
+                            Edit
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))
@@ -577,7 +575,7 @@ export default function AdminPortsPage() {
           }
         }}
       >
-        <DialogContent className="w-[min(98vw,1440px)] max-w-[min(98vw,1440px)]">
+        <DialogContent className="w-full max-w-[min(96vw,1060px)]">
           <DialogHeader>
             <DialogTitle>
               {dialogMode === "create" ? "Add Port" : "Edit Port"}
@@ -593,8 +591,8 @@ export default function AdminPortsPage() {
               Loading port details...
             </div>
           ) : (
-            <div className="grid max-h-[70svh] gap-6 overflow-y-auto pr-2">
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid max-h-[68svh] gap-5 overflow-y-auto pr-1">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <Field label="Code">
                   <Input
                     value={draft.code}
@@ -617,17 +615,6 @@ export default function AdminPortsPage() {
                     }
                   />
                 </Field>
-                <Field label="Country">
-                  <Input
-                    value={draft.countryName}
-                    onChange={(event) =>
-                      setDraft((current) => ({
-                        ...current,
-                        countryName: event.target.value,
-                      }))
-                    }
-                  />
-                </Field>
                 <Field label="Mode">
                   <Select
                     value={draft.portMode}
@@ -646,6 +633,17 @@ export default function AdminPortsPage() {
                       <SelectItem value="AIRPORT">Airport</SelectItem>
                     </SelectContent>
                   </Select>
+                </Field>
+                <Field label="Country">
+                  <Input
+                    value={draft.countryName}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        countryName: event.target.value,
+                      }))
+                    }
+                  />
                 </Field>
                 <Field label="City">
                   <Input
@@ -757,7 +755,7 @@ export default function AdminPortsPage() {
                     {draft.aliases.map((alias, index) => (
                       <div
                         key={alias.id ?? `alias-${index}`}
-                        className="grid gap-3 rounded-lg border p-4 md:grid-cols-2 xl:grid-cols-[minmax(220px,2.4fr)_minmax(120px,1fr)_minmax(140px,1fr)_minmax(140px,1fr)_auto_auto]"
+                        className="grid gap-3 rounded-lg border p-3 sm:grid-cols-2 lg:grid-cols-[minmax(200px,2fr)_minmax(120px,1fr)_minmax(130px,1fr)_minmax(130px,1fr)_auto_auto]"
                       >
                         <Field label="Alias">
                           <Input

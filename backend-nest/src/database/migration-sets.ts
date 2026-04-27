@@ -1,6 +1,7 @@
 import { AppInitialSchema2026032100000 } from './migrations/app/2026032100000-AppInitialSchema';
 import { AppSchemaHardening2026032100100 } from './migrations/app/2026032100100-AppSchemaHardening';
 import { AppUserEmailSignature2026040901400 } from './migrations/app/2026040901400-AppUserEmailSignature';
+import { AppQuoteInboxFoundation2026041810000 } from './migrations/app/2026041810000-AppQuoteInboxFoundation';
 import { BusinessInitialSchema2026032100200 } from './migrations/business/2026032100200-BusinessInitialSchema';
 import { BusinessSchemaHardening2026032100300 } from './migrations/business/2026032100300-BusinessSchemaHardening';
 import { BusinessVendorMasterPhase12026032400400 } from './migrations/business/2026032400400-BusinessVendorMasterPhase1';
@@ -19,6 +20,7 @@ export const APP_DB_MIGRATIONS = [
   AppInitialSchema2026032100000,
   AppSchemaHardening2026032100100,
   AppUserEmailSignature2026040901400,
+  AppQuoteInboxFoundation2026041810000,
 ];
 
 export const BUSINESS_DB_MIGRATIONS = [

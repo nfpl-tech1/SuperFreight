@@ -1,3 +1,4 @@
+import { buildQueryString } from "@/lib/api/query-builder";
 import { request } from "@/lib/api/request";
 import type {
   AppRoleDefinition,
@@ -6,6 +7,7 @@ import type {
   FreightQuote,
   Inquiry,
   OutlookStatus,
+  QuoteInboxMessage,
   RateSheet,
   Rfq,
   RolePermission,
@@ -26,77 +28,6 @@ import type {
   VendorLookups,
   VendorSummary,
 } from "@/lib/api/types";
-
-function buildQueryString(query: VendorListQuery) {
-  const params = new URLSearchParams();
-  if (query.page) params.set("page", String(query.page));
-  if (query.pageSize) params.set("pageSize", String(query.pageSize));
-  if (query.search) params.set("search", query.search);
-  if (query.isActive !== undefined)
-    params.set("isActive", String(query.isActive));
-  if (query.countryName) params.set("countryName", query.countryName);
-  if (query.cityName) params.set("cityName", query.cityName);
-  if (query.quoteTypeContext)
-    params.set("quoteTypeContext", query.quoteTypeContext);
-  if (query.shipmentMode) params.set("shipmentMode", query.shipmentMode);
-  if (query.locationKind) params.set("locationKind", query.locationKind);
-  if (query.locationId) params.set("locationId", query.locationId);
-  if (query.locationCountryName)
-    params.set("locationCountryName", query.locationCountryName);
-  if (query.locationRole) params.set("locationRole", query.locationRole);
-  if (query.locationScope) params.set("locationScope", query.locationScope);
-  if (query.typeCodes && query.typeCodes.length > 0) {
-    params.set("typeCodes", query.typeCodes.join(","));
-  }
-  if (query.isIataCertified !== undefined)
-    params.set("isIataCertified", String(query.isIataCertified));
-  if (query.doesSeaFreight !== undefined)
-    params.set("doesSeaFreight", String(query.doesSeaFreight));
-  if (query.doesProjectCargo !== undefined)
-    params.set("doesProjectCargo", String(query.doesProjectCargo));
-  if (query.doesOwnConsolidation !== undefined)
-    params.set("doesOwnConsolidation", String(query.doesOwnConsolidation));
-  if (query.doesOwnTransportation !== undefined)
-    params.set("doesOwnTransportation", String(query.doesOwnTransportation));
-  if (query.doesOwnWarehousing !== undefined)
-    params.set("doesOwnWarehousing", String(query.doesOwnWarehousing));
-  if (query.doesOwnCustomClearance !== undefined)
-    params.set("doesOwnCustomClearance", String(query.doesOwnCustomClearance));
-  const serialized = params.toString();
-  return serialized ? `?${serialized}` : "";
-}
-
-function buildLocationOptionsQueryString(query: VendorLocationOptionsQuery) {
-  const params = new URLSearchParams();
-  if (query.page) params.set("page", String(query.page));
-  if (query.pageSize) params.set("pageSize", String(query.pageSize));
-  if (query.quoteTypeContext)
-    params.set("quoteTypeContext", query.quoteTypeContext);
-  if (query.shipmentMode) params.set("shipmentMode", query.shipmentMode);
-  if (query.locationKind) params.set("locationKind", query.locationKind);
-  if (query.locationRole) params.set("locationRole", query.locationRole);
-  if (query.portMode) params.set("portMode", query.portMode);
-  if (query.countryName) params.set("countryName", query.countryName);
-  if (query.search) params.set("search", query.search);
-  if (query.typeCodes && query.typeCodes.length > 0) {
-    params.set("typeCodes", query.typeCodes.join(","));
-  }
-  const serialized = params.toString();
-  return serialized ? `?${serialized}` : "";
-}
-
-function buildPortMasterQueryString(query: PortMasterListQuery) {
-  const params = new URLSearchParams();
-  if (query.page) params.set("page", String(query.page));
-  if (query.pageSize) params.set("pageSize", String(query.pageSize));
-  if (query.search) params.set("search", query.search);
-  if (query.countryName) params.set("countryName", query.countryName);
-  if (query.portMode) params.set("portMode", query.portMode);
-  if (query.isActive !== undefined)
-    params.set("isActive", String(query.isActive));
-  const serialized = params.toString();
-  return serialized ? `?${serialized}` : "";
-}
 
 export const api = {
   login: (email: string, password: string) =>
@@ -174,10 +105,45 @@ export const api = {
   getVendorLookups: () => request<VendorLookups>("/vendors/lookups"),
   getVendorLocationOptions: (query: VendorLocationOptionsQuery = {}) =>
     request<VendorLocationOptionPage>(
-      `/vendors/location-options${buildLocationOptionsQueryString(query)}`,
+      `/vendors/location-options${buildQueryString({
+        page: query.page,
+        pageSize: query.pageSize,
+        quoteTypeContext: query.quoteTypeContext,
+        shipmentMode: query.shipmentMode,
+        locationKind: query.locationKind,
+        locationRole: query.locationRole,
+        portMode: query.portMode,
+        countryName: query.countryName,
+        search: query.search,
+        typeCodes: query.typeCodes,
+      })}`,
     ),
   getVendors: (query: VendorListQuery = {}) =>
-    request<VendorCatalogPage>(`/vendors${buildQueryString(query)}`),
+    request<VendorCatalogPage>(
+      `/vendors${buildQueryString({
+        page: query.page,
+        pageSize: query.pageSize,
+        search: query.search,
+        isActive: query.isActive,
+        countryName: query.countryName,
+        cityName: query.cityName,
+        quoteTypeContext: query.quoteTypeContext,
+        shipmentMode: query.shipmentMode,
+        locationKind: query.locationKind,
+        locationId: query.locationId,
+        locationCountryName: query.locationCountryName,
+        locationRole: query.locationRole,
+        locationScope: query.locationScope,
+        typeCodes: query.typeCodes,
+        isIataCertified: query.isIataCertified,
+        doesSeaFreight: query.doesSeaFreight,
+        doesProjectCargo: query.doesProjectCargo,
+        doesOwnConsolidation: query.doesOwnConsolidation,
+        doesOwnTransportation: query.doesOwnTransportation,
+        doesOwnWarehousing: query.doesOwnWarehousing,
+        doesOwnCustomClearance: query.doesOwnCustomClearance,
+      })}`,
+    ),
   getVendorDetail: (id: string) => request<VendorDetail>(`/vendors/${id}`),
   createVendor: (body: UpsertVendorPayload) =>
     request<VendorDetail>("/vendors", {
@@ -205,7 +171,14 @@ export const api = {
     }),
   getPortMaster: (query: PortMasterListQuery = {}) =>
     request<PortMasterPage>(
-      `/vendors/port-master${buildPortMasterQueryString(query)}`,
+      `/vendors/port-master${buildQueryString({
+        page: query.page,
+        pageSize: query.pageSize,
+        search: query.search,
+        countryName: query.countryName,
+        portMode: query.portMode,
+        isActive: query.isActive,
+      })}`,
     ),
   getPortMasterDetail: (id: string) =>
     request<PortMasterDetail>(`/vendors/port-master/${id}`),
@@ -283,10 +256,72 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  getQuotes: (inquiryId?: string) =>
+  getQuotes: (inquiryId?: string, includeHistory?: boolean) =>
     request<FreightQuote[]>(
-      `/quotes${inquiryId ? `?inquiryId=${encodeURIComponent(inquiryId)}` : ""}`,
+      `/quotes${buildQueryString({ inquiryId, includeHistory })}`,
     ),
+  getQuotesByRfq: (
+    query: { inquiryId?: string; rfqId?: string; includeHistory?: boolean } = {},
+  ) =>
+    request<FreightQuote[]>(
+      `/quotes${buildQueryString({
+        inquiryId: query.inquiryId,
+        rfqId: query.rfqId,
+        includeHistory: query.includeHistory,
+      })}`,
+    ),
+  updateQuote: (
+    id: string,
+    body: Partial<{
+      vendorName: string;
+      currency: string;
+      totalRate: number;
+      freightRate: number;
+      localCharges: number;
+      documentation: number;
+      transitDays: number;
+      validUntil: string;
+      remarks: string;
+      reviewStatus: string;
+      extractedFields: Record<string, unknown>;
+      comparisonFields: Record<string, unknown>;
+    }>,
+  ) =>
+    request<FreightQuote>(`/quotes/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    }),
+  getQuoteInbox: (query: { inquiryId?: string; rfqId?: string; status?: string } = {}) =>
+    request<QuoteInboxMessage[]>(
+      `/quote-inbox${buildQueryString({
+        inquiryId: query.inquiryId,
+        rfqId: query.rfqId,
+        status: query.status,
+      })}`,
+    ),
+  triggerQuoteInboxScan: () =>
+    request<{ started: boolean; reason?: string }>("/quote-inbox/scan", {
+      method: "POST",
+    }),
+  reprocessQuoteInboxMessage: (id: string) =>
+    request<FreightQuote | null>(`/quote-inbox/${id}/reprocess`, {
+      method: "POST",
+    }),
+  ignoreQuoteInboxMessage: (id: string) =>
+    request<QuoteInboxMessage>(`/quote-inbox/${id}/ignore`, {
+      method: "POST",
+    }),
+  linkQuoteInboxMessage: (
+    id: string,
+    body: {
+      rfqId: string;
+      vendorId: string;
+    },
+  ) =>
+    request<FreightQuote | null>(`/quote-inbox/${id}/link`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
   createQuote: (body: {
     inquiryId: string;
     vendorId?: string;
@@ -306,7 +341,8 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  getRfqs: () => request<Rfq[]>("/rfqs"),
+  getRfqs: (inquiryId?: string) =>
+    request<Rfq[]>(`/rfqs${buildQueryString({ inquiryId })}`),
   createRfq: (body: {
     inquiryId: string;
     inquiryNumber: string;
@@ -319,6 +355,7 @@ export const api = {
       fieldLabel: string;
       isCustom: boolean;
     }[];
+    customCcEmail?: string;
     sendNow?: boolean;
     mailSubject?: string;
     mailBodyHtml?: string;
@@ -336,6 +373,9 @@ export const api = {
         JSON.stringify(body.officeSelections ?? []),
       );
       formData.set("responseFields", JSON.stringify(body.responseFields));
+      if (body.customCcEmail !== undefined) {
+        formData.set("customCcEmail", body.customCcEmail);
+      }
 
       if (body.sendNow !== undefined) {
         formData.set("sendNow", String(body.sendNow));

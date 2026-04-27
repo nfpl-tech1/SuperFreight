@@ -1,10 +1,24 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Audit } from '../../common/decorators/audit.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../users/entities/user.entity';
+import { Role, User } from '../users/entities/user.entity';
 import { CreateFreightQuoteDto } from './dto/create-freight-quote.dto';
+import { LinkQuoteInboxMessageDto } from './dto/link-quote-inbox-message.dto';
+import { ListQuoteInboxDto } from './dto/list-quote-inbox.dto';
+import { ListQuotesDto } from './dto/list-quotes.dto';
+import { UpdateFreightQuoteDto } from './dto/update-freight-quote.dto';
 import { UpsertRateSheetDto } from './dto/upsert-rate-sheet.dto';
 import { ShipmentsService } from './shipments.service';
 
@@ -26,13 +40,55 @@ export class ShipmentsController {
   }
 
   @Get('quotes')
-  listQuotes(@Query('inquiryId') inquiryId?: string) {
-    return this.shipmentsService.listQuotes(inquiryId);
+  listQuotes(@Query() query: ListQuotesDto) {
+    return this.shipmentsService.listQuotes(query);
+  }
+
+  @Get('quote-inbox')
+  listQuoteInbox(@Query() query: ListQuoteInboxDto) {
+    return this.shipmentsService.listQuoteInbox(query);
+  }
+
+  @Post('quote-inbox/scan')
+  @Audit('QUOTE_INBOX_SCAN_TRIGGERED', 'quote_inbox')
+  triggerQuoteInboxScan() {
+    return this.shipmentsService.triggerQuoteInboxScan();
+  }
+
+  @Post('quote-inbox/:id/reprocess')
+  @Audit('QUOTE_INBOX_REPROCESSED', 'quote_inbox')
+  reprocessQuoteInboxMessage(@Param('id') id: string) {
+    return this.shipmentsService.reprocessQuoteInboxMessage(id);
+  }
+
+  @Post('quote-inbox/:id/ignore')
+  @Audit('QUOTE_INBOX_IGNORED', 'quote_inbox')
+  ignoreQuoteInboxMessage(@Param('id') id: string) {
+    return this.shipmentsService.ignoreQuoteInboxMessage(id);
+  }
+
+  @Post('quote-inbox/:id/link')
+  @Audit('QUOTE_INBOX_LINKED', 'quote_inbox')
+  linkQuoteInboxMessage(
+    @Param('id') id: string,
+    @Body() dto: LinkQuoteInboxMessageDto,
+  ) {
+    return this.shipmentsService.linkQuoteInboxMessage(id, dto);
   }
 
   @Post('quotes')
   @Audit('QUOTE_CREATED', 'quote')
   createQuote(@Body() dto: CreateFreightQuoteDto) {
     return this.shipmentsService.createQuote(dto);
+  }
+
+  @Patch('quotes/:id')
+  @Audit('QUOTE_UPDATED', 'quote')
+  updateQuote(
+    @Param('id') id: string,
+    @Body() dto: UpdateFreightQuoteDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.shipmentsService.updateQuote(id, dto, user);
   }
 }

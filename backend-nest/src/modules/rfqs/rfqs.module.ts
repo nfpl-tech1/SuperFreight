@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuditModule } from '../audit/audit.module';
+import { ExternalThreadRef } from '../inquiries/entities/external-thread-ref.entity';
 import { Inquiry } from '../inquiries/entities/inquiry.entity';
 import { OutlookModule } from '../outlook/outlook.module';
 import { VendorCcRecipient } from '../vendors/entities/vendor-cc-recipient.entity';
@@ -16,7 +17,14 @@ import { RfqsService } from './rfqs.service';
   imports: [
     TypeOrmModule.forFeature([Rfq, RfqFieldSpec]),
     TypeOrmModule.forFeature(
-      [Inquiry, VendorMaster, VendorOffice, VendorContact, VendorCcRecipient],
+      [
+        ExternalThreadRef,
+        Inquiry,
+        VendorMaster,
+        VendorOffice,
+        VendorContact,
+        VendorCcRecipient,
+      ],
       'business',
     ),
     AuditModule,

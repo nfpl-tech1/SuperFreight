@@ -16,7 +16,10 @@ exports.RfqsService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const find_or_throw_helpers_1 = require("../../common/persistence/find-or-throw.helpers");
+const collection_helpers_1 = require("../../common/utils/collection.helpers");
 const email_1 = require("../../common/normalization/email");
+const external_thread_ref_entity_1 = require("../inquiries/entities/external-thread-ref.entity");
 const inquiry_entity_1 = require("../inquiries/entities/inquiry.entity");
 const outlook_service_1 = require("../outlook/outlook.service");
 const vendor_cc_recipient_entity_1 = require("../vendors/entities/vendor-cc-recipient.entity");
@@ -31,23 +34,45 @@ let RfqsService = class RfqsService {
     rfqRepo;
     fieldSpecRepo;
     inquiryRepo;
+    externalThreadRefRepo;
     vendorRepo;
     officeRepo;
     contactRepo;
     ccRepo;
     outlookService;
-    constructor(rfqRepo, fieldSpecRepo, inquiryRepo, vendorRepo, officeRepo, contactRepo, ccRepo, outlookService) {
+    constructor(rfqRepo, fieldSpecRepo, inquiryRepo, externalThreadRefRepo, vendorRepo, officeRepo, contactRepo, ccRepo, outlookService) {
         this.rfqRepo = rfqRepo;
         this.fieldSpecRepo = fieldSpecRepo;
         this.inquiryRepo = inquiryRepo;
+        this.externalThreadRefRepo = externalThreadRefRepo;
         this.vendorRepo = vendorRepo;
         this.officeRepo = officeRepo;
         this.contactRepo = contactRepo;
         this.ccRepo = ccRepo;
         this.outlookService = outlookService;
     }
-    list() {
-        return this.rfqRepo.find({ order: { createdAt: 'DESC' } });
+    list(inquiryId) {
+        return this.listRfqsWithFieldSpecs(inquiryId);
+    }
+    async listRfqsWithFieldSpecs(inquiryId) {
+        const rfqs = await this.rfqRepo.find({
+            where: inquiryId ? { inquiryId } : {},
+            order: { createdAt: 'DESC' },
+        });
+        if (rfqs.length === 0) {
+            return [];
+        }
+        const fieldSpecs = await this.fieldSpecRepo.find({
+            where: {
+                rfqId: (0, typeorm_2.In)(rfqs.map((rfq) => rfq.id)),
+            },
+            order: { id: 'ASC' },
+        });
+        const fieldSpecsByRfqId = (0, collection_helpers_1.groupBy)(fieldSpecs, (fieldSpec) => fieldSpec.rfqId);
+        return rfqs.map((rfq) => ({
+            ...rfq,
+            fieldSpecs: fieldSpecsByRfqId.get(rfq.id) ?? [],
+        }));
     }
     async create(dto, user, files = []) {
         const rfq = await this.createDraftRfq(dto, user);
@@ -74,20 +99,15 @@ let RfqsService = class RfqsService {
         const recipients = await this.resolveVendorRecipients(dto.vendorIds, dto.officeSelections ?? []);
         const mailDraft = (0, rfq_mail_builder_1.resolveMailDraft)(dto, inquiry, user.name ?? user.email);
         for (const recipient of recipients) {
-            await this.sendRfqMailToRecipient(user, recipient, mailDraft.subjectLine, mailDraft.bodyHtml, attachments);
+            await this.sendRfqMailToRecipient(rfq, user, recipient, dto.customCcEmail, mailDraft.subjectLine, mailDraft.bodyHtml, attachments);
         }
     }
     async findInquiryForRfqOrThrow(inquiryId) {
-        const inquiry = await this.inquiryRepo.findOne({
-            where: { id: inquiryId },
-        });
-        if (!inquiry) {
-            throw new common_1.NotFoundException('Inquiry not found for this RFQ.');
-        }
-        return inquiry;
+        return (0, find_or_throw_helpers_1.findByIdOrThrow)(this.inquiryRepo, inquiryId, 'Inquiry not found for this RFQ.');
     }
-    async sendRfqMailToRecipient(user, recipient, subjectLine, bodyHtml, attachments) {
-        await this.outlookService.sendMail(user, {
+    async sendRfqMailToRecipient(rfq, user, recipient, customCcEmail, subjectLine, bodyHtml, attachments) {
+        const mergedCcAddresses = this.mergeCcEmails(recipient.cc, recipient.email, customCcEmail);
+        const sentMessage = await this.outlookService.sendMailTracked(user, {
             subject: subjectLine,
             htmlBody: (0, rfq_mail_builder_1.personalizeMailBodyHtml)(bodyHtml, {
                 companyName: recipient.companyName,
@@ -97,9 +117,27 @@ let RfqsService = class RfqsService {
                 emailSignature: user.emailSignature,
             }),
             to: [{ address: recipient.email, name: recipient.contactName }],
-            cc: recipient.cc.map((address) => ({ address })),
+            cc: mergedCcAddresses.map((address) => ({ address })),
             attachments,
         });
+        await this.externalThreadRefRepo.save(this.externalThreadRefRepo.create({
+            inquiryId: rfq.inquiryId,
+            participantType: 'VENDOR',
+            participantEmail: recipient.email,
+            conversationId: sentMessage.conversationId,
+            messageId: sentMessage.id,
+            internetMessageId: sentMessage.internetMessageId,
+            webLink: sentMessage.webLink,
+            lastActivityAt: new Date(sentMessage.sentDateTime ?? Date.now()),
+            metadata: {
+                rfqId: rfq.id,
+                vendorId: recipient.vendorId,
+                officeId: recipient.officeId,
+                subjectLine: sentMessage.subject ?? subjectLine,
+                departmentId: rfq.departmentId,
+                outbound: true,
+            },
+        }));
     }
     buildMailAttachments(files) {
         return files.map((file) => ({
@@ -197,9 +235,9 @@ let RfqsService = class RfqsService {
             : [[], []];
         return {
             vendorsById: new Map(vendors.map((vendor) => [vendor.id, vendor])),
-            officesByVendorId: this.groupBy(offices, (office) => office.vendorId),
-            contactsByOfficeId: this.groupBy(contacts, (contact) => contact.officeId),
-            ccByOfficeId: this.groupBy(ccRecipients, (recipient) => recipient.officeId),
+            officesByVendorId: (0, collection_helpers_1.groupBy)(offices, (office) => office.vendorId),
+            contactsByOfficeId: (0, collection_helpers_1.groupBy)(contacts, (contact) => contact.officeId),
+            ccByOfficeId: (0, collection_helpers_1.groupBy)(ccRecipients, (recipient) => recipient.officeId),
         };
     }
     resolveTargetOfficesForVendor(vendor, vendorOffices, selectedOfficeIds) {
@@ -256,6 +294,10 @@ let RfqsService = class RfqsService {
             .map((recipient) => (0, email_1.normalizeEmail)(recipient.email))
             .filter((address) => Boolean(address) && address !== primaryEmail)));
     }
+    mergeCcEmails(existingCcAddresses, primaryEmail, customCcEmail) {
+        const normalizedCustomCcEmail = (0, email_1.normalizeEmail)(customCcEmail);
+        return Array.from(new Set([...existingCcAddresses, normalizedCustomCcEmail ?? ''].filter((address) => Boolean(address) && address !== primaryEmail)));
+    }
     throwIfRecipientsMissing(missingRecipients) {
         if (missingRecipients.length === 0) {
             return;
@@ -274,15 +316,6 @@ let RfqsService = class RfqsService {
             missingRecipients,
         };
     }
-    groupBy(items, getKey) {
-        return items.reduce((map, item) => {
-            const key = getKey(item);
-            const current = map.get(key) ?? [];
-            current.push(item);
-            map.set(key, current);
-            return map;
-        }, new Map());
-    }
 };
 exports.RfqsService = RfqsService;
 exports.RfqsService = RfqsService = __decorate([
@@ -290,11 +323,13 @@ exports.RfqsService = RfqsService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(rfq_entity_1.Rfq)),
     __param(1, (0, typeorm_1.InjectRepository)(rfq_field_spec_entity_1.RfqFieldSpec)),
     __param(2, (0, typeorm_1.InjectRepository)(inquiry_entity_1.Inquiry, 'business')),
-    __param(3, (0, typeorm_1.InjectRepository)(vendor_master_entity_1.VendorMaster, 'business')),
-    __param(4, (0, typeorm_1.InjectRepository)(vendor_office_entity_1.VendorOffice, 'business')),
-    __param(5, (0, typeorm_1.InjectRepository)(vendor_contact_entity_1.VendorContact, 'business')),
-    __param(6, (0, typeorm_1.InjectRepository)(vendor_cc_recipient_entity_1.VendorCcRecipient, 'business')),
+    __param(3, (0, typeorm_1.InjectRepository)(external_thread_ref_entity_1.ExternalThreadRef, 'business')),
+    __param(4, (0, typeorm_1.InjectRepository)(vendor_master_entity_1.VendorMaster, 'business')),
+    __param(5, (0, typeorm_1.InjectRepository)(vendor_office_entity_1.VendorOffice, 'business')),
+    __param(6, (0, typeorm_1.InjectRepository)(vendor_contact_entity_1.VendorContact, 'business')),
+    __param(7, (0, typeorm_1.InjectRepository)(vendor_cc_recipient_entity_1.VendorCcRecipient, 'business')),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,

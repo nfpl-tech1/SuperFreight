@@ -12,8 +12,17 @@ export declare class FreightQuote {
     transitDays: number | null;
     validUntil: string | null;
     sourceThreadRefId: string | null;
+    inboundMessageId: string | null;
+    receivedAt: Date | null;
     extractedFields: Record<string, unknown> | null;
+    comparisonFields: Record<string, unknown> | null;
     quotePromptSnapshot: Record<string, unknown> | null;
+    reviewStatus: string | null;
+    versionNumber: number;
+    isLatestVersion: boolean;
+    extractionConfidence: number | null;
+    reviewedByUserId: string | null;
+    reviewedAt: Date | null;
     remarks: string | null;
     isSelected: boolean;
     createdAt: Date;

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VendorsController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
@@ -99,7 +100,7 @@ __decorate([
 ], VendorsController.prototype, "getLocationOptions", null);
 __decorate([
     (0, common_1.Get)('port-master'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-ports', 'view'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_port_master_dto_1.ListPortMasterDto]),
@@ -107,7 +108,7 @@ __decorate([
 ], VendorsController.prototype, "listPortMaster", null);
 __decorate([
     (0, common_1.Get)('port-master/:id'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-ports', 'view'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -138,7 +139,7 @@ __decorate([
 ], VendorsController.prototype, "create", null);
 __decorate([
     (0, common_1.Post)('port-master'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-ports', 'edit'),
     (0, audit_decorator_1.Audit)('PORT_MASTER_CREATED', 'port_master'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -157,7 +158,7 @@ __decorate([
 ], VendorsController.prototype, "update", null);
 __decorate([
     (0, common_1.Put)('port-master/:id'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-ports', 'edit'),
     (0, audit_decorator_1.Audit)('PORT_MASTER_UPDATED', 'port_master'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),

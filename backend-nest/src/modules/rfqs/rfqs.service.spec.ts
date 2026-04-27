@@ -6,6 +6,7 @@ jest.mock('../outlook/outlook.service', () => ({
 import { Repository } from 'typeorm';
 import { RfqsService } from './rfqs.service';
 import { CreateRfqDto } from './dto/create-rfq.dto';
+import { ExternalThreadRef } from '../inquiries/entities/external-thread-ref.entity';
 import { Inquiry, InquiryStatus } from '../inquiries/entities/inquiry.entity';
 import { User } from '../users/entities/user.entity';
 import { Rfq } from './entities/rfq.entity';
@@ -26,12 +27,13 @@ describe('RfqsService', () => {
   let rfqRepo: MockRepository<Rfq>;
   let fieldSpecRepo: MockRepository<RfqFieldSpec>;
   let inquiryRepo: MockRepository<Inquiry>;
+  let externalThreadRefRepo: MockRepository<ExternalThreadRef>;
   let vendorRepo: MockRepository<VendorMaster>;
   let officeRepo: MockRepository<VendorOffice>;
   let contactRepo: MockRepository<VendorContact>;
   let ccRepo: MockRepository<VendorCcRecipient>;
   let outlookService: {
-    sendMail: jest.Mock;
+    sendMailTracked: jest.Mock;
   };
 
   let storedRfq: Partial<Rfq> | null;
@@ -51,6 +53,7 @@ describe('RfqsService', () => {
         isCustom: false,
       },
     ],
+    customCcEmail: 'senior.staff@company.com',
     sendNow: false,
     mailSubject: 'Custom RFQ Subject',
     mailBodyHtml: '<p>Body</p>',
@@ -99,6 +102,10 @@ describe('RfqsService', () => {
         return Promise.resolve(storedInquiry);
       }),
     };
+    externalThreadRefRepo = {
+      create: jest.fn((input: Partial<ExternalThreadRef>) => input),
+      save: jest.fn((input: Partial<ExternalThreadRef>) => Promise.resolve(input)),
+    };
     vendorRepo = {
       find: jest.fn(() =>
         Promise.resolve([
@@ -146,13 +153,24 @@ describe('RfqsService', () => {
       ),
     };
     outlookService = {
-      sendMail: jest.fn(() => Promise.resolve(undefined)),
+      sendMailTracked: jest.fn(() =>
+        Promise.resolve({
+          id: 'msg-1',
+          conversationId: 'conv-1',
+          internetMessageId: '<msg-1@example.com>',
+          webLink: 'https://outlook.example.com/msg-1',
+          subject: 'Custom RFQ Subject',
+          createdDateTime: '2026-04-18T10:00:00.000Z',
+          sentDateTime: '2026-04-18T10:01:00.000Z',
+        }),
+      ),
     };
 
     service = new RfqsService(
       rfqRepo as Repository<Rfq>,
       fieldSpecRepo as Repository<RfqFieldSpec>,
       inquiryRepo as Repository<Inquiry>,
+      externalThreadRefRepo as Repository<ExternalThreadRef>,
       vendorRepo as Repository<VendorMaster>,
       officeRepo as Repository<VendorOffice>,
       contactRepo as Repository<VendorContact>,
@@ -167,7 +185,7 @@ describe('RfqsService', () => {
       email: 'user@example.com',
     } as User);
 
-    expect(outlookService.sendMail).not.toHaveBeenCalled();
+    expect(outlookService.sendMailTracked).not.toHaveBeenCalled();
     expect(fieldSpecRepo.save).toHaveBeenCalledTimes(1);
     expect(result).toEqual(
       expect.objectContaining({
@@ -189,12 +207,23 @@ describe('RfqsService', () => {
       [],
     );
 
-    expect(outlookService.sendMail).toHaveBeenCalledWith(
+    expect(outlookService.sendMailTracked).toHaveBeenCalledWith(
       expect.objectContaining({ id: 'user-1' }),
       expect.objectContaining({
         subject: 'Custom RFQ Subject',
         to: [{ address: 'jane@acme.com', name: 'Jane Smith' }],
-        cc: [{ address: 'ops@acme.com' }],
+        cc: [
+          { address: 'ops@acme.com' },
+          { address: 'senior.staff@company.com' },
+        ],
+      }),
+    );
+    expect(externalThreadRefRepo.save).toHaveBeenCalledWith(
+      expect.objectContaining({
+        inquiryId: 'inquiry-1',
+        participantEmail: 'jane@acme.com',
+        conversationId: 'conv-1',
+        messageId: 'msg-1',
       }),
     );
     expect(storedInquiry?.status).toBe(InquiryStatus.RFQ_SENT);
@@ -216,7 +245,7 @@ describe('RfqsService', () => {
       } as User),
     ).rejects.toBeInstanceOf(NotFoundException);
 
-    expect(outlookService.sendMail).not.toHaveBeenCalled();
+    expect(outlookService.sendMailTracked).not.toHaveBeenCalled();
   });
 
   it('throws when a selected vendor has no usable recipient email', async () => {
@@ -239,6 +268,6 @@ describe('RfqsService', () => {
       } as User),
     ).rejects.toBeInstanceOf(BadRequestException);
 
-    expect(outlookService.sendMail).not.toHaveBeenCalled();
+    expect(outlookService.sendMailTracked).not.toHaveBeenCalled();
   });
 });

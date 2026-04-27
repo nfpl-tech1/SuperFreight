@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Copy, Plus, SquarePen, Trash2 } from "lucide-react";
-import { api, AppRoleDefinition, RolePermission } from "@/lib/api";
+import {
+  api,
+  AppRoleDefinition,
+  getErrorMessage,
+  RolePermission,
+} from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -11,7 +16,7 @@ import {
   createDefaultPermissions,
   createDefaultScopeRules,
   getFilteredModuleGroups,
-  MODULES,
+  normalizePermissions,
   SCOPE_VALUE_OPTIONS,
   normalizeScopeRules,
 } from "./role-builder.constants";
@@ -67,14 +72,7 @@ export default function AdminRolesPage() {
     setEditingRoleId(null);
     setName(baseRole ? `${baseRole.name} Copy` : "");
     setDescription(baseRole?.description ?? "");
-    setPermissions(
-      baseRole
-        ? MODULES.map((module) => {
-            const existing = baseRole.permissions.find((permission) => permission.moduleKey === module.key);
-            return existing ?? { moduleKey: module.key, canView: false, canEdit: false };
-          })
-        : createDefaultPermissions()
-    );
+    setPermissions(baseRole ? normalizePermissions(baseRole.permissions) : createDefaultPermissions());
     setScopeRules(baseRole ? normalizeScopeRules(baseRole.scopeRules) : createDefaultScopeRules());
   };
 
@@ -82,19 +80,30 @@ export default function AdminRolesPage() {
     setEditingRoleId(role.id);
     setName(role.name);
     setDescription(role.description ?? "");
-    setPermissions(
-      MODULES.map((module) => {
-        const existing = role.permissions.find((permission) => permission.moduleKey === module.key);
-        return existing ?? { moduleKey: module.key, canView: false, canEdit: false };
-      })
-    );
+    setPermissions(normalizePermissions(role.permissions));
     setScopeRules(normalizeScopeRules(role.scopeRules));
   };
 
   const updatePermission = (moduleKey: string, field: "canView" | "canEdit", value: boolean) => {
     setPermissions((prev) =>
       prev.map((permission) =>
-        permission.moduleKey === moduleKey ? { ...permission, [field]: value } : permission
+        permission.moduleKey === moduleKey
+          ? {
+              ...permission,
+              canView:
+                field === "canEdit" && value
+                  ? true
+                  : field === "canView"
+                    ? value
+                    : permission.canView,
+              canEdit:
+                field === "canView" && !value
+                  ? false
+                  : field === "canEdit"
+                    ? value
+                    : permission.canEdit,
+            }
+          : permission
       )
     );
   };
@@ -147,8 +156,17 @@ export default function AdminRolesPage() {
       const body = {
         name: name.trim(),
         description: description.trim() || undefined,
-        permissions,
-        scopeRules: scopeRules.filter((rule) => rule.scopeType && rule.scopeValue),
+        permissions: normalizePermissions(permissions).map((permission) => ({
+          moduleKey: permission.moduleKey,
+          canView: permission.canView,
+          canEdit: permission.canView ? permission.canEdit : false,
+        })),
+        scopeRules: scopeRules
+          .filter((rule) => rule.scopeType && rule.scopeValue)
+          .map((rule) => ({
+            scopeType: rule.scopeType,
+            scopeValue: rule.scopeValue,
+          })),
       };
 
       const savedRole = editingRoleId
@@ -159,7 +177,7 @@ export default function AdminRolesPage() {
       loadIntoForm(savedRole);
       toast.success(editingRoleId ? "Role updated" : "Role created");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to save role");
+      toast.error(getErrorMessage(error, "Failed to save role"));
     } finally {
       setSaving(false);
     }
@@ -184,7 +202,7 @@ export default function AdminRolesPage() {
       startNewRole();
       toast.success("Role deleted");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to delete role");
+      toast.error(getErrorMessage(error, "Failed to delete role"));
     } finally {
       setDeleting(false);
     }

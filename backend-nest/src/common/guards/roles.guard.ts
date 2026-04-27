@@ -1,12 +1,13 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import {
+  MODULE_ACCESS_KEY,
+  ModuleAccessRequirement,
+} from '../decorators/module-access.decorator';
 import { ROLES_KEY } from '../decorators/roles.decorator';
+import { userHasModuleAccess } from '../security/module-access.helpers';
 import { Role } from '../../modules/users/entities/user.entity';
 
-/**
- * Enforces Role-Based Access Control (RBAC).
- * Must be used after JwtAuthGuard so `request.user` is populated.
- */
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -16,11 +17,28 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+    const requiredModuleAccess =
+      this.reflector.getAllAndOverride<ModuleAccessRequirement>(
+        MODULE_ACCESS_KEY,
+        [context.getHandler(), context.getClass()],
+      );
 
-    // No @Roles() decorator — route is accessible by any authenticated user
-    if (!requiredRoles || requiredRoles.length === 0) return true;
+    if (!requiredRoles?.length && !requiredModuleAccess) {
+      return true;
+    }
 
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.includes(user?.role);
+    const hasRequiredRole = requiredRoles?.length
+      ? requiredRoles.includes(user?.role)
+      : true;
+    const hasRequiredModuleAccess = requiredModuleAccess
+      ? userHasModuleAccess(
+          user,
+          requiredModuleAccess.moduleKey,
+          requiredModuleAccess.action,
+        )
+      : true;
+
+    return hasRequiredRole && hasRequiredModuleAccess;
   }
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -53,7 +54,7 @@ export default function RateSheetsPage() {
       setIsOpen(false);
       toast.success("Rate sheet added");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to save rate sheet");
+      toast.error(getErrorMessage(error, "Failed to save rate sheet"));
     }
   };
 

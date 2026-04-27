@@ -1,11 +1,13 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { findByIdOrThrow } from '../../common/persistence/find-or-throw.helpers';
+import { groupBy } from '../../common/utils/collection.helpers';
 import { normalizeEmail } from '../../common/normalization/email';
+import { ExternalThreadRef } from '../inquiries/entities/external-thread-ref.entity';
 import { Inquiry, InquiryStatus } from '../inquiries/entities/inquiry.entity';
 import { OutlookService } from '../outlook/outlook.service';
 import { User } from '../users/entities/user.entity';
@@ -67,6 +69,8 @@ export class RfqsService {
     private readonly fieldSpecRepo: Repository<RfqFieldSpec>,
     @InjectRepository(Inquiry, 'business')
     private readonly inquiryRepo: Repository<Inquiry>,
+    @InjectRepository(ExternalThreadRef, 'business')
+    private readonly externalThreadRefRepo: Repository<ExternalThreadRef>,
     @InjectRepository(VendorMaster, 'business')
     private readonly vendorRepo: Repository<VendorMaster>,
     @InjectRepository(VendorOffice, 'business')
@@ -78,8 +82,32 @@ export class RfqsService {
     private readonly outlookService: OutlookService,
   ) {}
 
-  list() {
-    return this.rfqRepo.find({ order: { createdAt: 'DESC' } });
+  list(inquiryId?: string) {
+    return this.listRfqsWithFieldSpecs(inquiryId);
+  }
+
+  private async listRfqsWithFieldSpecs(inquiryId?: string) {
+    const rfqs = await this.rfqRepo.find({
+      where: inquiryId ? { inquiryId } : {},
+      order: { createdAt: 'DESC' },
+    });
+
+    if (rfqs.length === 0) {
+      return [];
+    }
+
+    const fieldSpecs = await this.fieldSpecRepo.find({
+      where: {
+        rfqId: In(rfqs.map((rfq) => rfq.id)),
+      },
+      order: { id: 'ASC' },
+    });
+    const fieldSpecsByRfqId = groupBy(fieldSpecs, (fieldSpec) => fieldSpec.rfqId);
+
+    return rfqs.map((rfq) => ({
+      ...rfq,
+      fieldSpecs: fieldSpecsByRfqId.get(rfq.id) ?? [],
+    }));
   }
 
   async create(
@@ -145,8 +173,10 @@ export class RfqsService {
 
     for (const recipient of recipients) {
       await this.sendRfqMailToRecipient(
+        rfq,
         user,
         recipient,
+        dto.customCcEmail,
         mailDraft.subjectLine,
         mailDraft.bodyHtml,
         attachments,
@@ -155,25 +185,29 @@ export class RfqsService {
   }
 
   private async findInquiryForRfqOrThrow(inquiryId: string) {
-    const inquiry = await this.inquiryRepo.findOne({
-      where: { id: inquiryId },
-    });
-
-    if (!inquiry) {
-      throw new NotFoundException('Inquiry not found for this RFQ.');
-    }
-
-    return inquiry;
+    return findByIdOrThrow(
+      this.inquiryRepo,
+      inquiryId,
+      'Inquiry not found for this RFQ.',
+    );
   }
 
   private async sendRfqMailToRecipient(
+    rfq: Rfq,
     user: User,
     recipient: VendorRecipient,
+    customCcEmail: string | undefined,
     subjectLine: string,
     bodyHtml: string,
     attachments: MailAttachment[],
   ) {
-    await this.outlookService.sendMail(user, {
+    const mergedCcAddresses = this.mergeCcEmails(
+      recipient.cc,
+      recipient.email,
+      customCcEmail,
+    );
+
+    const sentMessage = await this.outlookService.sendMailTracked(user, {
       subject: subjectLine,
       htmlBody: personalizeMailBodyHtml(bodyHtml, {
         companyName: recipient.companyName,
@@ -183,9 +217,30 @@ export class RfqsService {
         emailSignature: user.emailSignature,
       }),
       to: [{ address: recipient.email, name: recipient.contactName }],
-      cc: recipient.cc.map((address) => ({ address })),
+      cc: mergedCcAddresses.map((address) => ({ address })),
       attachments,
     });
+
+    await this.externalThreadRefRepo.save(
+      this.externalThreadRefRepo.create({
+        inquiryId: rfq.inquiryId,
+        participantType: 'VENDOR',
+        participantEmail: recipient.email,
+        conversationId: sentMessage.conversationId,
+        messageId: sentMessage.id,
+        internetMessageId: sentMessage.internetMessageId,
+        webLink: sentMessage.webLink,
+        lastActivityAt: new Date(sentMessage.sentDateTime ?? Date.now()),
+        metadata: {
+          rfqId: rfq.id,
+          vendorId: recipient.vendorId,
+          officeId: recipient.officeId,
+          subjectLine: sentMessage.subject ?? subjectLine,
+          departmentId: rfq.departmentId,
+          outbound: true,
+        },
+      }),
+    );
   }
 
   private buildMailAttachments(files: Express.Multer.File[]) {
@@ -355,12 +410,9 @@ export class RfqsService {
 
     return {
       vendorsById: new Map(vendors.map((vendor) => [vendor.id, vendor])),
-      officesByVendorId: this.groupBy(offices, (office) => office.vendorId),
-      contactsByOfficeId: this.groupBy(contacts, (contact) => contact.officeId),
-      ccByOfficeId: this.groupBy(
-        ccRecipients,
-        (recipient) => recipient.officeId,
-      ),
+      officesByVendorId: groupBy(offices, (office) => office.vendorId),
+      contactsByOfficeId: groupBy(contacts, (contact) => contact.officeId),
+      ccByOfficeId: groupBy(ccRecipients, (recipient) => recipient.officeId),
     };
   }
 
@@ -467,6 +519,23 @@ export class RfqsService {
     );
   }
 
+  private mergeCcEmails(
+    existingCcAddresses: string[],
+    primaryEmail: string,
+    customCcEmail?: string,
+  ) {
+    const normalizedCustomCcEmail = normalizeEmail(customCcEmail);
+
+    return Array.from(
+      new Set(
+        [...existingCcAddresses, normalizedCustomCcEmail ?? ''].filter(
+          (address): address is string =>
+            Boolean(address) && address !== primaryEmail,
+        ),
+      ),
+    );
+  }
+
   private throwIfRecipientsMissing(missingRecipients: string[]) {
     if (missingRecipients.length === 0) {
       return;
@@ -498,15 +567,5 @@ export class RfqsService {
       recipients,
       missingRecipients,
     };
-  }
-
-  private groupBy<TItem>(items: TItem[], getKey: (item: TItem) => string) {
-    return items.reduce<Map<string, TItem[]>>((map, item) => {
-      const key = getKey(item);
-      const current = map.get(key) ?? [];
-      current.push(item);
-      map.set(key, current);
-      return map;
-    }, new Map());
   }
 }

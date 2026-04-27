@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const find_or_throw_helpers_1 = require("../../common/persistence/find-or-throw.helpers");
 const customer_draft_entity_1 = require("../customer-quotes/entities/customer-draft.entity");
 const rfq_entity_1 = require("../rfqs/entities/rfq.entity");
 const freight_quote_entity_1 = require("../shipments/entities/freight-quote.entity");
@@ -175,11 +176,7 @@ let InquiriesService = class InquiriesService {
                 { id, ownerUserId: currentUser.id },
                 { id, mailboxOwnerUserId: currentUser.id },
             ];
-        const inquiry = await this.inquiryRepo.findOne({ where });
-        if (!inquiry) {
-            throw new common_1.NotFoundException('Inquiry not found');
-        }
-        return inquiry;
+        return (0, find_or_throw_helpers_1.findOneOrThrow)(this.inquiryRepo, where, 'Inquiry');
     }
 };
 exports.InquiriesService = InquiriesService;

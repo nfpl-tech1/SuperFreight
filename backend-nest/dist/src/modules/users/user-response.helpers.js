@@ -5,6 +5,8 @@ function formatAssignedRole(user) {
     return (user.roleAssignments?.map((assignment) => ({
         id: assignment.role.id,
         name: assignment.role.name,
+        description: assignment.role.description ?? null,
+        isSystem: assignment.role.isSystem,
         permissions: assignment.role.permissions ?? [],
         scopeRules: assignment.role.scopeRules ?? [],
     })) ?? []);

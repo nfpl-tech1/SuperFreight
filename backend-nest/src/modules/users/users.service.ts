@@ -1,11 +1,11 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { findByIdOrThrow } from '../../common/persistence/find-or-throw.helpers';
 import { AppRole } from './entities/app-role.entity';
 import { UserRoleAssignment } from './entities/user-role-assignment.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -54,8 +54,7 @@ export class UsersService {
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
-    const user = await this.findById(id);
-    if (!user) throw new NotFoundException('User not found');
+    const user = await findByIdOrThrow(this.userRepo, id, 'User');
 
     Object.assign(user, dto);
     return this.userRepo.save(user);
@@ -65,8 +64,7 @@ export class UsersService {
     userId: string,
     departments: string[],
   ): Promise<User> {
-    const user = await this.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    await findByIdOrThrow(this.userRepo, userId, 'User');
 
     await this.replaceDepartments(userId, departments);
 
@@ -85,15 +83,13 @@ export class UsersService {
   }
 
   async markOutlookConnected(userId: string, connectedAt: Date) {
-    const user = await this.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    const user = await findByIdOrThrow(this.userRepo, userId, 'User');
     user.outlookConnectedAt = connectedAt;
     return this.userRepo.save(user);
   }
 
   async updateSignature(userId: string, signature: string | null) {
-    const user = await this.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    const user = await findByIdOrThrow(this.userRepo, userId, 'User');
     user.emailSignature = signature;
     return this.userRepo.save(user);
   }

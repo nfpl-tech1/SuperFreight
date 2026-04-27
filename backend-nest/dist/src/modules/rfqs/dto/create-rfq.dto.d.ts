@@ -15,6 +15,7 @@ export declare class CreateRfqDto {
     vendorIds: string[];
     officeSelections?: OfficeSelectionDto[];
     responseFields: ResponseFieldDto[];
+    customCcEmail?: string;
     sendNow?: boolean;
     mailSubject?: string;
     mailBodyHtml?: string;

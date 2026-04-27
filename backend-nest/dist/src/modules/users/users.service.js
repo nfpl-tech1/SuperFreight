@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const uuid_1 = require("uuid");
+const find_or_throw_helpers_1 = require("../../common/persistence/find-or-throw.helpers");
 const app_role_entity_1 = require("./entities/app-role.entity");
 const user_role_assignment_entity_1 = require("./entities/user-role-assignment.entity");
 const user_department_entity_1 = require("./entities/user-department.entity");
@@ -54,16 +55,12 @@ let UsersService = class UsersService {
         return this.userRepo.save(user);
     }
     async update(id, dto) {
-        const user = await this.findById(id);
-        if (!user)
-            throw new common_1.NotFoundException('User not found');
+        const user = await (0, find_or_throw_helpers_1.findByIdOrThrow)(this.userRepo, id, 'User');
         Object.assign(user, dto);
         return this.userRepo.save(user);
     }
     async updateDepartments(userId, departments) {
-        const user = await this.findById(userId);
-        if (!user)
-            throw new common_1.NotFoundException('User not found');
+        await (0, find_or_throw_helpers_1.findByIdOrThrow)(this.userRepo, userId, 'User');
         await this.replaceDepartments(userId, departments);
         return this.findById(userId);
     }
@@ -76,16 +73,12 @@ let UsersService = class UsersService {
         return (await this.findById(user.id));
     }
     async markOutlookConnected(userId, connectedAt) {
-        const user = await this.findById(userId);
-        if (!user)
-            throw new common_1.NotFoundException('User not found');
+        const user = await (0, find_or_throw_helpers_1.findByIdOrThrow)(this.userRepo, userId, 'User');
         user.outlookConnectedAt = connectedAt;
         return this.userRepo.save(user);
     }
     async updateSignature(userId, signature) {
-        const user = await this.findById(userId);
-        if (!user)
-            throw new common_1.NotFoundException('User not found');
+        const user = await (0, find_or_throw_helpers_1.findByIdOrThrow)(this.userRepo, userId, 'User');
         user.emailSignature = signature;
         return this.userRepo.save(user);
     }

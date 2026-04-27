@@ -29,6 +29,10 @@ export declare class VendorsController {
         countries: string[];
     }>;
     getLocationOptions(query: ListVendorLocationOptionsDto): Promise<{
+        page: number;
+        pageSize: number;
+        total: number;
+        totalPages: number;
         items: {
             id: string;
             kind: import("./domain/vendor-selection-context").VendorLocationKind;
@@ -38,11 +42,11 @@ export declare class VendorsController {
             portMode: import("./entities/port-master.entity").PortMode;
             recommended: boolean;
         }[];
+    } | {
         page: number;
         pageSize: number;
         total: number;
         totalPages: number;
-    } | {
         items: {
             id: string;
             kind: import("./domain/vendor-selection-context").VendorLocationKind;
@@ -52,12 +56,12 @@ export declare class VendorsController {
             portMode: null;
             recommended: boolean;
         }[];
+    }>;
+    listPortMaster(query: ListPortMasterDto): Promise<{
         page: number;
         pageSize: number;
         total: number;
         totalPages: number;
-    }>;
-    listPortMaster(query: ListPortMasterDto): Promise<{
         items: {
             id: string;
             code: string;
@@ -87,10 +91,6 @@ export declare class VendorsController {
             createdAt: Date;
             updatedAt: Date;
         }[];
-        page: number;
-        pageSize: number;
-        total: number;
-        totalPages: number;
     }>;
     getPortMasterDetail(id: string): Promise<{
         normalizedName: string | null;
@@ -126,6 +126,10 @@ export declare class VendorsController {
         updatedAt: Date;
     }>;
     list(query: ListVendorsDto): Promise<{
+        page: number;
+        pageSize: number;
+        total: number;
+        totalPages: number;
         items: {
             id: string;
             companyName: string;
@@ -183,10 +187,6 @@ export declare class VendorsController {
             createdAt: Date;
             updatedAt: Date;
         }[];
-        page: number;
-        pageSize: number;
-        total: number;
-        totalPages: number;
     }>;
     getDetail(id: string): Promise<{
         id: string;

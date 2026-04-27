@@ -45,7 +45,7 @@ export function getOsBackendUrl(config: ConfigService) {
 }
 
 export function getOsAppSlug(config: ConfigService) {
-  return config.get<string>('os.appSlug') ?? 'super-freight';
+  return config.get<string>('os.appSlug') ?? 'superfreight';
 }
 
 export function getOsInternalHeaders(config: ConfigService) {

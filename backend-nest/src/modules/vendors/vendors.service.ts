@@ -6,6 +6,16 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  buildPaginationMeta,
+  parsePaginationParams,
+} from '../../common/pagination/pagination.helpers';
+import { findByIdOrThrow } from '../../common/persistence/find-or-throw.helpers';
+import {
+  groupBy,
+  groupMappedBy,
+  isNonEmpty,
+} from '../../common/utils/collection.helpers';
+import {
   Brackets,
   EntityManager,
   In,
@@ -152,8 +162,11 @@ export class VendorsService {
   }
 
   async getLocationOptions(query: ListVendorLocationOptionsDto) {
-    const page = Math.max(query.page ?? 1, 1);
-    const pageSize = Math.min(Math.max(query.pageSize ?? 20, 1), 100);
+    const { page, pageSize } = parsePaginationParams(
+      query.page,
+      query.pageSize,
+      { pageSize: 20 },
+    );
     const context = resolveVendorSelectionContext({
       quoteTypeContext: query.quoteTypeContext,
       shipmentMode: query.shipmentMode,
@@ -194,8 +207,11 @@ export class VendorsService {
   }
 
   async listPortMaster(query: ListPortMasterDto) {
-    const page = Math.max(query.page ?? 1, 1);
-    const pageSize = Math.min(Math.max(query.pageSize ?? 25, 1), 100);
+    const { page, pageSize } = parsePaginationParams(
+      query.page,
+      query.pageSize,
+      { pageSize: 25 },
+    );
     const baseQuery = this.buildPortMasterListQuery(query);
 
     const totalResult = await baseQuery
@@ -252,10 +268,7 @@ export class VendorsService {
             linkedOfficeCounts.get(port.id) ?? 0,
           ),
         ),
-      page,
-      pageSize,
-      total,
-      totalPages: total === 0 ? 0 : Math.ceil(total / pageSize),
+      ...buildPaginationMeta(total, page, pageSize),
     };
   }
 
@@ -366,8 +379,11 @@ export class VendorsService {
   }
 
   async listVendors(query: ListVendorsDto) {
-    const page = Math.max(query.page ?? 1, 1);
-    const pageSize = Math.min(Math.max(query.pageSize ?? 25, 1), 100);
+    const { page, pageSize } = parsePaginationParams(
+      query.page,
+      query.pageSize,
+      { pageSize: 25 },
+    );
     const baseQuery = this.buildVendorListQuery(query);
 
     const totalResult = await baseQuery
@@ -395,19 +411,12 @@ export class VendorsService {
 
     return {
       items,
-      page,
-      pageSize,
-      total,
-      totalPages: total === 0 ? 0 : Math.ceil(total / pageSize),
+      ...buildPaginationMeta(total, page, pageSize),
     };
   }
 
   async getVendorDetail(id: string) {
-    const vendor = await this.vendorRepo.findOne({ where: { id } });
-    if (!vendor) {
-      throw new NotFoundException('Vendor not found');
-    }
-
+    const vendor = await this.findVendorOrThrow(id);
     const graph = await this.loadVendorGraph([vendor.id]);
     return this.formatVendorDetail(vendor, graph);
   }
@@ -1120,10 +1129,7 @@ export class VendorsService {
         portMode: port.portMode,
         recommended: recommendedPortIds.has(port.id),
       })),
-      page: input.page,
-      pageSize: input.pageSize,
-      total,
-      totalPages: total === 0 ? 0 : Math.ceil(total / input.pageSize),
+      ...buildPaginationMeta(total, input.page, input.pageSize),
     };
   }
 
@@ -1187,10 +1193,7 @@ export class VendorsService {
           portMode: null,
           recommended: recommendedServiceLocationIds.has(serviceLocation.id),
         })),
-        page: input.page,
-        pageSize: input.pageSize,
-        total: canonicalTotal,
-        totalPages: Math.ceil(canonicalTotal / input.pageSize),
+        ...buildPaginationMeta(canonicalTotal, input.page, input.pageSize),
       };
     }
 
@@ -1286,10 +1289,7 @@ export class VendorsService {
         portMode: null,
         recommended: false,
       })),
-      page: input.page,
-      pageSize: input.pageSize,
-      total,
-      totalPages: total === 0 ? 0 : Math.ceil(total / input.pageSize),
+      ...buildPaginationMeta(total, input.page, input.pageSize),
     };
   }
 
@@ -1912,27 +1912,24 @@ export class VendorsService {
   }
 
   private async findVendorOrThrow(id: string) {
-    const vendor = await this.vendorRepo.findOne({ where: { id } });
-    if (!vendor) {
-      throw new NotFoundException('Vendor not found');
-    }
-    return vendor;
+    return findByIdOrThrow(this.vendorRepo, id, 'Vendor');
   }
 
   private async findOfficeOrThrow(id: string) {
-    const office = await this.officeRepo.findOne({ where: { id } });
-    if (!office) {
-      throw new NotFoundException('Vendor office not found');
-    }
-    return office;
+    return findByIdOrThrow(this.officeRepo, id, 'Vendor office not found');
   }
 
   private async ensureOfficeBelongsToVendor(
     officeId: string,
     vendorId: string,
   ) {
-    const office = await this.officeRepo.findOne({ where: { id: officeId } });
-    if (!office || office.vendorId !== vendorId) {
+    const office = await findByIdOrThrow(
+      this.officeRepo,
+      officeId,
+      'Primary office was not found for this vendor',
+    );
+
+    if (office.vendorId !== vendorId) {
       throw new NotFoundException(
         'Primary office was not found for this vendor',
       );
@@ -1961,11 +1958,7 @@ export class VendorsService {
   }
 
   private async findPortOrThrow(id: string) {
-    const port = await this.portRepo.findOne({ where: { id } });
-    if (!port) {
-      throw new NotFoundException('Port not found');
-    }
-    return port;
+    return findByIdOrThrow(this.portRepo, id, 'Port');
   }
 
   private async ensurePortCodeUnique(
@@ -2109,46 +2102,6 @@ export class VendorsService {
       updatedAt: alias.updatedAt,
     };
   }
-}
-
-function groupBy<T>(items: T[], keySelector: (item: T) => string) {
-  const groups = new Map<string, T[]>();
-  for (const item of items) {
-    const key = keySelector(item);
-    const existing = groups.get(key);
-    if (existing) {
-      existing.push(item);
-      continue;
-    }
-    groups.set(key, [item]);
-  }
-  return groups;
-}
-
-function groupMappedBy<T, U>(
-  items: T[],
-  keySelector: (item: T) => string,
-  valueSelector: (item: T) => U | undefined,
-) {
-  const groups = new Map<string, U[]>();
-  for (const item of items) {
-    const value = valueSelector(item);
-    if (!value) {
-      continue;
-    }
-    const key = keySelector(item);
-    const existing = groups.get(key);
-    if (existing) {
-      existing.push(value);
-      continue;
-    }
-    groups.set(key, [value]);
-  }
-  return groups;
-}
-
-function isNonEmpty(value: string | null | undefined): value is string {
-  return Boolean(value && value.trim());
 }
 
 function normalizePortValue(value: string | null | undefined) {

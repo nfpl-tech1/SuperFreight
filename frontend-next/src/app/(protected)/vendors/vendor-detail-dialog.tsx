@@ -75,7 +75,7 @@ export function VendorDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92svh] overflow-hidden p-0 sm:max-w-6xl">
+      <DialogContent className="max-h-[92svh] overflow-hidden p-0 w-full sm:max-w-5xl">
         <DialogHeader className="border-b border-slate-200 px-6 py-4 text-left">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>

@@ -41,6 +41,13 @@ declare const _default: () => {
         apiKey: string;
         model: string;
     };
+    quoteIntake: {
+        enabled: boolean;
+        pollIntervalMs: number;
+        overlapSeconds: number;
+        initialLookbackHours: number;
+        batchSize: number;
+    };
     initialSuperadminEmail: string | undefined;
     frontendUrl: string;
 };

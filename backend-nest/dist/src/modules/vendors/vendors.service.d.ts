@@ -52,6 +52,10 @@ export declare class VendorsService {
         countries: string[];
     }>;
     getLocationOptions(query: ListVendorLocationOptionsDto): Promise<{
+        page: number;
+        pageSize: number;
+        total: number;
+        totalPages: number;
         items: {
             id: string;
             kind: VendorLocationKind;
@@ -61,11 +65,11 @@ export declare class VendorsService {
             portMode: PortMode;
             recommended: boolean;
         }[];
+    } | {
         page: number;
         pageSize: number;
         total: number;
         totalPages: number;
-    } | {
         items: {
             id: string;
             kind: VendorLocationKind;
@@ -75,12 +79,12 @@ export declare class VendorsService {
             portMode: null;
             recommended: boolean;
         }[];
+    }>;
+    listPortMaster(query: ListPortMasterDto): Promise<{
         page: number;
         pageSize: number;
         total: number;
         totalPages: number;
-    }>;
-    listPortMaster(query: ListPortMasterDto): Promise<{
         items: {
             id: string;
             code: string;
@@ -110,10 +114,6 @@ export declare class VendorsService {
             createdAt: Date;
             updatedAt: Date;
         }[];
-        page: number;
-        pageSize: number;
-        total: number;
-        totalPages: number;
     }>;
     getPortMasterDetail(id: string): Promise<{
         normalizedName: string | null;
@@ -215,6 +215,10 @@ export declare class VendorsService {
         updatedAt: Date;
     }>;
     listVendors(query: ListVendorsDto): Promise<{
+        page: number;
+        pageSize: number;
+        total: number;
+        totalPages: number;
         items: {
             id: string;
             companyName: string;
@@ -272,10 +276,6 @@ export declare class VendorsService {
             createdAt: Date;
             updatedAt: Date;
         }[];
-        page: number;
-        pageSize: number;
-        total: number;
-        totalPages: number;
     }>;
     getVendorDetail(id: string): Promise<{
         id: string;

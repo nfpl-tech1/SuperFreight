@@ -1,4 +1,5 @@
 export { api } from "@/lib/api/client";
+export { getErrorMessage, isApiError } from "@/lib/api/error-handler";
 export { ApiError, request } from "@/lib/api/request";
 export type {
   AppRoleDefinition,
@@ -6,6 +7,8 @@ export type {
   FreightQuote,
   Inquiry,
   OutlookStatus,
+  QuoteInboxMessage,
+  QuoteInboxMessageMetadata,
   PortMasterAlias,
   PortMasterDetail,
   PortMasterListItem,
@@ -14,6 +17,7 @@ export type {
   PortMode,
   RateSheet,
   Rfq,
+  RfqFieldSpec,
   RolePermission,
   ScopeRule,
   SessionResponse,

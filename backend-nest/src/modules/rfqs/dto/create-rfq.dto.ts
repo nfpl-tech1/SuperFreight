@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsEmail,
   IsObject,
   IsOptional,
   IsString,
@@ -53,6 +54,10 @@ export class CreateRfqDto {
   @ValidateNested({ each: true })
   @Type(() => ResponseFieldDto)
   responseFields: ResponseFieldDto[];
+
+  @IsOptional()
+  @IsEmail()
+  customCcEmail?: string;
 
   @IsOptional()
   @IsBoolean()
