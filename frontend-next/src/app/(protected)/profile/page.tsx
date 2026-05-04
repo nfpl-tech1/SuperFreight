@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { api, getErrorMessage, OutlookStatus } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 import { toast } from "sonner";
 
 export default function ProfilePage() {
   const { user, refreshSession } = useAuth();
+  const canEditProfile = canEditModule(user, "profile");
   const [outlookStatus, setOutlookStatus] = useState<OutlookStatus | null>(null);
   const [isConnectingOutlook, setIsConnectingOutlook] = useState(false);
   const [isSavingSignature, setIsSavingSignature] = useState(false);
@@ -127,7 +129,7 @@ export default function ProfilePage() {
                   : "Connect your Outlook mailbox to send RFQs directly from your logged-in account."}
             </div>
             <div>
-              <Button onClick={() => void handleReconnectOutlook()} disabled={isConnectingOutlook}>
+              <Button onClick={() => void handleReconnectOutlook()} disabled={!canEditProfile || isConnectingOutlook}>
                 {isConnectingOutlook
                   ? "Opening Microsoft..."
                   : outlookStatus?.isConnected
@@ -144,7 +146,7 @@ export default function ProfilePage() {
         fullName={user.name}
         departmentName={user.departmentName}
         isSaving={isSavingSignature}
-        onSave={handleSaveGeneratedSignature}
+        onSave={canEditProfile ? handleSaveGeneratedSignature : undefined}
       />
     </div>
   );

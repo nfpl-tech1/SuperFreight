@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { api, AppRoleDefinition, User } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 import { toast } from "sonner";
 import { DEPARTMENTS } from "./user-management.constants";
 import { UserManagementTile } from "./components/user-management-tile";
 
 export default function AdminUsersPage() {
   const { user: currentUser } = useAuth();
+  const canEditUsers = canEditModule(currentUser, "admin-users");
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<AppRoleDefinition[]>([]);
   const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
@@ -64,7 +66,7 @@ export default function AdminUsersPage() {
     }
   };
 
-  if (currentUser?.role !== "ADMIN") return null;
+  if (!currentUser) return null;
 
   return (
     <div className="space-y-6 p-6">
@@ -86,6 +88,7 @@ export default function AdminUsersPage() {
             onExpandedUserIdChange={setExpandedUserId}
             onToggleDepartment={(department) => void toggleDepartment(user, department)}
             onToggleRole={(roleId) => void toggleRole(user, roleId)}
+            canEdit={canEditUsers}
           />
         ))}
       </div>

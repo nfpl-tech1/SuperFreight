@@ -2,12 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Copy, Plus, SquarePen, Trash2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   api,
   AppRoleDefinition,
   getErrorMessage,
   RolePermission,
 } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -27,6 +29,8 @@ import { RoleListPanel } from "./components/role-list-panel";
 import { WorkVisibilitySection } from "./components/work-visibility-section";
 
 export default function AdminRolesPage() {
+  const { user } = useAuth();
+  const canEditRoles = canEditModule(user, "admin-roles");
   const [roles, setRoles] = useState<AppRoleDefinition[]>([]);
   const [editingRoleId, setEditingRoleId] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -224,7 +228,7 @@ export default function AdminRolesPage() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => startNewRole(selectedRole)}>
+            <Button variant="outline" onClick={() => startNewRole(selectedRole)} disabled={!canEditRoles}>
               <Copy className="mr-2 h-4 w-4" />
               Duplicate Current
             </Button>
@@ -232,14 +236,14 @@ export default function AdminRolesPage() {
               <Button
                 variant="outline"
                 onClick={() => void handleDelete()}
-                disabled={!canDeleteSelectedRole || deleting}
+                disabled={!canEditRoles || !canDeleteSelectedRole || deleting}
                 className="border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50 hover:text-red-700 disabled:border-slate-200 disabled:text-slate-400"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 {deleting ? "Deleting..." : "Delete Role"}
               </Button>
             )}
-            <Button onClick={() => startNewRole()}>
+            <Button onClick={() => startNewRole()} disabled={!canEditRoles}>
               <Plus className="mr-2 h-4 w-4" />
               Create New Role
             </Button>
@@ -255,6 +259,7 @@ export default function AdminRolesPage() {
               duplicateNameExists={duplicateNameExists}
               onNameChange={setName}
               onDescriptionChange={setDescription}
+              disabled={!canEditRoles}
             />
 
             <ModuleAccessSection
@@ -264,6 +269,7 @@ export default function AdminRolesPage() {
               onModuleSearchChange={setModuleSearch}
               onUpdatePermission={updatePermission}
               onSetAllModuleViewAccess={setAllModuleViewAccess}
+              disabled={!canEditRoles}
             />
 
             <WorkVisibilitySection
@@ -272,17 +278,21 @@ export default function AdminRolesPage() {
               onUpdateScopeType={updateScopeType}
               onUpdateScopeValue={updateScopeValue}
               onRemoveScopeRule={removeScopeRule}
+              disabled={!canEditRoles}
             />
           </div>
         </ScrollArea>
 
         <div className="shrink-0 border-t border-slate-200 bg-white px-7 py-4">
           <div className="flex flex-wrap gap-3">
-            <Button onClick={handleSave} disabled={!name.trim() || duplicateNameExists || saving}>
+            <Button
+              onClick={handleSave}
+              disabled={!canEditRoles || !name.trim() || duplicateNameExists || saving}
+            >
               <SquarePen className="mr-2 h-4 w-4" />
               {saving ? "Saving..." : createMode ? "Create Role" : "Save Changes"}
             </Button>
-            <Button variant="outline" onClick={() => startNewRole()}>
+            <Button variant="outline" onClick={() => startNewRole()} disabled={!canEditRoles}>
               Start Blank
             </Button>
             {!createMode && !canDeleteSelectedRole && (

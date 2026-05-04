@@ -18,6 +18,7 @@ import {
 } from "../comparison.helpers";
 
 type VendorQuotesTableProps = {
+  canEdit: boolean;
   fieldSpecs: RfqFieldSpec[];
   lowestRate: number | null;
   onReviewQuote: (quoteId: string) => void;
@@ -26,6 +27,7 @@ type VendorQuotesTableProps = {
 };
 
 export function VendorQuotesTable({
+  canEdit,
   fieldSpecs,
   lowestRate,
   onReviewQuote,
@@ -106,7 +108,7 @@ export function VendorQuotesTable({
                     {quote.remarks || "-"}
                   </TableCell>
                   <TableCell className="space-x-2">
-                    <Button size="sm" variant="outline" onClick={() => onReviewQuote(quote.id)}>
+                    <Button size="sm" variant="outline" onClick={() => onReviewQuote(quote.id)} disabled={!canEdit}>
                       Review
                     </Button>
                     <Button size="sm" onClick={() => onSelectQuote(quote.id)}>

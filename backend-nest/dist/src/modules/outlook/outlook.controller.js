@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OutlookController = void 0;
 const common_1 = require("@nestjs/common");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
@@ -41,6 +42,7 @@ let OutlookController = class OutlookController {
 exports.OutlookController = OutlookController;
 __decorate([
     (0, common_1.Get)('status'),
+    (0, module_access_decorator_1.ModuleAccess)('profile', 'view'),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
@@ -48,6 +50,7 @@ __decorate([
 ], OutlookController.prototype, "getStatus", null);
 __decorate([
     (0, common_1.Get)('connect-url'),
+    (0, module_access_decorator_1.ModuleAccess)('profile', 'edit'),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
@@ -55,6 +58,7 @@ __decorate([
 ], OutlookController.prototype, "getConnectUrl", null);
 __decorate([
     (0, common_1.Post)('complete'),
+    (0, module_access_decorator_1.ModuleAccess)('profile', 'edit'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
@@ -63,6 +67,7 @@ __decorate([
 ], OutlookController.prototype, "complete", null);
 __decorate([
     (0, common_1.Post)('reconnect'),
+    (0, module_access_decorator_1.ModuleAccess)('profile', 'edit'),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),

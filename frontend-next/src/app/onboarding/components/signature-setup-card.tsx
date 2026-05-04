@@ -19,7 +19,7 @@ type SignatureSetupCardProps = {
   fullName?: string | null;
   departmentName?: string | null;
   isSaving: boolean;
-  onSave: (signatureHtml: string) => Promise<void>;
+  onSave?: (signatureHtml: string) => Promise<void>;
   onSkip?: () => void;
   showStepBadge?: boolean;
 };
@@ -43,6 +43,7 @@ export function SignatureSetupCard({
 
   const signatureHtml = buildSignatureHtml(draft);
   const canSave =
+    Boolean(onSave) &&
     draft.fullName.trim().length > 0 &&
     draft.designation.trim().length > 0 &&
     draft.phone.trim().length > 0;
@@ -112,7 +113,14 @@ export function SignatureSetupCard({
           </div>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <Button onClick={() => void onSave(signatureHtml)} disabled={!canSave || isSaving}>
+            <Button
+              onClick={() => {
+                if (onSave) {
+                  void onSave(signatureHtml);
+                }
+              }}
+              disabled={!canSave || isSaving}
+            >
               {isSaving ? "Saving signature..." : "Save and continue"}
             </Button>
             {onSkip ? (

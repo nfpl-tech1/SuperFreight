@@ -42,6 +42,7 @@ interface Props {
   incoterm?: string;
   isExwClubbed?: boolean;
   isSending?: boolean;
+  canEdit?: boolean;
   outlookStatus?: OutlookStatus | null;
   customCcEmail: string;
   onCustomCcEmailChange: (value: string) => void;
@@ -183,6 +184,7 @@ export function Step4ReviewSend({
   incoterm,
   isExwClubbed,
   isSending = false,
+  canEdit = true,
   outlookStatus = null,
   customCcEmail,
   onCustomCcEmailChange,
@@ -312,6 +314,7 @@ export function Step4ReviewSend({
             <SendRfqButton
               count={selectedVendors.length}
               disabled={
+                !canEdit ||
                 selectedVendors.length === 0 ||
                 !canSendViaOutlook ||
                 !dispatchTargetsReady ||
@@ -341,7 +344,7 @@ export function Step4ReviewSend({
               value={customCcEmail}
               onChange={(event) => onCustomCcEmailChange(event.target.value)}
               aria-invalid={!hasValidCustomCcEmail}
-              disabled={isSending}
+              disabled={!canEdit || isSending}
             />
             {!hasValidCustomCcEmail ? (
               <p className="mt-2 text-xs text-red-600">
@@ -353,7 +356,7 @@ export function Step4ReviewSend({
 
         <AttachmentPanel
           attachments={attachments}
-          disabled={isSending}
+          disabled={!canEdit || isSending}
           onAdd={() => fileInputRef.current?.click()}
           onRemove={handleRemoveAttachment}
         />
@@ -499,7 +502,7 @@ export function Step4ReviewSend({
               value={customCcEmail}
               onChange={(event) => onCustomCcEmailChange(event.target.value)}
               aria-invalid={!hasValidCustomCcEmail}
-              disabled={isSending}
+              disabled={!canEdit || isSending}
             />
             {!hasValidCustomCcEmail ? (
               <p className="mt-2 text-xs text-red-600">
@@ -537,7 +540,7 @@ export function Step4ReviewSend({
 
         <AttachmentPanel
           attachments={attachments}
-          disabled={isSending}
+          disabled={!canEdit || isSending}
           onAdd={() => fileInputRef.current?.click()}
           onRemove={handleRemoveAttachment}
         />
@@ -546,6 +549,7 @@ export function Step4ReviewSend({
           <SendRfqButton
             count={selectedVendors.length}
             disabled={
+              !canEdit ||
               selectedVendors.length === 0 ||
               !canSendViaOutlook ||
               !dispatchTargetsReady ||

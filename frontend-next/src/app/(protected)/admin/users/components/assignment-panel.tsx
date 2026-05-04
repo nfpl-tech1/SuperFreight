@@ -15,6 +15,7 @@ export function AssignmentPanel({
   emptyLabel,
   options,
   onToggle,
+  disabled = false,
 }: {
   title: string;
   icon: ReactNode;
@@ -22,6 +23,7 @@ export function AssignmentPanel({
   emptyLabel: string;
   options: AssignmentOption[];
   onToggle: (key: string) => void;
+  disabled?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-slate-200 p-4">
@@ -49,9 +51,10 @@ export function AssignmentPanel({
           <button
             key={option.key}
             type="button"
+            disabled={disabled}
             onClick={() => onToggle(option.key)}
             className={cn(
-              "rounded-xl border px-3 py-2 text-sm font-medium transition-all",
+              "rounded-xl border px-3 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-60",
               option.active
                 ? "border-primary/20 bg-primary/10 text-primary"
                 : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"

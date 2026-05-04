@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   api,
   FreightQuote,
@@ -12,6 +13,7 @@ import {
   Rfq,
   VendorDetail,
 } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 import {
   buildQuoteUpdatePayload,
   createQuoteReviewForm,
@@ -38,6 +40,8 @@ const INITIAL_LOADING_STATE: ComparisonWorkspaceState = {
 };
 
 export default function ComparisonPage() {
+  const { user } = useAuth();
+  const canEditComparison = canEditModule(user, "comparison");
   const router = useRouter();
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [rfqs, setRfqs] = useState<Rfq[]>([]);
@@ -362,6 +366,7 @@ export default function ComparisonPage() {
       {selectedRfq ? (
         <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
           <QuoteInboxPanel
+            canEdit={canEditComparison}
             inboxMessages={inboxMessages}
             isBusy={loading.inbox || loading.quotes}
             linkableVendorOptions={linkableVendorOptions}
@@ -375,6 +380,7 @@ export default function ComparisonPage() {
           />
 
           <VendorQuotesTable
+            canEdit={canEditComparison}
             fieldSpecs={selectedRfq.fieldSpecs}
             lowestRate={lowestRate}
             onReviewQuote={openQuoteReview}
@@ -386,6 +392,7 @@ export default function ComparisonPage() {
 
       {selectedQuote && reviewForm && selectedRfq ? (
         <QuoteCaptureDialog
+          canEdit={canEditComparison}
           fieldSpecs={selectedRfq.fieldSpecs}
           form={reviewForm}
           inboxMessage={linkedInboxMessage}

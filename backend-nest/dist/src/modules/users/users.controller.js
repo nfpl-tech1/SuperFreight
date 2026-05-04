@@ -16,7 +16,7 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const roles_decorator_1 = require("../../common/decorators/roles.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const assign_user_roles_dto_1 = require("./dto/assign-user-roles.dto");
@@ -72,6 +72,7 @@ __decorate([
 ], UsersController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Patch)('me/signature'),
+    (0, module_access_decorator_1.ModuleAccess)('profile', 'edit'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Body)()),
@@ -81,7 +82,7 @@ __decorate([
 ], UsersController.prototype, "updateMySignature", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-users', 'view'),
     __param(0, (0, common_1.Query)('skip')),
     __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
@@ -90,7 +91,7 @@ __decorate([
 ], UsersController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-users', 'edit'),
     (0, audit_decorator_1.Audit)('USER_CREATED', 'user'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -99,7 +100,7 @@ __decorate([
 ], UsersController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-users', 'edit'),
     (0, audit_decorator_1.Audit)('USER_UPDATED', 'user'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -109,7 +110,7 @@ __decorate([
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Post)(':id/departments'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-users', 'edit'),
     (0, audit_decorator_1.Audit)('USER_DEPARTMENTS_UPDATED', 'user'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id')),
@@ -120,7 +121,7 @@ __decorate([
 ], UsersController.prototype, "updateDepartments", null);
 __decorate([
     (0, common_1.Post)(':id/roles'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('admin-users', 'edit'),
     (0, audit_decorator_1.Audit)('USER_ROLES_UPDATED', 'user'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id')),

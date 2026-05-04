@@ -26,7 +26,8 @@ let RolesGuard = class RolesGuard {
             context.getClass(),
         ]);
         const requiredModuleAccess = this.reflector.getAllAndOverride(module_access_decorator_1.MODULE_ACCESS_KEY, [context.getHandler(), context.getClass()]);
-        if (!requiredRoles?.length && !requiredModuleAccess) {
+        const anyRequiredModuleAccess = this.reflector.getAllAndOverride(module_access_decorator_1.ANY_MODULE_ACCESS_KEY, [context.getHandler(), context.getClass()]);
+        if (!requiredRoles?.length && !requiredModuleAccess && !anyRequiredModuleAccess?.length) {
             return true;
         }
         const { user } = context.switchToHttp().getRequest();
@@ -36,7 +37,10 @@ let RolesGuard = class RolesGuard {
         const hasRequiredModuleAccess = requiredModuleAccess
             ? (0, module_access_helpers_1.userHasModuleAccess)(user, requiredModuleAccess.moduleKey, requiredModuleAccess.action)
             : true;
-        return hasRequiredRole && hasRequiredModuleAccess;
+        const hasAnyRequiredModuleAccess = anyRequiredModuleAccess?.length
+            ? anyRequiredModuleAccess.some((requirement) => (0, module_access_helpers_1.userHasModuleAccess)(user, requirement.moduleKey, requirement.action))
+            : true;
+        return hasRequiredRole && hasRequiredModuleAccess && hasAnyRequiredModuleAccess;
     }
 };
 exports.RolesGuard = RolesGuard;

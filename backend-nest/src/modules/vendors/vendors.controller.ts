@@ -10,11 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Audit } from '../../common/decorators/audit.decorator';
-import { ModuleAccess } from '../../common/decorators/module-access.decorator';
-import { Roles } from '../../common/decorators/roles.decorator';
+import {
+  AnyModuleAccess,
+  ModuleAccess,
+} from '../../common/decorators/module-access.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../users/entities/user.entity';
 import { CreateVendorDto } from './dto/create-vendor.dto';
 import { CreateVendorOfficeDto } from './dto/create-vendor-office.dto';
 import { CreatePortMasterDto } from './dto/create-port-master.dto';
@@ -32,16 +33,26 @@ export class VendorsController {
   constructor(private readonly vendorsService: VendorsService) {}
 
   @Get('summary')
+  @ModuleAccess('vendors', 'view')
   getSummary() {
     return this.vendorsService.getCatalogSummary();
   }
 
   @Get('lookups')
+  @AnyModuleAccess([
+    { moduleKey: 'vendors', action: 'view' },
+    { moduleKey: 'rfq', action: 'view' },
+  ])
   getLookups() {
     return this.vendorsService.getCatalogLookups();
   }
 
   @Get('location-options')
+  @AnyModuleAccess([
+    { moduleKey: 'vendors', action: 'view' },
+    { moduleKey: 'inquiries', action: 'view' },
+    { moduleKey: 'rfq', action: 'view' },
+  ])
   getLocationOptions(@Query() query: ListVendorLocationOptionsDto) {
     return this.vendorsService.getLocationOptions(query);
   }
@@ -59,17 +70,26 @@ export class VendorsController {
   }
 
   @Get()
+  @AnyModuleAccess([
+    { moduleKey: 'vendors', action: 'view' },
+    { moduleKey: 'rfq', action: 'view' },
+  ])
   list(@Query() query: ListVendorsDto) {
     return this.vendorsService.listVendors(query);
   }
 
   @Get(':id')
+  @AnyModuleAccess([
+    { moduleKey: 'vendors', action: 'view' },
+    { moduleKey: 'rfq', action: 'view' },
+    { moduleKey: 'comparison', action: 'view' },
+  ])
   getDetail(@Param('id') id: string) {
     return this.vendorsService.getVendorDetail(id);
   }
 
   @Post()
-  @Roles(Role.ADMIN)
+  @ModuleAccess('vendors', 'edit')
   @Audit('VENDOR_CREATED', 'vendor_master')
   create(@Body() dto: CreateVendorDto) {
     return this.vendorsService.createVendor(dto);
@@ -83,7 +103,7 @@ export class VendorsController {
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('vendors', 'edit')
   @Audit('VENDOR_UPDATED', 'vendor_master')
   update(@Param('id') id: string, @Body() dto: UpdateVendorDto) {
     return this.vendorsService.updateVendor(id, dto);
@@ -97,21 +117,21 @@ export class VendorsController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('vendors', 'edit')
   @Audit('VENDOR_DELETED', 'vendor_master')
   remove(@Param('id') id: string) {
     return this.vendorsService.deleteVendor(id);
   }
 
   @Post(':vendorId/offices')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('vendors', 'edit')
   @Audit('VENDOR_OFFICE_CREATED', 'vendor_office')
   createOffice(@Param('vendorId') vendorId: string, @Body() dto: CreateVendorOfficeDto) {
     return this.vendorsService.createOffice(vendorId, dto);
   }
 
   @Put('offices/:officeId')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('vendors', 'edit')
   @Audit('VENDOR_OFFICE_UPDATED', 'vendor_office')
   updateOffice(@Param('officeId') officeId: string, @Body() dto: UpdateVendorOfficeDto) {
     return this.vendorsService.updateOffice(officeId, dto);

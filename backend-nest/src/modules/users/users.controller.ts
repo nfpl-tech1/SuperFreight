@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { Audit } from '../../common/decorators/audit.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { ModuleAccess } from '../../common/decorators/module-access.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -38,6 +39,7 @@ export class UsersController {
   }
 
   @Patch('me/signature')
+  @ModuleAccess('profile', 'edit')
   @HttpCode(HttpStatus.OK)
   async updateMySignature(
     @CurrentUser() user: User,
@@ -48,14 +50,14 @@ export class UsersController {
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-users', 'view')
   async getAll(@Query('skip') skip = 0, @Query('limit') limit = 100) {
     const users = await this.usersService.findAll(+skip, +limit);
     return this.usersService.formatMany(users);
   }
 
   @Post()
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-users', 'edit')
   @Audit('USER_CREATED', 'user')
   async create(@Body() dto: CreateUserDto) {
     const user = await this.usersService.create(dto);
@@ -63,7 +65,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-users', 'edit')
   @Audit('USER_UPDATED', 'user')
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
     const user = await this.usersService.update(id, dto);
@@ -71,7 +73,7 @@ export class UsersController {
   }
 
   @Post(':id/departments')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-users', 'edit')
   @Audit('USER_DEPARTMENTS_UPDATED', 'user')
   @HttpCode(HttpStatus.OK)
   async updateDepartments(
@@ -83,7 +85,7 @@ export class UsersController {
   }
 
   @Post(':id/roles')
-  @Roles(Role.ADMIN)
+  @ModuleAccess('admin-users', 'edit')
   @Audit('USER_ROLES_UPDATED', 'user')
   @HttpCode(HttpStatus.OK)
   async assignRoles(@Param('id') id: string, @Body() dto: AssignUserRolesDto) {

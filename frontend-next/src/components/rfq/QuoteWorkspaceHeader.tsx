@@ -35,6 +35,7 @@ interface Props {
   onDepartmentChange: (id: string) => void;
   onSaveQuote: () => Promise<void>;
   isSavingQuote: boolean;
+  canEdit?: boolean;
   compact?: boolean;
   compactTitle?: string;
   compactSubtitle?: string;
@@ -79,6 +80,7 @@ export function QuoteWorkspaceHeader({
   onDepartmentChange,
   onSaveQuote,
   isSavingQuote,
+  canEdit = true,
   compact = false,
   compactTitle,
   compactSubtitle,
@@ -294,7 +296,7 @@ export function QuoteWorkspaceHeader({
                 <Button
                   type="button"
                   onClick={() => void onSaveQuote()}
-                  disabled={isSavingQuote || currentQuote?.isReady}
+                  disabled={!canEdit || isSavingQuote || currentQuote?.isReady}
                   className="h-11 min-w-[8.5rem]"
                 >
                   <Save data-icon="inline-start" />

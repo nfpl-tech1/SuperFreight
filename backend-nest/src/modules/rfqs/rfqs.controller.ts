@@ -12,6 +12,10 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Audit } from '../../common/decorators/audit.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import {
+  AnyModuleAccess,
+  ModuleAccess,
+} from '../../common/decorators/module-access.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { User } from '../users/entities/user.entity';
@@ -120,11 +124,16 @@ export class RfqsController {
   constructor(private readonly rfqsService: RfqsService) {}
 
   @Get()
+  @AnyModuleAccess([
+    { moduleKey: 'rfq', action: 'view' },
+    { moduleKey: 'comparison', action: 'view' },
+  ])
   list(@Query('inquiryId') inquiryId?: string) {
     return this.rfqsService.list(inquiryId);
   }
 
   @Post()
+  @ModuleAccess('rfq', 'edit')
   @UseInterceptors(FilesInterceptor('attachments', 10))
   @Audit('RFQ_CREATED', 'rfq')
   create(

@@ -40,6 +40,7 @@ const CORE_FIELDS: Array<{
 ];
 
 type QuoteCaptureDialogProps = {
+  canEdit: boolean;
   fieldSpecs: RfqFieldSpec[];
   form: QuoteReviewFormState;
   inboxMessage?: QuoteInboxMessage | null;
@@ -52,6 +53,7 @@ type QuoteCaptureDialogProps = {
 };
 
 export function QuoteCaptureDialog({
+  canEdit,
   fieldSpecs,
   form,
   inboxMessage,
@@ -95,6 +97,7 @@ export function QuoteCaptureDialog({
                   <Input
                     type={field.type}
                     value={form[field.key]}
+                    disabled={!canEdit}
                     onChange={(event) => onCoreFieldChange(field.key, event.target.value)}
                   />
                 </div>
@@ -115,6 +118,7 @@ export function QuoteCaptureDialog({
                     <Label>{field.fieldLabel}</Label>
                     <Input
                       value={form.comparisonFields[field.fieldKey] ?? ""}
+                      disabled={!canEdit}
                       onChange={(event) =>
                         onComparisonFieldChange(field.fieldKey, event.target.value)
                       }
@@ -128,13 +132,14 @@ export function QuoteCaptureDialog({
               <Label>Remarks</Label>
               <Textarea
                 value={form.remarks}
+                disabled={!canEdit}
                 onChange={(event) => onCoreFieldChange("remarks", event.target.value)}
                 rows={5}
               />
             </div>
 
             <div className="flex justify-end">
-              <Button onClick={onSave} disabled={isSaving}>
+              <Button onClick={onSave} disabled={!canEdit || isSaving}>
                 {isSaving ? "Saving..." : "Save Review"}
               </Button>
             </div>

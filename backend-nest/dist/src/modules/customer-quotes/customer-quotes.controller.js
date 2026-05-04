@@ -16,6 +16,7 @@ exports.CustomerQuotesController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
@@ -36,12 +37,14 @@ let CustomerQuotesController = class CustomerQuotesController {
 exports.CustomerQuotesController = CustomerQuotesController;
 __decorate([
     (0, common_1.Get)(),
+    (0, module_access_decorator_1.ModuleAccess)('customer-quote', 'view'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CustomerQuotesController.prototype, "list", null);
 __decorate([
     (0, common_1.Post)('generate'),
+    (0, module_access_decorator_1.ModuleAccess)('customer-quote', 'edit'),
     (0, audit_decorator_1.Audit)('CUSTOMER_DRAFT_GENERATED', 'customer_draft'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),

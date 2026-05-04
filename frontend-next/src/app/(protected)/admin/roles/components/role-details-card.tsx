@@ -12,6 +12,7 @@ type RoleDetailsCardProps = {
   duplicateNameExists: boolean;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
+  disabled?: boolean;
 };
 
 export function RoleDetailsCard({
@@ -21,6 +22,7 @@ export function RoleDetailsCard({
   duplicateNameExists,
   onNameChange,
   onDescriptionChange,
+  disabled = false,
 }: RoleDetailsCardProps) {
   return (
     <section className="space-y-4">
@@ -39,6 +41,7 @@ export function RoleDetailsCard({
             <Input
               id="role-name"
               value={name}
+              disabled={disabled}
               onChange={(event) => onNameChange(event.target.value)}
               placeholder="Example: Pricing Executive"
               className="h-12"
@@ -64,6 +67,7 @@ export function RoleDetailsCard({
           <Textarea
             id="role-description"
             value={description}
+            disabled={disabled}
             onChange={(event) => onDescriptionChange(event.target.value)}
             placeholder="Explain which kind of team member should get this role."
             className="min-h-28"

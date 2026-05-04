@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +16,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { api, RateSheet } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 
 export default function RateSheetsPage() {
+  const { user } = useAuth();
+  const canEditRateSheets = canEditModule(user, "rate-sheets");
   const [rateSheets, setRateSheets] = useState<RateSheet[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({
@@ -67,7 +71,7 @@ export default function RateSheetsPage() {
         </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button><Plus className="h-4 w-4 mr-1" /> Add Rate Sheet</Button>
+            <Button disabled={!canEditRateSheets}><Plus className="h-4 w-4 mr-1" /> Add Rate Sheet</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader><DialogTitle>Add Rate Sheet</DialogTitle></DialogHeader>
@@ -80,7 +84,13 @@ export default function RateSheetsPage() {
               </div>
               <div className="space-y-2"><Label>Effective Month</Label><Input type="date" value={form.effectiveMonth} onChange={(e) => setForm({ ...form, effectiveMonth: e.target.value })} /></div>
               <div className="space-y-2"><Label>Notes</Label><Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></div>
-              <Button onClick={handleCreate} className="w-full" disabled={!form.shippingLine}>Save Rate Sheet</Button>
+              <Button
+                onClick={handleCreate}
+                className="w-full"
+                disabled={!canEditRateSheets || !form.shippingLine}
+              >
+                Save Rate Sheet
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

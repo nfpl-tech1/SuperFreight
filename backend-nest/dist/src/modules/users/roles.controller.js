@@ -14,12 +14,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RolesController = void 0;
 const common_1 = require("@nestjs/common");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
-const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const create_app_role_dto_1 = require("./dto/create-app-role.dto");
-const user_entity_1 = require("./entities/user.entity");
 const roles_service_1 = require("./roles.service");
 let RolesController = class RolesController {
     rolesService;
@@ -42,12 +41,17 @@ let RolesController = class RolesController {
 exports.RolesController = RolesController;
 __decorate([
     (0, common_1.Get)(),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'admin-roles', action: 'view' },
+        { moduleKey: 'admin-users', action: 'view' },
+    ]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], RolesController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, module_access_decorator_1.ModuleAccess)('admin-roles', 'edit'),
     (0, audit_decorator_1.Audit)('ROLE_CREATED', 'role'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -56,6 +60,7 @@ __decorate([
 ], RolesController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, module_access_decorator_1.ModuleAccess)('admin-roles', 'edit'),
     (0, audit_decorator_1.Audit)('ROLE_UPDATED', 'role'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -65,6 +70,7 @@ __decorate([
 ], RolesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, module_access_decorator_1.ModuleAccess)('admin-roles', 'edit'),
     (0, audit_decorator_1.Audit)('ROLE_DELETED', 'role'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -74,7 +80,6 @@ __decorate([
 exports.RolesController = RolesController = __decorate([
     (0, common_1.Controller)('roles'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
     __metadata("design:paramtypes", [roles_service_1.RolesService])
 ], RolesController);
 //# sourceMappingURL=roles.controller.js.map

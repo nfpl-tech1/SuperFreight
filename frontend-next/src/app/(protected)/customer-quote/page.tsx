@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,8 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { api, CustomerDraft, FreightQuote, Inquiry } from "@/lib/api";
+import { canEditModule } from "@/lib/module-access";
 
 function CustomerQuoteInner() {
+  const { user } = useAuth();
+  const canEditCustomerQuote = canEditModule(user, "customer-quote");
   const searchParams = useSearchParams();
   const [quotes, setQuotes] = useState<FreightQuote[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -83,7 +87,9 @@ function CustomerQuoteInner() {
               Drafting against {inquiry.inquiryNumber} for {inquiry.customerName}.
             </div>
           )}
-          <Button onClick={handleGenerate} disabled={!selectedQuoteId}>Generate Draft</Button>
+          <Button onClick={handleGenerate} disabled={!canEditCustomerQuote || !selectedQuoteId}>
+            Generate Draft
+          </Button>
         </CardContent>
       </Card>
 

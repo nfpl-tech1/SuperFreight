@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import {
+  ANY_MODULE_ACCESS_KEY,
   MODULE_ACCESS_KEY,
   ModuleAccessRequirement,
 } from '../decorators/module-access.decorator';
@@ -22,8 +23,13 @@ export class RolesGuard implements CanActivate {
         MODULE_ACCESS_KEY,
         [context.getHandler(), context.getClass()],
       );
+    const anyRequiredModuleAccess =
+      this.reflector.getAllAndOverride<ModuleAccessRequirement[]>(
+        ANY_MODULE_ACCESS_KEY,
+        [context.getHandler(), context.getClass()],
+      );
 
-    if (!requiredRoles?.length && !requiredModuleAccess) {
+    if (!requiredRoles?.length && !requiredModuleAccess && !anyRequiredModuleAccess?.length) {
       return true;
     }
 
@@ -38,7 +44,12 @@ export class RolesGuard implements CanActivate {
           requiredModuleAccess.action,
         )
       : true;
+    const hasAnyRequiredModuleAccess = anyRequiredModuleAccess?.length
+      ? anyRequiredModuleAccess.some((requirement) =>
+          userHasModuleAccess(user, requirement.moduleKey, requirement.action),
+        )
+      : true;
 
-    return hasRequiredRole && hasRequiredModuleAccess;
+    return hasRequiredRole && hasRequiredModuleAccess && hasAnyRequiredModuleAccess;
   }
 }

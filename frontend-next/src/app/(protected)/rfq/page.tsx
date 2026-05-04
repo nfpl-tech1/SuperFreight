@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useRFQWizard } from "@/components/rfq/hooks/use-rfq-wizard";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useAuth } from "@/contexts/AuthContext";
 import { StepProgressBar } from "@/components/rfq/StepProgressBar";
 import { StepNavigation } from "@/components/rfq/StepNavigation";
 import { QuoteWorkspaceHeader } from "@/components/rfq/QuoteWorkspaceHeader";
@@ -11,10 +12,13 @@ import { Step2ResponseFields } from "@/components/rfq/steps/Step2ResponseFields"
 import { Step3VendorSelection } from "@/components/rfq/steps/Step3VendorSelection";
 import { Step4ReviewSend } from "@/components/rfq/steps/Step4ReviewSend";
 import { shouldUseExwClubbedTemplate } from "@/lib/inquiryQuotePlanning";
+import { canEditModule } from "@/lib/module-access";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function RFQPage() {
+  const { user } = useAuth();
+  const canEditRfq = canEditModule(user, "rfq");
   const wizard = useRFQWizard();
   const isMobile = useIsMobile();
   const copyEmailFnRef = useRef<(() => Promise<void>) | undefined>(undefined);
@@ -125,9 +129,14 @@ export default function RFQPage() {
             isExwClubbed={isExwClubbed}
             isSending={wizard.isSubmitting}
             outlookStatus={wizard.outlookStatus}
+            canEdit={canEditRfq}
             customCcEmail={wizard.customCcEmail}
             onCustomCcEmailChange={wizard.setCustomCcEmail}
-            onOfficeChange={wizard.setSelectedVendorOffice}
+            onOfficeChange={(vendorId, officeId, checked) => {
+              if (canEditRfq) {
+                wizard.setSelectedVendorOffice(vendorId, officeId, checked);
+              }
+            }}
             onSend={wizard.saveRfq}
           />
         );
@@ -175,6 +184,7 @@ export default function RFQPage() {
             onDepartmentChange={wizard.handleDepartmentChange}
             onSaveQuote={handleSaveQuote}
             isSavingQuote={wizard.isSavingDraft}
+            canEdit={canEditRfq}
             compact={wizard.currentStep > 1}
             compactTitle={
               wizard.currentStep > 1 ? compactHeaderTitle : undefined
@@ -196,7 +206,11 @@ export default function RFQPage() {
             ? () => copyEmailFnRef.current?.()
             : undefined
         }
-        nextDisabled={wizard.currentStep === 4 ? wizard.isSubmitting : false}
+        nextDisabled={
+          wizard.currentStep === 4
+            ? wizard.isSubmitting || !canEditRfq
+            : !canEditRfq
+        }
       />
     </div>
   );

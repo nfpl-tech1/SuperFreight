@@ -72,7 +72,6 @@ export const MODULES: readonly AppModuleDefinition[] = [
     description: "Manage who can use SuperFreight.",
     path: "/admin/users",
     groupKey: "admin",
-    requiresBaseAdmin: true,
   },
   {
     key: "admin-roles",
@@ -80,7 +79,6 @@ export const MODULES: readonly AppModuleDefinition[] = [
     description: "Create and maintain role definitions.",
     path: "/admin/roles",
     groupKey: "admin",
-    requiresBaseAdmin: true,
   },
   {
     key: "admin-ports",

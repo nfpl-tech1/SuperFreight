@@ -16,7 +16,7 @@ exports.ShipmentsController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const roles_decorator_1 = require("../../common/decorators/roles.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
@@ -66,13 +66,14 @@ let ShipmentsController = class ShipmentsController {
 exports.ShipmentsController = ShipmentsController;
 __decorate([
     (0, common_1.Get)('rate-sheets'),
+    (0, module_access_decorator_1.ModuleAccess)('rate-sheets', 'view'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ShipmentsController.prototype, "listRateSheets", null);
 __decorate([
     (0, common_1.Post)('rate-sheets'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('rate-sheets', 'edit'),
     (0, audit_decorator_1.Audit)('RATE_SHEET_CREATED', 'rate_sheet'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -81,6 +82,10 @@ __decorate([
 ], ShipmentsController.prototype, "createRateSheet", null);
 __decorate([
     (0, common_1.Get)('quotes'),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'comparison', action: 'view' },
+        { moduleKey: 'customer-quote', action: 'view' },
+    ]),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_quotes_dto_1.ListQuotesDto]),
@@ -88,6 +93,7 @@ __decorate([
 ], ShipmentsController.prototype, "listQuotes", null);
 __decorate([
     (0, common_1.Get)('quote-inbox'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'view'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_quote_inbox_dto_1.ListQuoteInboxDto]),
@@ -95,6 +101,7 @@ __decorate([
 ], ShipmentsController.prototype, "listQuoteInbox", null);
 __decorate([
     (0, common_1.Post)('quote-inbox/scan'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_INBOX_SCAN_TRIGGERED', 'quote_inbox'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -102,6 +109,7 @@ __decorate([
 ], ShipmentsController.prototype, "triggerQuoteInboxScan", null);
 __decorate([
     (0, common_1.Post)('quote-inbox/:id/reprocess'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_INBOX_REPROCESSED', 'quote_inbox'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -110,6 +118,7 @@ __decorate([
 ], ShipmentsController.prototype, "reprocessQuoteInboxMessage", null);
 __decorate([
     (0, common_1.Post)('quote-inbox/:id/ignore'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_INBOX_IGNORED', 'quote_inbox'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -118,6 +127,7 @@ __decorate([
 ], ShipmentsController.prototype, "ignoreQuoteInboxMessage", null);
 __decorate([
     (0, common_1.Post)('quote-inbox/:id/link'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_INBOX_LINKED', 'quote_inbox'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -127,6 +137,7 @@ __decorate([
 ], ShipmentsController.prototype, "linkQuoteInboxMessage", null);
 __decorate([
     (0, common_1.Post)('quotes'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_CREATED', 'quote'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -135,6 +146,7 @@ __decorate([
 ], ShipmentsController.prototype, "createQuote", null);
 __decorate([
     (0, common_1.Patch)('quotes/:id'),
+    (0, module_access_decorator_1.ModuleAccess)('comparison', 'edit'),
     (0, audit_decorator_1.Audit)('QUOTE_UPDATED', 'quote'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),

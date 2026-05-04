@@ -19,6 +19,7 @@ type WorkVisibilitySectionProps = {
   onUpdateScopeType: (index: number, scopeType: string) => void;
   onUpdateScopeValue: (index: number, scopeValue: string) => void;
   onRemoveScopeRule: (index: number) => void;
+  disabled?: boolean;
 };
 
 export function WorkVisibilitySection({
@@ -27,6 +28,7 @@ export function WorkVisibilitySection({
   onUpdateScopeType,
   onUpdateScopeValue,
   onRemoveScopeRule,
+  disabled = false,
 }: WorkVisibilitySectionProps) {
   return (
     <section className="space-y-4 pb-2">
@@ -38,7 +40,7 @@ export function WorkVisibilitySection({
             Work Visibility Rules
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={onAddRule}>
+        <Button variant="outline" size="sm" onClick={onAddRule} disabled={disabled}>
           <Plus className="mr-2 h-4 w-4" />
           Add Rule
         </Button>
@@ -54,7 +56,11 @@ export function WorkVisibilitySection({
               <div className="grid gap-4 xl:grid-cols-[220px_240px_minmax(0,1fr)_40px] xl:items-end">
                 <div className="space-y-2">
                   <Label>Rule Type</Label>
-                  <Select value={rule.scopeType} onValueChange={(value) => onUpdateScopeType(index, value)}>
+                  <Select
+                    value={rule.scopeType}
+                    onValueChange={(value) => onUpdateScopeType(index, value)}
+                    disabled={disabled}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
@@ -70,7 +76,11 @@ export function WorkVisibilitySection({
 
                 <div className="space-y-2">
                   <Label>Setting</Label>
-                  <Select value={rule.scopeValue} onValueChange={(value) => onUpdateScopeValue(index, value)}>
+                  <Select
+                    value={rule.scopeValue}
+                    onValueChange={(value) => onUpdateScopeValue(index, value)}
+                    disabled={disabled}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
@@ -92,7 +102,7 @@ export function WorkVisibilitySection({
                   variant="ghost"
                   size="icon"
                   onClick={() => onRemoveScopeRule(index)}
-                  disabled={scopeRules.length === 1}
+                  disabled={disabled || scopeRules.length === 1}
                   className="text-slate-500 hover:text-red-600"
                 >
                   <Trash2 className="h-4 w-4" />

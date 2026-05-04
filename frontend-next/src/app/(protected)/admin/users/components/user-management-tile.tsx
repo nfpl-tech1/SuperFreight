@@ -14,6 +14,7 @@ export function UserManagementTile({
   onExpandedUserIdChange,
   onToggleDepartment,
   onToggleRole,
+  canEdit,
 }: {
   user: User;
   roles: AppRoleDefinition[];
@@ -22,6 +23,7 @@ export function UserManagementTile({
   onExpandedUserIdChange: (value: string | null) => void;
   onToggleDepartment: (department: string) => void;
   onToggleRole: (roleId: string) => void;
+  canEdit: boolean;
 }) {
   const isExpanded = expandedUserId === user.id;
 
@@ -92,6 +94,7 @@ export function UserManagementTile({
                   active: user.departments.includes(department),
                 }))}
                 onToggle={onToggleDepartment}
+                disabled={!canEdit}
               />
 
               <AssignmentPanel
@@ -105,6 +108,7 @@ export function UserManagementTile({
                   active: user.customRoles.some((item) => item.id === role.id),
                 }))}
                 onToggle={onToggleRole}
+                disabled={!canEdit}
               />
             </div>
           </AccordionContent>

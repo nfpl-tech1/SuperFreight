@@ -16,6 +16,7 @@ exports.InquiriesController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
@@ -47,6 +48,13 @@ let InquiriesController = class InquiriesController {
 exports.InquiriesController = InquiriesController;
 __decorate([
     (0, common_1.Get)(),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'dashboard', action: 'view' },
+        { moduleKey: 'inquiries', action: 'view' },
+        { moduleKey: 'rfq', action: 'view' },
+        { moduleKey: 'comparison', action: 'view' },
+        { moduleKey: 'customer-quote', action: 'view' },
+    ]),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
@@ -54,6 +62,7 @@ __decorate([
 ], InquiriesController.prototype, "list", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, module_access_decorator_1.ModuleAccess)('inquiries', 'edit'),
     (0, audit_decorator_1.Audit)('INQUIRY_CREATED', 'inquiry'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
@@ -63,6 +72,7 @@ __decorate([
 ], InquiriesController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, module_access_decorator_1.ModuleAccess)('inquiries', 'edit'),
     (0, audit_decorator_1.Audit)('INQUIRY_UPDATED', 'inquiry'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -74,6 +84,7 @@ __decorate([
 ], InquiriesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, module_access_decorator_1.ModuleAccess)('inquiries', 'edit'),
     (0, audit_decorator_1.Audit)('INQUIRY_DELETED', 'inquiry'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
@@ -83,6 +94,7 @@ __decorate([
 ], InquiriesController.prototype, "remove", null);
 __decorate([
     (0, common_1.Post)(':id/transfer'),
+    (0, module_access_decorator_1.ModuleAccess)('inquiries', 'edit'),
     (0, audit_decorator_1.Audit)('INQUIRY_TRANSFERRED', 'inquiry'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),

@@ -29,15 +29,19 @@ import {
   isCustomerRoleRequired,
   type InquiryFormState,
 } from "@/app/(protected)/inquiries/inquiry-form.helpers";
+import { useAuth } from "@/contexts/AuthContext";
+import { canEditModule } from "@/lib/module-access";
 
 function InquiryCard({
   inquiry,
   onEdit,
   onDelete,
+  canManage,
 }: {
   inquiry: Inquiry;
   onEdit: () => void;
   onDelete: () => void;
+  canManage: boolean;
 }) {
   const routeSummary = formatRoute(inquiry.origin, inquiry.destination);
 
@@ -93,11 +97,23 @@ function InquiryCard({
       </dl>
 
       <div className="mt-4 flex flex-col gap-2 border-t border-border/70 pt-4 sm:flex-row sm:justify-end">
-        <Button variant="outline" size="sm" className="w-full sm:w-auto" onClick={onEdit}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full sm:w-auto"
+          onClick={onEdit}
+          disabled={!canManage}
+        >
           <Pencil className="h-3.5 w-3.5" />
           Edit
         </Button>
-        <Button variant="destructive" size="sm" className="w-full sm:w-auto" onClick={onDelete}>
+        <Button
+          variant="destructive"
+          size="sm"
+          className="w-full sm:w-auto"
+          onClick={onDelete}
+          disabled={!canManage}
+        >
           <Trash2 className="h-3.5 w-3.5" />
           Delete
         </Button>
@@ -107,6 +123,8 @@ function InquiryCard({
 }
 
 export default function InquiriesPage() {
+  const { user } = useAuth();
+  const canManage = canEditModule(user, "inquiries");
   const isMobile = useIsMobile();
   const isCompactDesktop = useIsCompactDesktop();
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -245,7 +263,7 @@ export default function InquiriesPage() {
             Mailbox-originated and manually captured inquiries for Freight.
           </p>
         </div>
-        <Button onClick={openCreateDialog} className="w-full sm:w-auto">
+        <Button onClick={openCreateDialog} className="w-full sm:w-auto" disabled={!canManage}>
           <Plus className="h-4 w-4 mr-1" />
           Capture Inquiry
         </Button>
@@ -330,6 +348,7 @@ export default function InquiriesPage() {
                         <Button
                           variant="outline"
                           size="xs"
+                          disabled={!canManage}
                           onClick={() => openEditDialog(inquiry)}
                         >
                           <Pencil className="h-3 w-3" />
@@ -338,6 +357,7 @@ export default function InquiriesPage() {
                         <Button
                           variant="destructive"
                           size="xs"
+                          disabled={!canManage}
                           onClick={() => openDeleteDialog(inquiry)}
                         >
                           <Trash2 className="h-3 w-3" />
@@ -357,6 +377,7 @@ export default function InquiriesPage() {
                   inquiry={inquiry}
                   onEdit={() => openEditDialog(inquiry)}
                   onDelete={() => openDeleteDialog(inquiry)}
+                  canManage={canManage}
                 />
               ))}
             </div>

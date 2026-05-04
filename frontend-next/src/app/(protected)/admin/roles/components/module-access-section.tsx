@@ -14,6 +14,7 @@ type ModuleAccessSectionProps = {
   onModuleSearchChange: (value: string) => void;
   onUpdatePermission: (moduleKey: string, field: "canView" | "canEdit", value: boolean) => void;
   onSetAllModuleViewAccess: (canView: boolean) => void;
+  disabled?: boolean;
 };
 
 export function ModuleAccessSection({
@@ -23,6 +24,7 @@ export function ModuleAccessSection({
   onModuleSearchChange,
   onUpdatePermission,
   onSetAllModuleViewAccess,
+  disabled = false,
 }: ModuleAccessSectionProps) {
   return (
     <section className="space-y-4">
@@ -40,6 +42,7 @@ export function ModuleAccessSection({
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <Input
               value={moduleSearch}
+              disabled={disabled}
               onChange={(event) => onModuleSearchChange(event.target.value)}
               placeholder="Search modules..."
               className="h-10 pl-9"
@@ -47,6 +50,7 @@ export function ModuleAccessSection({
           </div>
           <button
             type="button"
+            disabled={disabled}
             onClick={() => onSetAllModuleViewAccess(true)}
             className="text-xs font-semibold uppercase tracking-[0.16em] text-primary"
           >
@@ -54,6 +58,7 @@ export function ModuleAccessSection({
           </button>
           <button
             type="button"
+            disabled={disabled}
             onClick={() => onSetAllModuleViewAccess(false)}
             className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400"
           >
@@ -88,6 +93,7 @@ export function ModuleAccessSection({
                         <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                           <Checkbox
                             checked={permission.canView}
+                            disabled={disabled}
                             onCheckedChange={(value) => onUpdatePermission(moduleDef.key, "canView", !!value)}
                           />
                           Can view
@@ -95,7 +101,7 @@ export function ModuleAccessSection({
                         <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                           <Checkbox
                             checked={permission.canEdit}
-                            disabled={!permission.canView}
+                            disabled={disabled || !permission.canView}
                             onCheckedChange={(value) => onUpdatePermission(moduleDef.key, "canEdit", !!value)}
                           />
                           Can edit

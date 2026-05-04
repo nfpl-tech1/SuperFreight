@@ -16,10 +16,8 @@ exports.VendorsController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
-const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
-const user_entity_1 = require("../users/entities/user.entity");
 const create_vendor_dto_1 = require("./dto/create-vendor.dto");
 const create_vendor_office_dto_1 = require("./dto/create-vendor-office.dto");
 const create_port_master_dto_1 = require("./dto/create-port-master.dto");
@@ -81,18 +79,28 @@ let VendorsController = class VendorsController {
 exports.VendorsController = VendorsController;
 __decorate([
     (0, common_1.Get)('summary'),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'view'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], VendorsController.prototype, "getSummary", null);
 __decorate([
     (0, common_1.Get)('lookups'),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'vendors', action: 'view' },
+        { moduleKey: 'rfq', action: 'view' },
+    ]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], VendorsController.prototype, "getLookups", null);
 __decorate([
     (0, common_1.Get)('location-options'),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'vendors', action: 'view' },
+        { moduleKey: 'inquiries', action: 'view' },
+        { moduleKey: 'rfq', action: 'view' },
+    ]),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_vendor_location_options_dto_1.ListVendorLocationOptionsDto]),
@@ -116,6 +124,10 @@ __decorate([
 ], VendorsController.prototype, "getPortMasterDetail", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'vendors', action: 'view' },
+        { moduleKey: 'rfq', action: 'view' },
+    ]),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_vendors_dto_1.ListVendorsDto]),
@@ -123,6 +135,11 @@ __decorate([
 ], VendorsController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'vendors', action: 'view' },
+        { moduleKey: 'rfq', action: 'view' },
+        { moduleKey: 'comparison', action: 'view' },
+    ]),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -130,7 +147,7 @@ __decorate([
 ], VendorsController.prototype, "getDetail", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'edit'),
     (0, audit_decorator_1.Audit)('VENDOR_CREATED', 'vendor_master'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -148,7 +165,7 @@ __decorate([
 ], VendorsController.prototype, "createPortMaster", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'edit'),
     (0, audit_decorator_1.Audit)('VENDOR_UPDATED', 'vendor_master'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -168,7 +185,7 @@ __decorate([
 ], VendorsController.prototype, "updatePortMaster", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'edit'),
     (0, audit_decorator_1.Audit)('VENDOR_DELETED', 'vendor_master'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -177,7 +194,7 @@ __decorate([
 ], VendorsController.prototype, "remove", null);
 __decorate([
     (0, common_1.Post)(':vendorId/offices'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'edit'),
     (0, audit_decorator_1.Audit)('VENDOR_OFFICE_CREATED', 'vendor_office'),
     __param(0, (0, common_1.Param)('vendorId')),
     __param(1, (0, common_1.Body)()),
@@ -187,7 +204,7 @@ __decorate([
 ], VendorsController.prototype, "createOffice", null);
 __decorate([
     (0, common_1.Put)('offices/:officeId'),
-    (0, roles_decorator_1.Roles)(user_entity_1.Role.ADMIN),
+    (0, module_access_decorator_1.ModuleAccess)('vendors', 'edit'),
     (0, audit_decorator_1.Audit)('VENDOR_OFFICE_UPDATED', 'vendor_office'),
     __param(0, (0, common_1.Param)('officeId')),
     __param(1, (0, common_1.Body)()),

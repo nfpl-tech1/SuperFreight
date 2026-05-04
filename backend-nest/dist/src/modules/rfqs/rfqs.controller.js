@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const audit_decorator_1 = require("../../common/decorators/audit.decorator");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+const module_access_decorator_1 = require("../../common/decorators/module-access.decorator");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../common/guards/roles.guard");
 const user_entity_1 = require("../users/entities/user.entity");
@@ -105,6 +106,10 @@ let RfqsController = class RfqsController {
 exports.RfqsController = RfqsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, module_access_decorator_1.AnyModuleAccess)([
+        { moduleKey: 'rfq', action: 'view' },
+        { moduleKey: 'comparison', action: 'view' },
+    ]),
     __param(0, (0, common_1.Query)('inquiryId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -112,6 +117,7 @@ __decorate([
 ], RfqsController.prototype, "list", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, module_access_decorator_1.ModuleAccess)('rfq', 'edit'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('attachments', 10)),
     (0, audit_decorator_1.Audit)('RFQ_CREATED', 'rfq'),
     __param(0, (0, common_1.Body)()),

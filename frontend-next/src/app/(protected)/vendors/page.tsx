@@ -238,8 +238,10 @@ export default function VendorsPage() {
   }, [selectedVendorId]);
 
   const openVendorDetails = (vendorId: string) => {
-    setSelectedVendorId(vendorId);
-    setSelectedVendor(null);
+    if (selectedVendorId !== vendorId) {
+      setSelectedVendor(null);
+      setSelectedVendorId(vendorId);
+    }
     setDetailDialogOpen(true);
   };
 

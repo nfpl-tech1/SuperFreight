@@ -28,6 +28,7 @@ import {
 } from "../comparison.helpers";
 
 type QuoteInboxPanelProps = {
+  canEdit: boolean;
   inboxMessages: QuoteInboxMessage[];
   isBusy: boolean;
   linkableVendorOptions: Array<{ id: string; label: string }>;
@@ -41,6 +42,7 @@ type QuoteInboxPanelProps = {
 };
 
 export function QuoteInboxPanel({
+  canEdit,
   inboxMessages,
   isBusy,
   linkableVendorOptions,
@@ -56,7 +58,7 @@ export function QuoteInboxPanel({
     <Card className="min-h-[28rem]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-lg">Received Quote Inbox</CardTitle>
-        <Button size="sm" variant="outline" onClick={onScan} disabled={isBusy}>
+        <Button size="sm" variant="outline" onClick={onScan} disabled={!canEdit || isBusy}>
           Scan Mailbox
         </Button>
       </CardHeader>
@@ -174,7 +176,7 @@ export function QuoteInboxPanel({
                         size="sm"
                         variant="outline"
                         onClick={() => onReprocess(message.id)}
-                        disabled={isBusy}
+                        disabled={!canEdit || isBusy}
                       >
                         Reprocess
                       </Button>
@@ -182,7 +184,7 @@ export function QuoteInboxPanel({
                         size="sm"
                         variant="outline"
                         onClick={() => onIgnore(message.id)}
-                        disabled={isBusy}
+                        disabled={!canEdit || isBusy}
                       >
                         Ignore
                       </Button>
@@ -190,7 +192,7 @@ export function QuoteInboxPanel({
                         <Button
                           size="sm"
                           onClick={() => onOpenLinkedQuote(linkedQuoteId)}
-                          disabled={isBusy}
+                          disabled={!canEdit || isBusy}
                         >
                           Review Draft
                         </Button>
@@ -208,6 +210,7 @@ export function QuoteInboxPanel({
                       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
                         <Select
                           value={selectedVendorByMessageId[message.id] ?? ""}
+                          disabled={!canEdit}
                           onValueChange={(value) =>
                             onVendorSelectionChange(message.id, value)
                           }
@@ -227,7 +230,7 @@ export function QuoteInboxPanel({
                           size="sm"
                           onClick={() => onLinkMessage(message.id)}
                           disabled={
-                            isBusy || !selectedVendorByMessageId[message.id]
+                            !canEdit || isBusy || !selectedVendorByMessageId[message.id]
                           }
                         >
                           Link & Extract
