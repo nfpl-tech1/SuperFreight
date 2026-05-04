@@ -1,3 +1,5 @@
+import type { MscFields } from "@/types/rfq";
+
 export interface RolePermission {
   id?: number;
   moduleKey: string;
@@ -173,7 +175,7 @@ export interface Rfq {
   vendorIds: string[];
   sent: boolean;
   subjectLine: string | null;
-  promptTemplateMeta: { selectedFields?: string[] } | null;
+  promptTemplateMeta: { selectedFields?: string[]; mscFields?: MscFields } | null;
   fieldSpecs: RfqFieldSpec[];
 }
 

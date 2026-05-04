@@ -74,6 +74,7 @@ function buildCreateRfqDtoPayload(rawBody) {
         vendorIds: parseJsonField(rawBody.vendorIds, 'vendorIds') ?? [],
         officeSelections: parseJsonField(rawBody.officeSelections, 'officeSelections') ?? [],
         responseFields: parseJsonField(rawBody.responseFields, 'responseFields') ?? [],
+        mscFields: parseJsonField(rawBody.mscFields, 'mscFields'),
         customCcEmail: parseOptionalStringField(rawBody.customCcEmail),
         sendNow: parseBooleanField(rawBody.sendNow),
         mailSubject: rawBody.mailSubject,

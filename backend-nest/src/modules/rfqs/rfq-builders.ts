@@ -38,6 +38,7 @@ export function buildRfqFieldSpecInputs(
 export function buildPromptTemplateMeta(dto: CreateRfqDto) {
   return {
     selectedFields: dto.responseFields.map((field) => field.fieldLabel),
+    mscFields: dto.mscFields,
   };
 }
 

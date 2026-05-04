@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateRfqDto = void 0;
+exports.CreateRfqDto = exports.MscFieldsDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class ResponseFieldDto {
@@ -41,6 +41,74 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], OfficeSelectionDto.prototype, "officeId", void 0);
+class MscFieldsDto {
+    shipper;
+    forwarder;
+    por;
+    pol;
+    pod;
+    commodity;
+    cargoWeight;
+    volume;
+    requestedRates;
+    freeTimeIfAny;
+    validity;
+    termsOfShipment;
+    specificRemarks;
+}
+exports.MscFieldsDto = MscFieldsDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "shipper", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "forwarder", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "por", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "pol", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "pod", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "commodity", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "cargoWeight", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "volume", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "requestedRates", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "freeTimeIfAny", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "validity", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "termsOfShipment", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MscFieldsDto.prototype, "specificRemarks", void 0);
 class CreateRfqDto {
     inquiryId;
     inquiryNumber;
@@ -49,6 +117,7 @@ class CreateRfqDto {
     vendorIds;
     officeSelections;
     responseFields;
+    mscFields;
     customCcEmail;
     sendNow;
     mailSubject;
@@ -90,7 +159,14 @@ __decorate([
 ], CreateRfqDto.prototype, "responseFields", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => MscFieldsDto),
+    __metadata("design:type", MscFieldsDto)
+], CreateRfqDto.prototype, "mscFields", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateRfqDto.prototype, "customCcEmail", void 0);
 __decorate([

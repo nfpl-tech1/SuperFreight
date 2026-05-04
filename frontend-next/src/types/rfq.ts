@@ -196,6 +196,24 @@ export interface ResponseField {
   selected: boolean;
 }
 
+export type MscFieldKey =
+  | "shipper"
+  | "forwarder"
+  | "por"
+  | "pol"
+  | "pod"
+  | "commodity"
+  | "cargoWeight"
+  | "volume"
+  | "requestedRates"
+  | "freeTimeIfAny"
+  | "validity"
+  | "termsOfShipment"
+  | "specificRemarks";
+
+export type MscFields = Record<MscFieldKey, string>;
+export type MscFieldOverrides = Partial<MscFields>;
+
 export interface InquiryData {
   id: string;
   label: string;

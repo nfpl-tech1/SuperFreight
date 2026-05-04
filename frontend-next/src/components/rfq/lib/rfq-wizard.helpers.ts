@@ -4,6 +4,7 @@ import { getRecommendedDepartmentIdForInquiry } from "@/lib/inquiryQuotePlanning
 import type {
   DepartmentDefinition,
   FormValues,
+  MscFieldOverrides,
   ResponseField,
   VendorFilterCriteria,
   WizardStep,
@@ -21,6 +22,7 @@ type SerializedQuoteDraft = {
   responseFields?: ResponseField[];
   filterCriteria?: VendorFilterCriteria;
   customCcEmail?: string;
+  mscFields?: MscFieldOverrides;
   selectedVendorIds?: string[];
   selectedVendorOfficeIds?: Record<string, string | string[]>;
   completedSteps?: WizardStep[];
@@ -43,6 +45,7 @@ export type QuoteDraftState = {
   responseFields: ResponseField[];
   filterCriteria: VendorFilterCriteria;
   customCcEmail: string;
+  mscFields: MscFieldOverrides;
   selectedVendorIds: Set<string>;
   selectedVendorOfficeIds: Record<string, string[]>;
   completedSteps: Set<WizardStep>;
@@ -87,6 +90,7 @@ export function createQuoteDraftState(
     responseFields: getDefaultResponseFields(department.id),
     filterCriteria: defaultFilterCriteria(),
     customCcEmail: "",
+    mscFields: {},
     selectedVendorIds: new Set<string>(),
     selectedVendorOfficeIds: {},
     completedSteps: new Set<WizardStep>(),
@@ -157,6 +161,20 @@ export function updateQuoteDraftCustomCcEmail(
   return {
     ...draft,
     customCcEmail,
+  };
+}
+
+export function updateQuoteDraftMscField(
+  draft: QuoteDraftState,
+  key: keyof MscFieldOverrides,
+  value: string,
+): QuoteDraftState {
+  return {
+    ...draft,
+    mscFields: {
+      ...draft.mscFields,
+      [key]: value,
+    },
   };
 }
 
@@ -294,6 +312,7 @@ function serializeQuoteDraft(
     responseFields: quoteDraft.responseFields,
     filterCriteria: quoteDraft.filterCriteria,
     customCcEmail: quoteDraft.customCcEmail,
+    mscFields: quoteDraft.mscFields,
     selectedVendorIds: Array.from(quoteDraft.selectedVendorIds),
     selectedVendorOfficeIds: quoteDraft.selectedVendorOfficeIds,
     completedSteps: Array.from(quoteDraft.completedSteps),
@@ -336,6 +355,7 @@ function deserializeQuoteDraft(
       ...(quoteDraft.filterCriteria ?? {}),
     }),
     customCcEmail: quoteDraft.customCcEmail ?? fallback.customCcEmail,
+    mscFields: quoteDraft.mscFields ?? fallback.mscFields,
     selectedVendorIds: new Set<string>(quoteDraft.selectedVendorIds ?? []),
     selectedVendorOfficeIds,
     completedSteps: new Set<WizardStep>(quoteDraft.completedSteps ?? []),

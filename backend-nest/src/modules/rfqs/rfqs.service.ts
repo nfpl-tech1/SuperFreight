@@ -20,6 +20,7 @@ import { RfqFieldSpec } from './entities/rfq-field-spec.entity';
 import { Rfq } from './entities/rfq.entity';
 import { personalizeMailBodyHtml, resolveMailDraft } from './rfq-mail-builder';
 import { buildRfqCreateInput, buildRfqFieldSpecInputs } from './rfq-builders';
+import { buildMscMailBodyHtml, isMscVendorName } from './rfq-msc-builder';
 
 type VendorRecipient = {
   vendorId: string;
@@ -172,13 +173,18 @@ export class RfqsService {
     const mailDraft = resolveMailDraft(dto, inquiry, user.name ?? user.email);
 
     for (const recipient of recipients) {
+      const bodyHtml =
+        isMscVendorName(recipient.companyName) && dto.mscFields
+          ? buildMscMailBodyHtml(dto.mscFields)
+          : mailDraft.bodyHtml;
+
       await this.sendRfqMailToRecipient(
         rfq,
         user,
         recipient,
         dto.customCcEmail,
         mailDraft.subjectLine,
-        mailDraft.bodyHtml,
+        bodyHtml,
         attachments,
       );
     }
@@ -524,11 +530,14 @@ export class RfqsService {
     primaryEmail: string,
     customCcEmail?: string,
   ) {
-    const normalizedCustomCcEmail = normalizeEmail(customCcEmail);
+    const customEmails = (customCcEmail ?? '')
+      .split(/[\s,;]+/)
+      .map((s) => normalizeEmail(s.trim()))
+      .filter((e): e is string => Boolean(e));
 
     return Array.from(
       new Set(
-        [...existingCcAddresses, normalizedCustomCcEmail ?? ''].filter(
+        [...existingCcAddresses, ...customEmails].filter(
           (address): address is string =>
             Boolean(address) && address !== primaryEmail,
         ),

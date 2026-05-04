@@ -30,6 +30,7 @@ function buildRfqFieldSpecInputs(rfqId, dto) {
 function buildPromptTemplateMeta(dto) {
     return {
         selectedFields: dto.responseFields.map((field) => field.fieldLabel),
+        mscFields: dto.mscFields,
     };
 }
 function getDepartmentLabel(departmentId) {

@@ -30,6 +30,7 @@ const rfq_field_spec_entity_1 = require("./entities/rfq-field-spec.entity");
 const rfq_entity_1 = require("./entities/rfq.entity");
 const rfq_mail_builder_1 = require("./rfq-mail-builder");
 const rfq_builders_1 = require("./rfq-builders");
+const rfq_msc_builder_1 = require("./rfq-msc-builder");
 let RfqsService = class RfqsService {
     rfqRepo;
     fieldSpecRepo;
@@ -99,7 +100,10 @@ let RfqsService = class RfqsService {
         const recipients = await this.resolveVendorRecipients(dto.vendorIds, dto.officeSelections ?? []);
         const mailDraft = (0, rfq_mail_builder_1.resolveMailDraft)(dto, inquiry, user.name ?? user.email);
         for (const recipient of recipients) {
-            await this.sendRfqMailToRecipient(rfq, user, recipient, dto.customCcEmail, mailDraft.subjectLine, mailDraft.bodyHtml, attachments);
+            const bodyHtml = (0, rfq_msc_builder_1.isMscVendorName)(recipient.companyName) && dto.mscFields
+                ? (0, rfq_msc_builder_1.buildMscMailBodyHtml)(dto.mscFields)
+                : mailDraft.bodyHtml;
+            await this.sendRfqMailToRecipient(rfq, user, recipient, dto.customCcEmail, mailDraft.subjectLine, bodyHtml, attachments);
         }
     }
     async findInquiryForRfqOrThrow(inquiryId) {
@@ -295,8 +299,11 @@ let RfqsService = class RfqsService {
             .filter((address) => Boolean(address) && address !== primaryEmail)));
     }
     mergeCcEmails(existingCcAddresses, primaryEmail, customCcEmail) {
-        const normalizedCustomCcEmail = (0, email_1.normalizeEmail)(customCcEmail);
-        return Array.from(new Set([...existingCcAddresses, normalizedCustomCcEmail ?? ''].filter((address) => Boolean(address) && address !== primaryEmail)));
+        const customEmails = (customCcEmail ?? '')
+            .split(/[\s,;]+/)
+            .map((s) => (0, email_1.normalizeEmail)(s.trim()))
+            .filter((e) => Boolean(e));
+        return Array.from(new Set([...existingCcAddresses, ...customEmails].filter((address) => Boolean(address) && address !== primaryEmail)));
     }
     throwIfRecipientsMissing(missingRecipients) {
         if (missingRecipients.length === 0) {

@@ -11,6 +11,7 @@ import {
 import { ApiError } from "@/lib/api";
 import type {
   FilterableVendor,
+  MscFieldKey,
   VendorDispatchTarget,
   VendorLocationOption,
   ValidationResult,
@@ -53,6 +54,7 @@ import {
   toggleQuoteDraftResponseField,
   toggleQuoteDraftVendorSelection,
   updateQuoteDraftCustomCcEmail,
+  updateQuoteDraftMscField,
   updateQuoteDraftFormValue,
 } from "@/components/rfq/lib/rfq-wizard.helpers";
 import {
@@ -81,6 +83,7 @@ import {
   usesLocationLookupMode,
 } from "@/components/rfq/hooks/use-rfq-wizard.helpers";
 import { getVendorSelectionProfile } from "@/components/rfq/vendor-selection-profile";
+import { getMissingMscFieldLabels, getMscVendors, resolveMscFields } from "@/components/rfq/msc-format.helpers";
 
 const RFQ_VENDOR_PAGE_SIZE = 25;
 
@@ -308,6 +311,7 @@ export function useRFQWizard() {
   const responseFields = currentQuoteDraft.responseFields;
   const filterCriteria = currentQuoteDraft.filterCriteria;
   const customCcEmail = currentQuoteDraft.customCcEmail;
+  const mscFieldOverrides = currentQuoteDraft.mscFields;
   const deferredLocationQuery = useDeferredValue(filterCriteria.locationQuery);
   const selectedVendorIds = currentQuoteDraft.selectedVendorIds;
   const selectedVendorOfficeIds = currentQuoteDraft.selectedVendorOfficeIds;
@@ -653,6 +657,26 @@ export function useRFQWizard() {
     [responseFields],
   );
 
+  const mscVendors = useMemo(
+    () => getMscVendors(selectedVendors),
+    [selectedVendors],
+  );
+
+  const resolvedMscFields = useMemo(
+    () =>
+      resolveMscFields(mscFieldOverrides, {
+        inquiry: currentInquiry,
+        formValues,
+        responseFields: selectedResponseFields,
+      }),
+    [currentInquiry, formValues, mscFieldOverrides, selectedResponseFields],
+  );
+
+  const missingMscFields = useMemo(
+    () => (mscVendors.length > 0 ? getMissingMscFieldLabels(resolvedMscFields) : []),
+    [mscVendors, resolvedMscFields],
+  );
+
   const updateQuoteDraft = useCallback(
     (
       targetDepartmentId: string,
@@ -871,6 +895,15 @@ export function useRFQWizard() {
     [departmentId, updateQuoteDraft],
   );
 
+  const handleMscFieldChange = useCallback(
+    (key: MscFieldKey, value: string) => {
+      updateQuoteDraft(departmentId, (draft) =>
+        updateQuoteDraftMscField(draft, key, value),
+      );
+    },
+    [departmentId, updateQuoteDraft],
+  );
+
   const setSelectedVendorOffice = useCallback(
     (vendorId: string, officeId: string, checked: boolean) => {
       updateQuoteDraft(departmentId, (draft) =>
@@ -1018,6 +1051,7 @@ export function useRFQWizard() {
             fieldLabel: field.label,
             isCustom: field.isCustom,
           })),
+          mscFields: mscVendors.length > 0 ? resolvedMscFields : undefined,
           customCcEmail: customCcEmail.trim() || undefined,
           mailSubject: mailDraft?.subjectLine,
           mailBodyHtml: mailDraft?.html,
@@ -1033,6 +1067,8 @@ export function useRFQWizard() {
       selectedResponseFields,
       selectedVendorDispatchTargets,
       selectedVendorIds,
+      mscVendors.length,
+      resolvedMscFields,
       customCcEmail,
       validateStep,
     ],
@@ -1064,6 +1100,13 @@ export function useRFQWizard() {
 
   const saveRfq = useCallback(
     async (mailDraft?: RfqPreviewDraft | null, attachments: File[] = []) => {
+      if (mscVendors.length > 0 && missingMscFields.length > 0) {
+        throw new ApiError(
+          400,
+          `Complete the MSC-required fields before sending: ${missingMscFields.join(", ")}.`,
+        );
+      }
+
       const { inquiry, payload } = buildRfqPayload(mailDraft, attachments);
 
       setIsSubmitting(true);
@@ -1100,7 +1143,15 @@ export function useRFQWizard() {
         setIsSubmitting(false);
       }
     },
-    [buildRfqPayload, clearAll, departmentId, refreshRfqs, updateQuoteDraft],
+    [
+      buildRfqPayload,
+      clearAll,
+      departmentId,
+      missingMscFields,
+      mscVendors.length,
+      refreshRfqs,
+      updateQuoteDraft,
+    ],
   );
 
   return {
@@ -1117,6 +1168,10 @@ export function useRFQWizard() {
     selectedResponseFields,
     filterCriteria,
     customCcEmail,
+    mscFields: resolvedMscFields,
+    isMscRequired: mscVendors.length > 0,
+    mscVendors,
+    missingMscFields,
     fetchedVendors,
     selectedVendors,
     selectedVendorDispatchTargets,
@@ -1142,6 +1197,7 @@ export function useRFQWizard() {
     removeCustomField,
     setFilterCriteria: handleFilterCriteriaChange,
     setCustomCcEmail: handleCustomCcEmailChange,
+    setMscField: handleMscFieldChange,
     widenVendorScopeToCountry,
     resetVendorScopeToExact,
     toggleVendor,

@@ -131,7 +131,12 @@ export default function RFQPage() {
             outlookStatus={wizard.outlookStatus}
             canEdit={canEditRfq}
             customCcEmail={wizard.customCcEmail}
+            mscFields={wizard.mscFields}
+            isMscRequired={wizard.isMscRequired}
+            mscVendors={wizard.mscVendors}
+            missingMscFields={wizard.missingMscFields}
             onCustomCcEmailChange={wizard.setCustomCcEmail}
+            onMscFieldChange={wizard.setMscField}
             onOfficeChange={(vendorId, officeId, checked) => {
               if (canEditRfq) {
                 wizard.setSelectedVendorOffice(vendorId, officeId, checked);

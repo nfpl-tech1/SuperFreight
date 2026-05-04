@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsBoolean,
-  IsEmail,
   IsObject,
   IsOptional,
   IsString,
@@ -26,6 +25,47 @@ class OfficeSelectionDto {
 
   @IsString()
   officeId: string;
+}
+
+export class MscFieldsDto {
+  @IsString()
+  shipper: string;
+
+  @IsString()
+  forwarder: string;
+
+  @IsString()
+  por: string;
+
+  @IsString()
+  pol: string;
+
+  @IsString()
+  pod: string;
+
+  @IsString()
+  commodity: string;
+
+  @IsString()
+  cargoWeight: string;
+
+  @IsString()
+  volume: string;
+
+  @IsString()
+  requestedRates: string;
+
+  @IsString()
+  freeTimeIfAny: string;
+
+  @IsString()
+  validity: string;
+
+  @IsString()
+  termsOfShipment: string;
+
+  @IsString()
+  specificRemarks: string;
 }
 
 export class CreateRfqDto {
@@ -56,7 +96,13 @@ export class CreateRfqDto {
   responseFields: ResponseFieldDto[];
 
   @IsOptional()
-  @IsEmail()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => MscFieldsDto)
+  mscFields?: MscFieldsDto;
+
+  @IsOptional()
+  @IsString()
   customCcEmail?: string;
 
   @IsOptional()

@@ -798,6 +798,7 @@ export function createQuoteDraftFromRfq(
     responseFields: buildResponseFieldsFromRfq(departmentId, rfq),
     filterCriteria: baseDraft.filterCriteria,
     customCcEmail: baseDraft.customCcEmail,
+    mscFields: rfq.promptTemplateMeta?.mscFields ?? baseDraft.mscFields,
     selectedVendorIds: new Set<string>(rfq.vendorIds),
     selectedVendorOfficeIds: {},
     completedSteps: new Set<WizardStep>([

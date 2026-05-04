@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState, type ChangeEvent } from "react";
+import { useRef, useState, useEffect, type ChangeEvent } from "react";
 import { FileText, Paperclip, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Accordion,
   AccordionContent,
@@ -19,10 +20,13 @@ import type {
   DepartmentDefinition,
   FilterableVendor,
   FormValues,
+  MscFieldKey,
+  MscFields,
   ResponseField,
   VendorDispatchTarget,
 } from "@/types/rfq";
-import type { OutlookStatus } from "@/lib/api";
+import { api, type OutlookStatus, type PortMasterListItem } from "@/lib/api";
+import { MSC_FIELD_DEFINITIONS } from "@/components/rfq/msc-format.helpers";
 import {
   ResponseFieldList,
   SendRfqButton,
@@ -45,7 +49,12 @@ interface Props {
   canEdit?: boolean;
   outlookStatus?: OutlookStatus | null;
   customCcEmail: string;
+  mscFields: MscFields;
+  isMscRequired: boolean;
+  mscVendors: FilterableVendor[];
+  missingMscFields: string[];
   onCustomCcEmailChange: (value: string) => void;
+  onMscFieldChange: (key: MscFieldKey, value: string) => void;
   onOfficeChange: (
     vendorId: string,
     officeId: string,
@@ -84,13 +93,136 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function isValidOptionalEmail(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return true;
-  }
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+function isValidEmail(value: string) {
+  return EMAIL_RE.test(value.trim());
+}
+
+function parseEmailList(value: string): string[] {
+  return value
+    .split(/[\s,;]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function isValidOptionalEmailList(value: string) {
+  const emails = parseEmailList(value);
+  return emails.length === 0 || emails.every(isValidEmail);
+}
+
+function MultiEmailChipInput({
+  value,
+  disabled,
+  onChange,
+}: {
+  value: string;
+  disabled: boolean;
+  onChange: (value: string) => void;
+}) {
+  const [chips, setChips] = useState<string[]>(() => parseEmailList(value));
+  const [inputVal, setInputVal] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const prevValueRef = useRef(value);
+
+  useEffect(() => {
+    if (prevValueRef.current !== value) {
+      prevValueRef.current = value;
+      setChips(parseEmailList(value));
+    }
+  }, [value]);
+
+  const sync = (next: string[]) => {
+    setChips(next);
+    prevValueRef.current = next.join(",");
+    onChange(next.join(","));
+  };
+
+  const commit = (raw: string) => {
+    const emails = parseEmailList(raw);
+    if (emails.length === 0) return;
+    const next = Array.from(new Set([...chips, ...emails]));
+    sync(next);
+    setInputVal("");
+  };
+
+  const remove = (idx: number) => {
+    sync(chips.filter((_, i) => i !== idx));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (["Enter", "Tab", ",", " "].includes(e.key)) {
+      if (inputVal.trim()) {
+        e.preventDefault();
+        commit(inputVal);
+      }
+    } else if (e.key === "Backspace" && !inputVal && chips.length > 0) {
+      remove(chips.length - 1);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData("text");
+    if (parseEmailList(pasted).length > 1 || pasted.includes(",") || pasted.includes(";")) {
+      e.preventDefault();
+      commit(pasted);
+    }
+  };
+
+  const hasError = chips.some((c) => !isValidEmail(c));
+
+  return (
+    <div
+      className={[
+        "flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm ring-offset-background",
+        "focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+        hasError ? "border-red-300 focus-within:ring-red-400" : "border-input",
+        disabled ? "cursor-not-allowed opacity-50" : "cursor-text",
+      ].join(" ")}
+      onClick={() => !disabled && inputRef.current?.focus()}
+    >
+      {chips.map((email, idx) => {
+        const invalid = !isValidEmail(email);
+        return (
+          <span
+            key={`${email}-${idx}`}
+            className={[
+              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium",
+              invalid
+                ? "bg-red-100 text-red-700 ring-1 ring-red-300"
+                : "bg-muted text-foreground",
+            ].join(" ")}
+          >
+            {email}
+            {!disabled && (
+              <button
+                type="button"
+                aria-label={`Remove ${email}`}
+                className="ml-0.5 rounded-sm opacity-60 hover:opacity-100 focus:outline-none"
+                onClick={(e) => { e.stopPropagation(); remove(idx); }}
+                tabIndex={-1}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </span>
+        );
+      })}
+      <input
+        ref={inputRef}
+        type="email"
+        inputMode="email"
+        value={inputVal}
+        disabled={disabled}
+        placeholder={chips.length === 0 ? "senior.staff@company.com" : "Add another..."}
+        className="min-w-40 flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+        onChange={(e) => setInputVal(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onPaste={handlePaste}
+        onBlur={() => { if (inputVal.trim()) commit(inputVal); }}
+      />
+    </div>
+  );
 }
 
 function AttachmentPanel({
@@ -171,6 +303,177 @@ function AttachmentPanel({
   );
 }
 
+function formatPortLabel(port: PortMasterListItem) {
+  return `(${port.code}) ${port.name}`;
+}
+
+function PortSearchInput({
+  value,
+  placeholder,
+  disabled,
+  isMissing,
+  onChange,
+}: {
+  value: string;
+  placeholder?: string;
+  disabled: boolean;
+  isMissing: boolean;
+  onChange: (value: string) => void;
+}) {
+  const [query, setQuery] = useState(value);
+  const [results, setResults] = useState<PortMasterListItem[]>([]);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const page = await api.getPortMaster({ search: query, portMode: "SEAPORT", isActive: true, pageSize: 10 });
+        setResults(page.items);
+        setOpen(page.items.length > 0);
+      } catch {
+        setResults([]);
+      }
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <Input
+        value={query}
+        disabled={disabled}
+        placeholder={placeholder}
+        aria-invalid={isMissing}
+        className={isMissing ? "border-red-300 focus-visible:ring-red-400" : ""}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          onChange(e.target.value);
+        }}
+        onFocus={() => results.length > 0 && setOpen(true)}
+      />
+      {open && (
+        <ul className="absolute z-50 mt-1 w-full rounded-md border border-border bg-popover shadow-md text-sm max-h-48 overflow-y-auto">
+          {results.map((port) => (
+            <li
+              key={port.id}
+              className="cursor-pointer px-3 py-2 hover:bg-accent"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                const label = formatPortLabel(port);
+                setQuery(label);
+                onChange(label);
+                setOpen(false);
+              }}
+            >
+              <span className="font-medium">{port.code}</span>
+              <span className="text-muted-foreground"> — {port.name}</span>
+              {port.countryName && (
+                <span className="text-muted-foreground">, {port.countryName}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function MscFieldsPanel({
+  isRequired,
+  mscVendors,
+  fields,
+  missingFields,
+  disabled,
+  onChange,
+}: {
+  isRequired: boolean;
+  mscVendors: FilterableVendor[];
+  fields: MscFields;
+  missingFields: string[];
+  disabled: boolean;
+  onChange: (key: MscFieldKey, value: string) => void;
+}) {
+  if (!isRequired) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-xl border border-amber-300/70 bg-amber-50/60 shadow-sm">
+      <div className="border-b border-amber-300/70 px-4 py-3">
+        <p className="text-sm font-semibold text-amber-950">MSC Required Fields</p>
+        <p className="mt-1 text-xs text-amber-900/80">
+          MSC uses its own enquiry format. These fields are required before sending
+          because {mscVendors.map((vendor) => vendor.name).join(", ")} will receive
+          an MSC-specific RFQ email while the other vendors keep the standard format.
+        </p>
+        {missingFields.length > 0 ? (
+          <p className="mt-2 text-xs font-medium text-amber-800">
+            Still required: {missingFields.join(", ")}
+          </p>
+        ) : null}
+      </div>
+      <div className="grid gap-3 px-4 py-4 md:grid-cols-2">
+        {MSC_FIELD_DEFINITIONS.map((field) => {
+          const isMissing = missingFields.includes(field.label);
+          const commonProps = {
+            value: fields[field.key],
+            disabled,
+            "aria-invalid": isMissing,
+            placeholder: field.placeholder,
+            onChange: (
+              event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+            ) => onChange(field.key, event.target.value),
+            className: isMissing ? "border-red-300 focus-visible:ring-red-400" : "",
+          };
+
+          return (
+            <label
+              key={field.key}
+              className={field.multiline ? "md:col-span-2" : "space-y-2"}
+            >
+              <span className="text-xs font-medium text-amber-950">
+                {field.label}
+              </span>
+              {field.portSearch ? (
+                <PortSearchInput
+                  value={fields[field.key]}
+                  placeholder={field.placeholder}
+                  disabled={disabled}
+                  isMissing={isMissing}
+                  onChange={(val) => onChange(field.key, val)}
+                />
+              ) : field.multiline ? (
+                <Textarea rows={3} {...commonProps} />
+              ) : (
+                <Input {...commonProps} />
+              )}
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function Step4ReviewSend({
   department,
   formValues,
@@ -187,7 +490,12 @@ export function Step4ReviewSend({
   canEdit = true,
   outlookStatus = null,
   customCcEmail,
+  mscFields,
+  isMscRequired,
+  mscVendors,
+  missingMscFields,
   onCustomCcEmailChange,
+  onMscFieldChange,
   onOfficeChange,
   onSend,
 }: Props) {
@@ -226,7 +534,14 @@ export function Step4ReviewSend({
     : outlookStatus?.reconnectRequired
       ? "Reconnect Outlook once from your Profile page to enable sending."
       : "Connect Outlook from your Profile page to send RFQs.";
-  const hasValidCustomCcEmail = isValidOptionalEmail(customCcEmail);
+  const hasValidCustomCcEmail = isValidOptionalEmailList(customCcEmail);
+  const canSend = 
+    canEdit &&
+    selectedVendors.length > 0 &&
+    canSendViaOutlook &&
+    dispatchTargetsReady &&
+    hasValidCustomCcEmail &&
+    missingMscFields.length === 0;
 
   const handleAttachmentSelection = (event: ChangeEvent<HTMLInputElement>) => {
     const nextFiles = Array.from(event.target.files ?? []);
@@ -253,6 +568,13 @@ export function Step4ReviewSend({
   const handleSend = async () => {
     if (!hasValidCustomCcEmail) {
       toast.error("Enter a valid internal CC email before sending.");
+      return;
+    }
+
+    if (missingMscFields.length > 0) {
+      toast.error(
+        `Complete the MSC-required fields before sending: ${missingMscFields.join(", ")}.`,
+      );
       return;
     }
 
@@ -314,11 +636,7 @@ export function Step4ReviewSend({
             <SendRfqButton
               count={selectedVendors.length}
               disabled={
-                !canEdit ||
-                selectedVendors.length === 0 ||
-                !canSendViaOutlook ||
-                !dispatchTargetsReady ||
-                !hasValidCustomCcEmail
+                !canSend
               }
               loading={isSending}
               onClick={() => void handleSend()}
@@ -326,29 +644,34 @@ export function Step4ReviewSend({
           </div>
         </div>
 
+        <MscFieldsPanel
+          isRequired={isMscRequired}
+          mscVendors={mscVendors}
+          fields={mscFields}
+          missingFields={missingMscFields}
+          disabled={!canEdit || isSending}
+          onChange={onMscFieldChange}
+        />
+
         <div className="rounded-xl border border-border bg-card shadow-sm">
           <div className="border-b border-border px-4 py-3">
             <p className="text-sm font-semibold text-card-foreground">
               Internal CC
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Optional. Add one internal senior staff email to be CCed on every
-              vendor RFQ mail.
+              Optional. Add one or more internal staff emails to CC on every
+              vendor RFQ mail. Press Enter or comma to add each.
             </p>
           </div>
           <div className="px-4 py-4">
-            <Input
-              type="email"
-              inputMode="email"
-              placeholder="senior.staff@company.com"
+            <MultiEmailChipInput
               value={customCcEmail}
-              onChange={(event) => onCustomCcEmailChange(event.target.value)}
-              aria-invalid={!hasValidCustomCcEmail}
               disabled={!canEdit || isSending}
+              onChange={onCustomCcEmailChange}
             />
             {!hasValidCustomCcEmail ? (
               <p className="mt-2 text-xs text-red-600">
-                Enter a valid email address or leave this blank.
+                One or more emails are invalid.
               </p>
             ) : null}
           </div>
@@ -490,27 +813,32 @@ export function Step4ReviewSend({
               Internal CC
             </span>
             <p className="mt-2 text-xs text-muted-foreground">
-              Optional. Add one internal senior staff email to be CCed on every
-              vendor RFQ mail.
+              Optional. Add one or more internal staff emails to CC on every
+              vendor RFQ mail. Press Enter or comma to add each.
             </p>
           </div>
           <div className="px-4 py-3">
-            <Input
-              type="email"
-              inputMode="email"
-              placeholder="senior.staff@company.com"
+            <MultiEmailChipInput
               value={customCcEmail}
-              onChange={(event) => onCustomCcEmailChange(event.target.value)}
-              aria-invalid={!hasValidCustomCcEmail}
               disabled={!canEdit || isSending}
+              onChange={onCustomCcEmailChange}
             />
             {!hasValidCustomCcEmail ? (
               <p className="mt-2 text-xs text-red-600">
-                Enter a valid email address or leave this blank.
+                One or more emails are invalid.
               </p>
             ) : null}
           </div>
         </div>
+
+        <MscFieldsPanel
+          isRequired={isMscRequired}
+          mscVendors={mscVendors}
+          fields={mscFields}
+          missingFields={missingMscFields}
+          disabled={!canEdit || isSending}
+          onChange={onMscFieldChange}
+        />
 
         <div className="shrink-0 rounded-xl border border-border bg-card shadow-sm">
           <div className="px-4 py-2 border-b border-border">
@@ -549,11 +877,7 @@ export function Step4ReviewSend({
           <SendRfqButton
             count={selectedVendors.length}
             disabled={
-              !canEdit ||
-              selectedVendors.length === 0 ||
-              !canSendViaOutlook ||
-              !dispatchTargetsReady ||
-              !hasValidCustomCcEmail
+              !canSend
             }
             loading={isSending}
             onClick={() => void handleSend()}

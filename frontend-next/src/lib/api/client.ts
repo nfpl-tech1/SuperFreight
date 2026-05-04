@@ -1,5 +1,6 @@
 import { buildQueryString } from "@/lib/api/query-builder";
 import { request } from "@/lib/api/request";
+import type { MscFields } from "@/types/rfq";
 import type {
   AppRoleDefinition,
   AuthTokenResponse,
@@ -355,6 +356,7 @@ export const api = {
       fieldLabel: string;
       isCustom: boolean;
     }[];
+    mscFields?: MscFields;
     customCcEmail?: string;
     sendNow?: boolean;
     mailSubject?: string;
@@ -373,6 +375,9 @@ export const api = {
         JSON.stringify(body.officeSelections ?? []),
       );
       formData.set("responseFields", JSON.stringify(body.responseFields));
+      if (body.mscFields !== undefined) {
+        formData.set("mscFields", JSON.stringify(body.mscFields));
+      }
       if (body.customCcEmail !== undefined) {
         formData.set("customCcEmail", body.customCcEmail);
       }

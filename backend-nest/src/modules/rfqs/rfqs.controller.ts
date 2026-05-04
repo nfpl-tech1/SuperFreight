@@ -19,7 +19,7 @@ import {
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { User } from '../users/entities/user.entity';
-import { CreateRfqDto } from './dto/create-rfq.dto';
+import { CreateRfqDto, MscFieldsDto } from './dto/create-rfq.dto';
 import { RfqsService } from './rfqs.service';
 import { plainToInstance } from 'class-transformer';
 import { validateSync, ValidationError } from 'class-validator';
@@ -107,6 +107,7 @@ function buildCreateRfqDtoPayload(rawBody: Record<string, unknown>) {
         rawBody.responseFields,
         'responseFields',
       ) ?? [],
+    mscFields: parseJsonField<MscFieldsDto>(rawBody.mscFields, 'mscFields'),
     customCcEmail: parseOptionalStringField(rawBody.customCcEmail),
     sendNow: parseBooleanField(rawBody.sendNow),
     mailSubject: rawBody.mailSubject,
