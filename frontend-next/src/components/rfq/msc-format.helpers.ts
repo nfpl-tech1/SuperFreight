@@ -79,7 +79,7 @@ export function isMscVendorName(value: string | null | undefined) {
   );
 }
 
-export function getMscVendors(vendors: Array<Pick<FilterableVendor, "name">>) {
+export function getMscVendors<T extends Pick<FilterableVendor, "name">>(vendors: T[]): T[] {
   return vendors.filter((vendor) => isMscVendorName(vendor.name));
 }
 
